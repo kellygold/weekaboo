@@ -10,7 +10,7 @@ Kelly requested a future MCP/AI-client adapter after this release. See [MCP exte
 
 Prepare a clean public source repository at **kellygold/weekaboo**, authorized by Kelly once publication checks pass. Do not confuse this with permission to publish binaries, submit to stores, deploy the website, notarize or incur charges. Initial local commit `4090e70` now contains the audited 413-file source set; source and all-ref history scans pass with zero findings. There is no remote, and GitHub returned 404 for that destination. No push yet.
 
-Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are being prepared. Source URL stays unset until the repository exists. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Asset subscription status from ElevenLabs generation date is pending user input. See the release checklist for every remaining gate.
+Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are being prepared. Source URL stays unset until the repository exists. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
 
 ## Completed latest validation
 

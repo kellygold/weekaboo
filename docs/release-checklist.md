@@ -12,7 +12,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Archive unused motion studies/raster concepts and five denied audio files locally. Retain all thirteen approved greetings.
 - [x] Prepare README, MIT code license, contribution guidance, security guidance and asset provenance inventory.
 - [x] Separate current handoff from historical checkpoints so old device/setup instructions are not treated as current.
-- [ ] Verify generated-audio redistribution basis from the plan active when it was generated. Asked Kelly directly; no secret needed.
+- [x] Kelly confirmed on 11 September that a paid ElevenLabs subscription covered generation on 9 September; model availability and publishing terms checked.
 - [x] Fresh source-only npm ci/browser/static build passes; repeatable source audit and four negative/self-tests pass. Repeat final audit with `python3 scripts/audit-public-source.py --gitleaks /path/to/gitleaks` (pinned 8.30.1).
 - [x] Initial local commit `4090e70` contains only the audited 413-file manifest. Gitleaks scans of source and all Git refs report zero findings; GitHub noreply author address used. No push yet. Rerun the audit after subsequent changes.
 - [ ] Create public `kellygold/weekaboo`, push reviewed source, inspect the public tree and verify README/license/secret-scanning settings. Source publication is authorized; no further confirmation needed once clean.
@@ -72,7 +72,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 
 ## User-dependent items — ask directly when needed
 
-- **Now:** confirm whether ElevenLabs generation used a paid plan; redistribution terms depend on it. Generation recipes/approved files already located.
+- **Resolved:** Kelly confirmed paid ElevenLabs coverage for the audio generation date; no further account/billing evidence requested.
 - **Later:** Google OAuth consent still presents Instapie; approve deliberate project/branding separation without breaking that app.
 - **Distribution:** chosen Play/tester and TestFlight/family installation routes; any new signing/profile/store action requiring account interaction.
 - **Publication:** source repository is already authorized when clean. Website deployment and native binary/store publication still need their own concrete approval.
