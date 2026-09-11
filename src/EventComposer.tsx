@@ -23,22 +23,24 @@ function iso(value: string, allDay: boolean, end = false) {
 
 export function EventComposer(props: {
   event?: CalendarEvent; calendars: Calendar[]; start: Date; end?: Date; close: () => void;
-  saved: (message: string) => void; demo: boolean; anchor?: HTMLElement;
+  saved: (message: string) => void; demo: boolean; anchor?: HTMLElement; refreshing?: boolean; unavailable?: boolean;
 }) {
   const [editing, setEditing] = useState(!props.event);
-  return editing ? <EventEditing {...props} /> : <EventDetails {...props} event={props.event!} edit={() => setEditing(true)} />;
+  // Preview follows refreshes; an opened draft keeps its own conflict revision.
+  const [draftEvent, setDraftEvent] = useState(props.event);
+  return editing ? <EventEditing {...props} event={draftEvent} /> : <EventDetails {...props} event={props.event!} edit={() => { setDraftEvent(props.event); setEditing(true); }} />;
 }
 
-function EventDetails({ event, calendars, close, saved, demo, anchor, edit }: {
+function EventDetails({ event, calendars, close, saved, demo, anchor, edit, refreshing = false, unavailable = false }: {
   event: CalendarEvent; calendars: Calendar[]; close: () => void; saved: (message: string) => void;
-  demo: boolean; anchor?: HTMLElement; edit: () => void;
+  demo: boolean; anchor?: HTMLElement; edit: () => void; refreshing?: boolean; unavailable?: boolean;
 }) {
   const { calendars: service } = useServices();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const calendar = calendars.find(c => c.id === event.calendarId);
-  const writable = !demo && event.editable;
+  const writable = !demo && event.editable && !unavailable;
   const meeting = safeUrl(event.meetingUrl);
   const links = [...new Set([...(meeting ? [meeting] : []), ...descriptionLinks(event.location, event.description, event.sourceUrl).filter(isMeetingJoinLink)])];
   const source = safeUrl(event.sourceUrl);
@@ -47,6 +49,7 @@ function EventDetails({ event, calendars, close, saved, demo, anchor, edit }: {
   const day = (d: Date) => d.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const time = (d: Date) => d.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' });
   async function remove() {
+    if (refreshing || unavailable || busy) return;
     setBusy(true); setError('');
     try { await service.deleteEvent(eventTarget(event)); saved('Event removed · Calendar sync pending.'); close(); }
     catch (e) { setError((e as Error).message); setBusy(false); }
@@ -61,10 +64,12 @@ function EventDetails({ event, calendars, close, saved, demo, anchor, edit }: {
       {!!event.attendees?.length && <EventGuests guests={event.attendees} />}
       {event.description && <section className="detail-notes"><h3>About this event</h3><RichText text={event.description} /></section>}
       {source && !links.includes(source) && <a className="detail-action" href={source} target="_blank" rel="noopener noreferrer"><CalendarDays size={16} /> Open original event ↗</a>}
-      {!writable && <p className="detail-hint">{demo ? 'Sample calendar' : 'Read-only calendar'}</p>}
+      {refreshing && <p className="detail-hint" role="status">Updating event details…</p>}
+      {!refreshing && unavailable && <p className="detail-hint" role="status">This event is no longer in the calendar.</p>}
+      {!writable && !unavailable && <p className="detail-hint">{demo ? 'Sample calendar' : 'Read-only calendar'}</p>}
       {error && <p className="composer-error" role="alert">{error}</p>}
     </div>
-    {writable && <footer className="composer-footer">{confirm ? <><span>{event.recurrenceRule ? 'Delete this whole series?' : 'Delete this event?'}</span><button disabled={busy} onClick={() => setConfirm(false)}>Keep it</button><button className="danger" disabled={busy} onClick={() => void remove()}>Delete event</button></> : <><button className="icon" aria-label="Delete event" onClick={() => setConfirm(true)}><Trash2 size={17} /></button><span className="composer-spacer" /><button className="primary" onClick={edit}><Pencil size={16} /> Edit event</button></>}</footer>}
+    {writable && <footer className="composer-footer">{confirm ? <><span>{event.recurrenceRule ? 'Delete this whole series?' : 'Delete this event?'}</span><button disabled={busy} onClick={() => setConfirm(false)}>Keep it</button><button className="danger" disabled={busy || refreshing} onClick={() => void remove()}>Delete event</button></> : <><button className="icon" aria-label="Delete event" disabled={refreshing} onClick={() => setConfirm(true)}><Trash2 size={17} /></button><span className="composer-spacer" /><button className="primary" disabled={refreshing} onClick={edit}><Pencil size={16} /> Edit event</button></>}</footer>}
   </>}</EditorSurface>;
 }
 
