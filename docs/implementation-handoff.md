@@ -44,3 +44,11 @@ For rationale and researched provider differences read [cross-platform plan](cro
 ## Continue independently
 
 Public repository creation, source/history audit and website source-link validation are complete. Keep source changes audited before push. Complete Android native acknowledgments and refresh signed artifacts without changing profiles. Preserve honest release gates for independent review, remaining device/expiry/recurrence tests, consent branding, store tracks and notarization. Keep this handoff and checklist updated rather than accumulating contradictory top-level instructions.
+
+## Latest checkpoint — 11 September 22:05 AEST
+
+Android tablet reconnected and current signed APK installed in place. Exact tasks retained; all providers connected; offline restart/recovery and non-inspectable release WebView pass. Native notice gate closed, scoped Claude packaging review passed. Detailed receipt: current-validation.md and ignored output/production-validation/android-tablet-current/. User data preserved, Wi-Fi restored, app reopened. Continue release-execution-plan.md autonomously. iOS root privacy/API audit and small-phone button clipping remain agent-owned next checks; no new registrations needed. Source 45ede45 is local, awaiting final source/history audit before authorized push.
+
+## Latest final-artifact checkpoint — 11 September 22:18 AEST
+
+Shared suite 182 pass; Chromium/WebKit phone controls fixed and checked. Final Android APK installed with exact original tasks retained and inspection disabled. iOS current 18-test three-simulator matrix passes; current-source App Store-signed IPA export now succeeds using existing Apple account (no upload). New scripts/ios-release.py and docs/ios-release.md make archive/export repeatable. Mac signed DMG refreshed and exact renderer/install/update/import proof passes. See current-validation.md for hashes and limits. Remaining: privacy/disclosure/notice viewer, provider negative/recurrence matrix, independent cancellation follow-up, store records/testers, notarization and explicit publication approvals. No immediate new signup or client registration needed.

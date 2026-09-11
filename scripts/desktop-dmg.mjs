@@ -5,8 +5,9 @@ import { mkdtempSync, rmSync, symlinkSync, readFileSync, writeFileSync } from 'n
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-const signed = process.argv.includes('--signed');
 const identity = process.env.WEEKABOO_SIGN_IDENTITY;
+// Match package-desktop: a supplied signing identity selects the signed app.
+const signed = process.argv.includes('--signed') || Boolean(identity);
 if (signed && !/^[A-F0-9]{40}$/.test(identity || '')) throw new Error('Signed disk image requires an explicit existing Developer ID identity.');
 const root = resolve(import.meta.dirname, '..'), output = join(root, 'output/standalone-desktop');
 const application = join(output, (signed ? 'package-signed' : 'package') + '/Weekaboo-darwin-arm64/Weekaboo.app');
@@ -16,7 +17,7 @@ try {
   execFileSync('codesign', ['--verify', '--deep', '--strict', application], { stdio: 'pipe' });
   execFileSync('ditto', [application, join(stage, 'Weekaboo.app')], { stdio: 'pipe' });
   symlinkSync('/Applications', join(stage, 'Applications'));
-  writeFileSync(join(stage, 'Preview.txt'), 'Weekaboo development preview\n\nLocal build for testing. Not notarized or approved for public distribution. Google/Microsoft native registrations and real account consent need validation. Tasks and accounts are local to this installation; the browser database is not imported.\n');
+  writeFileSync(join(stage, 'Preview.txt'), 'Weekaboo development preview\n\nLocal build for testing. Not notarized or approved for public distribution. Connect your calendar accounts on this Mac. Tasks and accounts are local to this installation; the browser database is not imported.\n');
   execFileSync('hdiutil', ['create', '-ov', '-format', 'UDZO', '-volname', 'Weekaboo Preview', '-srcfolder', stage, image], { stdio: 'pipe' });
   execFileSync('hdiutil', ['verify', image], { stdio: 'pipe' });
   if (signed) { execFileSync('codesign', ['--force', '--sign', identity, '--timestamp', image], { stdio: 'pipe' }); execFileSync('codesign', ['--verify', '--strict', image], { stdio: 'pipe' }); }

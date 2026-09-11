@@ -24,7 +24,8 @@ try {
   // Only the parsed native registration fields enter the artifact; unrelated keys are excluded.
   await writeFile(join(stage, 'desktop/native-auth.json'), JSON.stringify(loadAuthConfig(join(root, 'desktop/native-auth.json'))));
   await cp(join(root, 'dist-desktop'), join(stage, 'dist-desktop'), { recursive: true, filter: path => !path.endsWith('/.DS_Store') });
-  await cp(join(root, 'licenses'), join(stage, 'licenses'), { recursive: true });
+  // Android SDK supplements belong only in Android artifacts.
+  await cp(join(root, 'licenses'), join(stage, 'licenses'), { recursive: true, filter: path => path !== join(root, 'licenses/android') && !path.endsWith('/.DS_Store') });
   const notices = await desktopNotices(root, stage, bundle.metafile);
   await writeFile(join(output, 'notice-inventory.json'), JSON.stringify(notices, null, 2));
   await cp(join(root, 'docs/attribution.md'), join(stage, 'ATTRIBUTION.md'));

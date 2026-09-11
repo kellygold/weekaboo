@@ -444,3 +444,11 @@ Final packaging check: browser and desktop web-asset builds also pass with this 
 - iOS development IPA export succeeded, signature/metadata/private-path/provisioning verified. Development registered-device install only; no public/TestFlight upload. Physical native import/export picker cancellation **1 pass** (`files.xcresult`); normal app relaunched afterwards.
 - Android AAB validates under official bundletool 1.18.3, generates signed universal APK; jarsigner passes. Tablet not reconnected/updated yet. Source/build metadata now centrally consistent.
 - No additional user action needed while away; next personal inputs are Mac Google Desktop client/real provider sign-in, later Google consent branding/public source/store decisions. Do not send credentials or repeat completed mobile setup requests.
+
+## 11 September 2026 — reconnected Android release checkpoint
+
+Completed native notices/strict runtime locking and scoped independent review; signed APK/AAB validated. Physical same-certificate update preserved all three accounts and all three tasks exactly. Real Wi-Fi-off process restart retained saved content; refresh recovered online. Physical MSAL fallback test passed; production WebView inspection is disabled. See current-validation.md for artifact hash and limits. Continue shared reliability, iOS privacy/distribution and narrow-screen checks, then final Mac refresh. No immediate user setup needed.
+
+## 11 September 2026 — current artifacts
+
+Phone clipping/overlap fixes pass Chromium/WebKit plus all 182 shared tests. Final Android update retains exact task data. iOS current iPhone/Mini/iPad matrix passes 18 tests and current-source App Store distribution export succeeds. Signed Mac DMG exact contents and isolated install/update/task transfer pass. Source/artifact evidence and outstanding release gates are in current-validation.md and release-checklist.md.

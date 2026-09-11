@@ -29,7 +29,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 
 ## Shared behavior and security
 
-- [x] Current shared regression suite: 180 pass, including cancellation race regressions.
+- [x] Current shared regression suite: 182 pass, including cancellation race regressions.
 - [x] Check native storage/logging boundaries and actual signed-artifact configuration; exact evidence scopes in credential review.
 - [x] Retain failed attempts and cleanup evidence; do not replace missing proof with an optimistic status.
 - [ ] Complete independent follow-up on the fixed cancellation race in a fresh review session. Existing review budget exhausted without final verdict.
@@ -42,7 +42,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Prior physical signed build: Google/Microsoft/iCloud connected and basic live CRUD validated.
 - [x] Current release emulator: cold launch, task persistence, AAB-derived in-place upgrade, completion/history/delete and settings.
 - [x] Package reviewed native SDK notices. Digest-bound supplements and locked runtime resolution now cover 91 records and 153 notice files with zero unresolved entries. Ten collector tests, signed APK/AAB byte checks and actual MSAL fallback instrumentation on the release emulator pass. Final device/release acceptance remains separate.
-- [ ] Validate exact final release on normal-user-OS physical tablet, including inspection disabled, upgrade and provider reconnect/refresh. Do not uninstall or replace signing key.
+- [x] Current physical normal-user-OS tablet: exact APK bytes, inspection disabled, in-place update, exact task preservation, retained accounts and refreshed calendars. Offline restart/recovery and actual MSAL fallback pass on the immediately preceding packaging candidate. Fresh reconnect remains in the shared matrix; do not uninstall/reset.
 - [ ] Review Play App Signing certificate and matching OAuth entries, track/testers, privacy/data-safety disclosures, listing and store assets before upload.
 - [ ] Verify sideload/family-install instructions using the final signed APK and checksums; store testing/production approval remains separate.
 
@@ -55,7 +55,8 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Add deterministic Swift-package acknowledgment collector; five tests pass, 13 original notices across ten locked packages match simulator app exactly.
 - [x] Refresh signed archive/IPA for newest notices and source asset cleanup; exact notices/assets and signatures verified in `ios-source-cleanup-current/`.
 - [ ] Physical iPhone/larger iPad/minimum-supported-OS and lock/unlock/expiry acceptance. The old iPad is sold: no further work on that device.
-- [ ] Configure appropriate family/TestFlight/App Store distribution. Current development profile includes only one formerly connected iPad.
+- [x] Current Release archive exports locally with App Store distribution profile, debugging disabled and no one-device restriction. Xcode managed signing succeeded with existing account; see ios-release.md.
+- [ ] Configure App Store Connect record/TestFlight testers and approve exact upload; local export is not distribution or App Store approval.
 - [ ] Review store metadata, privacy manifest/disclosures, review-account instructions and final archive/export before explicit upload approval.
 
 ## macOS
@@ -66,7 +67,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Accounts retained across full app restarts; tasks and calendar settings unchanged.
 - [x] Injected native provider outage retains 19 cached labels through renderer reload and failed refresh; recovery without interactive consent. This is not a physical network-off test.
 - [x] Signed packaged Google/Microsoft cancellation/retry. True token expiry is not established by ordinary silent acquisition.
-- [ ] Refresh final signed app/DMG after asset/license changes; preserve previous artifact-specific receipts.
+- [x] Current signed app/DMG refreshed after asset/license and phone UI changes; exact renderer/package checks and isolated install/update/export/import pass. Historical live-provider receipts remain separate.
 - [ ] Minimum macOS/Intel acceptance or explicit Apple Silicon-only support statement.
 - [ ] Notarization/stapling, downloaded-quarantine/Gatekeeper acceptance, checksum and release identity checks before public distribution.
 

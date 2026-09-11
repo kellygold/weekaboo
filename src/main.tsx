@@ -252,7 +252,7 @@ export function App({ demo }: { demo: boolean }) {
   }}><main className="app-shell" style={{ '--event-font-size': `${fontSize}px`, '--chip-height': `${Math.max(20, Math.min(30, hourHeight * .5))}px` } as React.CSSProperties}>
     <header className="app-header">
       <div className="brand"><div className="brand-icon"><img key={brandReplay} src={`/brand/weekaboo-mark.svg?replay=${brandReplay}`} alt="" /></div><div><h1>Weeka<span>boo</span></h1><p>Your week, with a wink.</p></div><button type="button" className="brand-replay" aria-label="Replay Weekaboo animation" title="One more peek" onClick={() => { setBrandReplay(value => value + 1); mascotSound.play(); }} /></div>
-      <div className="header-right">{!demo && <button className="new-event-button" onClick={() => { setEventDraft(undefined); setEventAnchor(undefined); setEditorSession(v => v + 1); setSelectedEvent(undefined); setCreatingEvent(true); }}><Plus size={18} /> New event</button>}<button className="demo-tag connected-calendars" aria-label="Connected calendars" onClick={() => { setSettings(false); setDrawer(true); }}>{demo ? 'Sample calendars' : 'Connected calendars'}</button><div className="clock"><strong>{time(now)}</strong><small>{now.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'short' })}</small></div><button className="icon settings-button" aria-label="Settings" onClick={() => setSettings(true)}><Settings size={21} /></button></div>
+      <div className="header-right">{!demo && <button className="new-event-button" aria-label="New event" title="New event" onClick={() => { setEventDraft(undefined); setEventAnchor(undefined); setEditorSession(v => v + 1); setSelectedEvent(undefined); setCreatingEvent(true); }}><Plus size={18} aria-hidden="true" /><span>New event</span></button>}<button className="demo-tag connected-calendars" aria-label="Connected calendars" onClick={() => { setSettings(false); setDrawer(true); }}>{demo ? 'Sample calendars' : 'Connected calendars'}</button><div className="clock"><strong>{time(now)}</strong><small>{now.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'short' })}</small></div><button className="icon settings-button" aria-label="Settings" onClick={() => setSettings(true)}><Settings size={21} /></button></div>
     </header>
     <div className={`dashboard ${tasksVisible ? '' : 'tasks-hidden'} ${resizing ? 'is-resizing' : ''}`} style={{ '--task-width': `${taskWidth}%` } as React.CSSProperties}>
       <section className="calendar-panel" aria-label={`${viewLabels[calendarView]} calendar`}>
@@ -291,7 +291,7 @@ export function App({ demo }: { demo: boolean }) {
 
         </div>
         <div className="task-note"><span>ONE THING AT A TIME</span><p>A place for “someday”,<br />and a little focus for today.</p></div>
-        <footer className="tasks-footer">Saved on this device · Personal prototype</footer>
+        <footer className="tasks-footer">Saved on this device</footer>
       </aside></div>
     </div>
     {error && <div className="error" role="alert">{error}<button className="icon" aria-label="Dismiss error" onClick={() => setError('')}><X size={16} /></button></div>}

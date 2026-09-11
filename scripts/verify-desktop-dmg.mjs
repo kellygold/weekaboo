@@ -1,6 +1,6 @@
 import { version } from './release-version.mjs';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { listPackage, extractFile } from '@electron/asar';
@@ -19,11 +19,21 @@ try {
   assert.equal(createHash('sha256').update(readFileSync(archive)).digest('hex'), packaged.appArchiveSha256);
   const paths = listPackage(archive);
   assert(!paths.some(path => /(^|\/)(backend|data|output|tests|\.git)(\/|$)|\.env|\.db$|\.sqlite$/.test(path)));
+  assert(!paths.some(path => path.startsWith('/licenses/android/')), 'Android-only SDK supplements must not enter the Mac package');
+  // A valid signature alone does not establish that we packaged the current UI.
+  let rendererFiles = 0;
+  for (const entry of readdirSync(resolve('dist-desktop'), { recursive: true, withFileTypes: true })) {
+    if (!entry.isFile() || entry.name === '.DS_Store') continue;
+    const full = join(entry.parentPath, entry.name);
+    const relative = full.slice(resolve('dist-desktop').length + 1);
+    assert.deepEqual(extractFile(archive, 'dist-desktop/' + relative), readFileSync(full), 'Stale packaged renderer: ' + relative);
+    rendererFiles++;
+  }
   const config = JSON.parse(extractFile(archive, 'desktop/native-auth.json').toString());
   assert(Object.keys(config).every(key => ['google', 'microsoft'].includes(key)));
   assert(!config.microsoft || Object.keys(config.microsoft).every(key => key === 'clientId'));
   const notices = JSON.parse(extractFile(archive, 'licenses/desktop/inventory.json').toString());
   assert(notices.packages.every(pkg => pkg.noticeFiles.length));
-  writeFileSync(join(output, 'dmg-mounted-proof.json'), JSON.stringify({ readOnlyMount: true, applicationSignatureVerified: true, archiveMatchesPackagedProof: true, privatePathsAbsent: true, sdkPackagesWithNotices: notices.packages.length, developerIDSigned: true, notarized: false, publicRelease: false }, null, 2));
+  writeFileSync(join(output, 'dmg-mounted-proof.json'), JSON.stringify({ readOnlyMount: true, applicationSignatureVerified: true, archiveMatchesPackagedProof: true, currentRendererFiles: rendererFiles, androidOnlyNoticesAbsent: true, privatePathsAbsent: true, sdkPackagesWithNotices: notices.packages.length, developerIDSigned: true, notarized: false, publicRelease: false }, null, 2));
   console.log('Signed DMG mounts read-only; signed app/archive match; private paths excluded; SDK notices present.');
 } finally { execFileSync('hdiutil', ['detach', volume['mount-point']], { stdio: 'pipe' }); }
