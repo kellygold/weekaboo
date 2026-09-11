@@ -31,12 +31,15 @@ Updated 12 September 2026. This is the work queue, not a production-readiness cl
 
 ## Shared behavior and security
 
-- [x] Current shared regression suite: 182 pass, including cancellation race regressions.
+- [x] Current shared regression suite: 190/190 stable run, including five preview-refresh regressions and cancellation races; initial interrupted run retained.
 - [x] Check native storage/logging boundaries and actual signed-artifact configuration; exact evidence scopes in credential review.
 - [x] Retain failed attempts and cleanup evidence; do not replace missing proof with an optimistic status.
-- [x] Fresh scoped cancellation follow-up on clean `e679c61`: one independent Claude/high review,251seconds, no confirmed P0/P1. Prior budget-exhausted receipt preserved; whole-release review remains separate.
+- [x] Fresh scoped cancellation follow-up on clean `e679c61`: one independent Claude/high review, 251 seconds, no confirmed P0/P1. Prior budget-exhausted receipt preserved; whole-release review remains separate.
 - [ ] Complete live expired/revoked access, reconnect/removal, recurrence/DST scope and ambiguous-write recovery matrix on relevant providers/platforms.
 - [ ] Verify final candidate after any packaging/source changes, including assets/notices and fresh-install/in-place-upgrade paths.
+
+- [x] Fix and independently review rapid edit/reopen/delete preview revision race (`bf621a9`); current Android Google live proof and Mac all-provider rapid CRUD/readback/cleanup pass.
+- [x] Rebuild signed APK/AAB, iOS App Store export and Mac app/DMG on bf621a9; package gates and 18/18 iOS simulator checks pass.
 
 ## Dedicated Google project migration — 12 September
 
@@ -58,6 +61,7 @@ Updated 12 September 2026. This is the work queue, not a production-readiness cl
 - [x] Current release emulator: cold launch, task persistence, AAB-derived in-place upgrade, completion/history/delete and settings.
 - [x] Package reviewed native SDK notices. Digest-bound supplements and locked runtime resolution now cover 91 records and 153 notice files with zero unresolved entries. Ten collector tests, signed APK/AAB byte checks and actual MSAL fallback instrumentation on the release emulator pass. Final device/release acceptance remains separate.
 - [x] Current physical normal-user-OS tablet: exact APK bytes, inspection disabled, in-place update, exact task preservation, retained accounts and refreshed calendars. Offline restart/recovery and actual MSAL fallback pass on the immediately preceding packaging candidate. Fresh reconnect remains in the shared matrix; do not uninstall/reset.
+- [x] Prepare dimension-checked icon, feature graphic and 12 synthetic shared-UI screenshot drafts; private store-assets packet records browser provenance and required final native comparison. Nothing uploaded.
 - [ ] Review Play App Signing certificate and matching OAuth entries, track/testers, privacy/data-safety disclosures, listing and store assets before upload.
 - [ ] Verify sideload/family-install instructions using the final signed APK and checksums; store testing/production approval remains separate.
 
@@ -92,6 +96,6 @@ Updated 12 September 2026. This is the work queue, not a production-readiness cl
 - **Resolved:** Kelly confirmed paid ElevenLabs coverage for the audio generation date; no further account/billing evidence requested.
 - **Resolved for current Android/Mac/browser consent:** dedicated Weekaboo project and branding. iOS simulator consent also passes. Remaining: public Google verification and actual Play-signing/tester acceptance.
 - **Distribution:** chosen Play/tester and TestFlight/family installation routes; any new signing/profile/store action requiring account interaction.
-- **Publication:** source repository is already authorized when clean. Website deployment and native binary/store publication still need their own concrete approval.
+- **Publication:** source repository is already authorized when clean. Website deployment is authorized and complete. Native binary/store publication still needs concrete final approval.
 
 No new Android/iOS OAuth client, developer signup, device trust or initial provider sign-in is needed merely to continue the remaining independent checks. Cross-device task sync and paid hosting remain deferred.

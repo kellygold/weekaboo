@@ -1,6 +1,6 @@
 # Android submission packet
 
-Prepared 12 September 2026. **Draft for review; no Play app record, upload, test-track rollout or production submission performed by this packet.** Runtime evidence is for `d3bcf4b`; preparation began at `d2ae0d7`, with subsequent documentation/website commits. Consult [current validation](current-validation.md) for the exact artifact and remaining release gates. A successful local AAB check is not Play acceptance.
+Prepared 12 September 2026. **Draft for review; no Play app record, upload, test-track rollout or production submission performed by this packet.** The current runtime candidate is `bf621a9`; preparation began at `d2ae0d7`, and earlier validation boundaries remain documented separately. Consult [current validation](current-validation.md) for the exact artifact and remaining release gates. A successful local AAB check is not Play acceptance.
 
 ## Candidate and store fields
 
@@ -50,7 +50,7 @@ Keep price language out of the short description and preview artwork; the websit
 
 > First Android test release. Connect Google, Outlook and iCloud calendars, switch calendar views and groups, and keep flexible local tasks. Please report connection, refresh, scheduling and tablet-layout issues. Tasks stay on each device and do not automatically sync.
 
-Use real screenshots of the candidate with synthetic data. Prepare a 512 × 512 app icon and 1024 × 500 feature graphic, plus representative phone and tablet screenshots for the surfaces being listed. Do not use screenshots containing Kelly's calendars or promise untested phone quality. Check the final asset requirements in [Google's store asset guidance](https://support.google.com/googleplay/android-developer/answer/9866151?hl=en-GB). Existing screenshots/artwork are inputs, not a completed Play asset upload.
+Use real screenshots of the candidate with synthetic data. Prepare a 512 × 512 app icon and 1024 × 500 feature graphic, plus representative phone and tablet screenshots for the surfaces being listed. Do not use screenshots containing Kelly's calendars or promise untested phone quality. Check the final asset requirements in [Google's store asset guidance](https://support.google.com/googleplay/android-developer/answer/9866151?hl=en-GB). The prepared private packet `output/distribution-preparation/store-assets-20260912/` contains a dimension-checked icon, feature graphic and 12 synthetic shared-React screenshots. These are browser-renderer drafts, not Android device captures; compare or replace them with final native captures before submission. Nothing has been uploaded.
 
 ## Getting testers installed
 
@@ -90,7 +90,7 @@ This is a technical input to the form, **not permission to select “no data col
 | Connected account email / provider account ID; display name when returned | Identity discovery and account selection use provider requests. Prepare Email address and User IDs; inspect actual name handling/SDK disclosures before deciding Name. Optional to provider connection, app functionality/account management. |
 | Tasks, calendar grouping and display preferences | App-owned implementation stores these locally. No off-device collection by Weekaboo's task implementation; explicit user export is a separate action. Do not extend this statement to provider events or authentication SDKs. |
 | Authentication credentials | Native SDK caches / protected credential stores; tokens are used in HTTPS requests and short-lived tokens enter the trusted bridge. No claim that tokens never leave Keychain/Keystore. The form taxonomy and vendor disclosures must be reconciled rather than inventing a credential category. |
-| Diagnostics, device identifiers, app interactions, IP-derived location | **Unresolved for the exact bundled authentication SDKs.** No app-owned analytics/ads SDK was found. That does not prove the sign-in SDKs collect none of these categories. Do not select No or ephemeral without vendor/configuration evidence. |
+| Diagnostics, device identifiers, app interactions, IP-derived location | Microsoft token-request environment diagnostics are confirmed off-device; prepare Diagnostics for app functionality/security. Optional MSAL event telemetry and OpenTelemetry export are not enabled. Google service-side fields and provider retention remain unresolved. See the exact pinned-source mapping in privacy-disclosures.md; do not select No or ephemeral without evidence. |
 | External meeting/map links | Opened by user action with a separate destination. Document that destination's involvement; do not describe third-party services as Weekaboo storage. |
 | Support email | Optional messages are handled by the configured mail services. Do not encourage sending calendar exports or credentials. Assess in-app collection separately from a user independently emailing support. |
 
@@ -122,4 +122,4 @@ Before the final form, engineering must close each uncertain SDK category with e
 | Testers + maintainer | Complete the real closed-test period; record engagement/feedback and fixes, then apply for production access with truthful answers. |
 | Engineering + Kelly | Complete [Google verification packet](google-verification-packet.md); store approval and Google OAuth approval are separate. |
 
-Website publication is being handled separately. Public APK/AAB distribution, Play uploads and production rollout remain explicit release actions. A listing draft is ready for review; release readiness is not asserted here.
+The static website is now published with the public support and canonical privacy links; see website.md for deployment evidence. Public APK/AAB distribution, Play uploads and production rollout remain explicit release actions. A listing draft is ready for review; release readiness is not asserted here.

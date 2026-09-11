@@ -4,7 +4,7 @@
 
 **A free, privacy-focused calendar with room for the things you haven't scheduled yet.**
 
-[Source code](https://github.com/kellygold/weekaboo) · [Build your own](#build-the-installed-apps) · [Privacy](#privacy-and-local-data)
+[Website](https://weekaboo.app/) · [Source code](https://github.com/kellygold/weekaboo) · [Build your own](#build-the-installed-apps) · [Privacy](#privacy-and-local-data)
 
 Bring Google Calendar, Outlook and iCloud together. Keep a flexible task list beside your week. Switch between work, personal and your own calendar groups, with a little peekaboo along the way.
 
@@ -29,7 +29,7 @@ One React UI and TypeScript provider engine power native Android, iOS/iPadOS and
 | macOS | Standalone Electron app and signed Apple Silicon DMG; live provider checks |
 | Browser | Local development app; calendar access currently uses the optional Python backend |
 
-**Public downloads are not available yet.** Store submission, macOS notarization and final release acceptance remain separate from successful local tests. See the [release checklist](docs/release-checklist.md) for the remaining work. The static website lives in [`website/`](website/); it does not host your calendar data.
+**Public downloads are not available yet.** Store submission, macOS notarization and final release acceptance remain separate from successful local tests. See the [release checklist](docs/release-checklist.md) for the remaining work. Visit [weekaboo.app](https://weekaboo.app/) for the project website and [hello@weekaboo.app](mailto:hello@weekaboo.app) for support. Its source lives in [`website/`](website/); it does not host your calendar data.
 
 ## Privacy and local data
 
@@ -77,7 +77,7 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 
 Google registration must match the package and signing SHA-1; Microsoft registration must match its signature hash and redirect. iCloud uses an app-specific password entered in the installed app. Google authorization currently requires Google Play services.
 
-`npm run android:bundle` prepares an unsigned AAB once the native acknowledgment gate passes. The gate currently reports unresolved SDK notice obligations; debug builds remain available. Signed APK/AAB preparation uses `npm run android:release` and an existing dedicated keystore; it never generates or replaces a key. Follow the [Android release procedure](docs/android-release.md).
+`npm run android:bundle` prepares an unsigned AAB once the native acknowledgment gate passes. The release gate verifies the locked SDK acknowledgment inventory before packaging. Signed APK/AAB preparation uses `npm run android:release` and an existing dedicated keystore; it never generates or replaces a key. Follow the [Android release procedure](docs/android-release.md).
 
 ### iOS / iPadOS
 
@@ -90,7 +90,7 @@ sh scripts/ios.sh resolve  # once, to fetch the locked Swift dependencies
 npm run ios:simulator
 ```
 
-Open `ios/App/App.xcodeproj` and select the **Weekaboo** scheme for normal builds. **WeekabooValidation** includes tests. Device signing and distribution profiles are configured through your Apple developer account. The current local development IPA is not a general-install or TestFlight package.
+Open `ios/App/App.xcodeproj` and select the **Weekaboo** scheme for normal builds. **WeekabooValidation** includes tests. Device signing and distribution profiles are configured through your Apple developer account. The [iOS release procedure](docs/ios-release.md) prepares an App Store export locally; uploading to TestFlight is a separate release step. A development IPA is limited to its provisioned devices.
 
 ### macOS
 
