@@ -6,7 +6,7 @@ Weekaboo uses provider OAuth registrations to identify the application and obtai
 
 The build includes Weekaboo's native registration identifiers. Open Connected calendars, choose Google/Microsoft/iCloud and complete that provider's flow. You do not need a Google Cloud project or Microsoft Entra application of your own. Each device authorizes its own access; signing into the same calendar accounts does not synchronize Weekaboo tasks.
 
-The consent screen's product name comes from the provider's app/consent configuration, not the app's visible title. Current Google test registrations still share an older project's consent branding. Correcting that is an explicit release gate; changing the React title does not fix it.
+The consent screen's product name comes from the provider's app/consent configuration, not the app's visible title. Current Google test registrations still share an older project's consent branding. Correcting that is an explicit release gate; changing the React title does not fix it. A dedicated `weekaboo-app` project is now prepared; follow the [migration checklist](google-project-migration.md) before replacing any working registration.
 
 ## What is public and what stays private?
 

@@ -1,10 +1,24 @@
 # Weekaboo implementation handoff
 
+## Google migration and discovery fix — 12 September 2026
+
+All five new Google clients are received. Active Web, iOS and Mac private configuration and canonical Android registration files now use `weekaboo-app` (project number `124770503970`). Owner-only private backups and receipts are under `output/google-project-migration/active-cutover/`. Browser backend restarted and health200 verified. Microsoft/iCloud configuration and signing keys are preserved.
+
+**Immediate owner action:** add intended Google accounts under [Audience → Test users](https://console.cloud.google.com/auth/audience?project=weekaboo-app). Fresh Android and Mac consent identifies Weekaboo but the selected account receives403/access_denied because the project is in Testing. Kelly has been given the exact account/address and Console steps directly. No successful new-project Google login is claimed. Cached calendars and earlier connected messages are not migration proof. All new clients are configured; no more clients are needed for the current direct-release test.
+
+**Runtime candidate `d3bcf4b`:** shared manual discovery now continues after an account fails, preserves failed-account calendars/settings, and retains its warning until discovery recovers. Three regression cases cover partial/all failure and warning persistence. Full safe suite182/182, TypeScript, exact-commit engine22/22 pass. Scoped independent Claude review completed in180seconds with no blocking findings; this is not whole-release approval.
+
+- Android: new signed APK/AAB verified; APK installed in place on the tablet. Exact three-task backup comparison, all account sections/calendar selections retained, release inspection disabled. `output/google-project-migration/android-discovery-fix/`.
+- iOS: new signed App Store IPA exported and verified;18/18 fresh iPhone/Mini/standard-iPad simulator tests pass. Retained consent simulator updated in place without data loss: `F18043A2-D6F3-4A75-9BFA-7BF07FBF5330`. Actual new-client consent and physical/store execution remain unproved. `output/google-project-migration/ios-discovery-fix/receipt.json`.
+- Mac: signed app/DMG rebuilt, package/mount/resource checks pass. Current Microsoft/iCloud UI create/edit/delete, provider readback, cleanup, restart, task and calendar-setting retention pass. `output/google-project-migration/mac/unchanged-providers-1789164513260/receipt.json`. Google live consent remains blocked; Mac is not notarized.
+
+No binary/store upload or site deployment occurred. Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: after allowlisting, retry Android fresh grant first, then Mac/Web/iOS consent; verify new-project identity, calendar discovery, guarded CRUD/readback and reconnect while preserving device data.
+
 Updated 11 September 2026 after physical Android validation, current iOS distribution export, Mac refresh and privacy packaging review. Read [current validation](current-validation.md), [release checklist](release-checklist.md), then [execution plan](release-execution-plan.md). Earlier chronological records are in [implementation history](history/implementation-checkpoints-through-2026-09-11.md) and [validation history](history/validation-checkpoints-through-2026-09-11.md); their old pending statuses are superseded.
 
 ## Active objective and authorization
 
-Continue autonomously toward release: Android tablet first, iOS/iPadOS second, Mac third. Preserve browser behavior and shared architecture. Phone redesign is deferred except actual clipping or unreachable controls. No immediate user setup is needed. Continue independent work around unavailable devices and store dependencies instead of stopping at a status report.
+Continue autonomously toward release: Android tablet first, iOS/iPadOS second, Mac third. Preserve browser behavior and shared architecture. Phone redesign is deferred except actual clipping or unreachable controls. Fresh Google consent now requires the new-project test-user allowlist; continue independent checks while Kelly completes it. Continue independent work around unavailable devices and store dependencies instead of stopping at a status report.
 
 Public source https://github.com/kellygold/weekaboo exists and audited source pushes are authorized. Secret scanning and push protection are enabled. Native binary/store publication, website deployment, notarization and new charges need their own concrete final approval. Do not infer those permissions from source publication. Prepare all reviewable work first.
 
@@ -23,7 +37,7 @@ Exact hashes, evidence paths, failed-attempt boundaries and remaining gates are 
 
 - Android tablet is connected by USB and authorized. Preserve accounts/tasks, use same-certificate in-place updates, never uninstall/reset. Only explicitly disposable Weekaboo emulators/simulators may be reset. Keep credentials in native stores; task export is the allowed portable backup mechanism.
 - The physical iPad was sold. Never reconnect, control or clean it. All synthetic remote events/tasks were removed; Kelly waived remaining local backup-file cleanup before factory reset. Continue iOS with simulators or a future approved family device.
-- Normal Mac profile has all three providers connected. No new registration, credential import or re-consent is needed for ordinary checks. Current package tests use isolated profiles.
+- Normal Mac profile has all three providers connected. The Google client has changed and needs normal re-consent; preserve the existing account identity and tasks. Microsoft/iCloud registration is unchanged. Package smoke tests use isolated profiles.
 - Live writes must be uniquely named, attendee-free synthetic records with direct readback and verified cleanup. Never alter existing calendar events to test recurrence or expiration. Preserve normal processes/settings on exit.
 - Tasks remain device-local. Same calendar accounts do not synchronize tasks. Preserve IDs/completion history during export/import; never copy credential vaults between devices.
 
@@ -39,6 +53,6 @@ Read [cross-platform plan](cross-platform-plan.md), [platform references](platfo
 2. Continue isolated provider expiry/reconnect/recurrence/DST/uncertain-write proof. Working user accounts must not be revoked for a test. Cancellation review follow-up is still incomplete: the original eight-minute review budget was exhausted; do not silently retry in that same session.
 3. Prepare Play signing/testers/store assets and App Store Connect/TestFlight metadata, without uploading. Preserve existing OAuth registrations. Physical family iOS/minimum-OS acceptance remains a separate checkpoint.
 4. Prepare Mac notarization/download acceptance and website deployment as concrete final actions for approval. Explicit Apple Silicon-only scope until Intel/minimum-OS evidence exists. Preserve ImprovMX DNS records.
-5. Present Google consent branding decision (currently Instapie) only with a prepared plan that protects that app. No new signup or client registration merely to continue testing.
+5. Finish the dedicated Google project migration and fresh authorization on every platform after test-user allowlisting. Keep Instapie registrations and branding untouched. No further client registration is needed except a differing Play app-signing certificate if applicable.
 
 Keep source/history audits current before authorized pushes. Raw evidence, keys, account labels and recovery files stay in ignored output or protected native storage. Do not write Obsidian/Linear/Slack automatically. Distinguish built, tested, approved, uploaded and publicly available states.

@@ -1,6 +1,6 @@
 # Release execution plan
 
-Accepted direction: 11 September 2026. Kelly asked to pursue the remaining work autonomously, with Android tablet delivery first. No new setup is needed to continue engineering. This plan sequences the [release checklist](release-checklist.md); [current validation](current-validation.md) remains the evidence ledger.
+Accepted direction: 11 September 2026. Kelly asked to pursue the remaining work autonomously, with Android tablet delivery first. The new Google project requires intended accounts in its Testing audience; engineering and isolated checks continue independently. This plan sequences the [release checklist](release-checklist.md); [current validation](current-validation.md) remains the evidence ledger.
 
 ## Delivery sequence
 
@@ -17,11 +17,11 @@ Tablet delivery is the first milestone. A broader phone redesign is deferred. Be
 
 ## Work Kelly may eventually need to do
 
-No immediate action. Ask directly only when a concrete prepared step needs it:
+Current immediate action: add intended Google accounts in the new project’s Testing audience and complete fresh consent. Further concrete steps may include:
 
 - Reconnect the Android tablet for final in-place upgrade/physical acceptance, or install the prepared APK manually. Do not request repeated OAuth or developer registrations.
 - Complete an Apple/Google login, MFA, agreement or role-restricted distribution action if available sessions cannot do it.
-- Decide the public Google consent branding approach because the current shared project says Instapie; do not rename a shared project's consent screen without assessing the other app.
+- Complete new-project Google consent/domain/scope verification before unrestricted distribution; Weekaboo has its own project and Instapie remains separate.
 - Approve prepared binary/store publication and website deployment, including their exact destinations. Existing permission to publish clean source persists.
 - Install the iOS candidate on an available iPhone/iPad for the remaining physical acceptance. The sold iPad is unavailable permanently.
 

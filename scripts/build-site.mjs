@@ -13,6 +13,7 @@ await mkdir(path.join(output,'assets/audio'), {recursive:true});
 for (const file of ['index.html','privacy.html','credits.html','site.css','site.js']) {
   await cp(path.join(root,'website',file), path.join(output,file));
 }
+await cp(path.join(root,'website/legal'),path.join(output,'legal'),{recursive:true});
 for (const file of ['android.svg','google-calendar.webp','Lucide-LICENSE.txt']) await cp(path.join(root,'website/assets',file),path.join(output,'assets',file));
 for (const file of ['weekaboo-mark.svg','weekaboo-peek.svg']) {
   const svg = (await readFile(path.join(root,'public/brand',file),'utf8')).replace(/@font-face\{[^}]*\}/g, '');

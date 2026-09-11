@@ -1,5 +1,19 @@
 # User dependencies and early setup
 
+## Google migration and discovery fix — 12 September 2026
+
+All five new Google clients are received. Active Web, iOS and Mac private configuration and canonical Android registration files now use `weekaboo-app` (project number `124770503970`). Owner-only private backups and receipts are under `output/google-project-migration/active-cutover/`. Browser backend restarted and health200 verified. Microsoft/iCloud configuration and signing keys are preserved.
+
+**Immediate owner action:** add intended Google accounts under [Audience → Test users](https://console.cloud.google.com/auth/audience?project=weekaboo-app). Fresh Android and Mac consent identifies Weekaboo but the selected account receives403/access_denied because the project is in Testing. Kelly has been given the exact account/address and Console steps directly. No successful new-project Google login is claimed. Cached calendars and earlier connected messages are not migration proof. All new clients are configured; no more clients are needed for the current direct-release test.
+
+**Runtime candidate `d3bcf4b`:** shared manual discovery now continues after an account fails, preserves failed-account calendars/settings, and retains its warning until discovery recovers. Three regression cases cover partial/all failure and warning persistence. Full safe suite182/182, TypeScript, exact-commit engine22/22 pass. Scoped independent Claude review completed in180seconds with no blocking findings; this is not whole-release approval.
+
+- Android: new signed APK/AAB verified; APK installed in place on the tablet. Exact three-task backup comparison, all account sections/calendar selections retained, release inspection disabled. `output/google-project-migration/android-discovery-fix/`.
+- iOS: new signed App Store IPA exported and verified;18/18 fresh iPhone/Mini/standard-iPad simulator tests pass. Retained consent simulator updated in place without data loss: `F18043A2-D6F3-4A75-9BFA-7BF07FBF5330`. Actual new-client consent and physical/store execution remain unproved. `output/google-project-migration/ios-discovery-fix/receipt.json`.
+- Mac: signed app/DMG rebuilt, package/mount/resource checks pass. Current Microsoft/iCloud UI create/edit/delete, provider readback, cleanup, restart, task and calendar-setting retention pass. `output/google-project-migration/mac/unchanged-providers-1789164513260/receipt.json`. Google live consent remains blocked; Mac is not notarized.
+
+No binary/store upload or site deployment occurred. Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: after allowlisting, retry Android fresh grant first, then Mac/Web/iOS consent; verify new-project identity, calendar discovery, guarded CRUD/readback and reconnect while preserving device data.
+
 ## Current setup status — 11 September (supersedes historical blockers below)
 
 **Done:** Play Console identity and Android package/release key registered; Android release Google/Microsoft/iCloud connected. Full Xcode installed and signed in. Physical iPad Mini trusted with Developer Mode and Web Inspector enabled; signed development build installed and all three accounts connected by Kelly. iOS provisioning now works through the existing Apple team. Google iOS plist and Microsoft Apple callback configured. Domain email forwarding for weekaboo.app configured by Kelly. Mac Google, Microsoft and iCloud initial sign-in is now user-confirmed, with active accounts and discovered calendars independently checked in read-only local metadata.

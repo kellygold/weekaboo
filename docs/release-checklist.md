@@ -37,6 +37,15 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [ ] Complete live expired/revoked access, reconnect/removal, recurrence/DST scope and ambiguous-write recovery matrix on relevant providers/platforms.
 - [ ] Verify final candidate after any packaging/source changes, including assets/notices and fresh-install/in-place-upgrade paths.
 
+## Dedicated Google project migration — 12 September
+
+- [x] Receive all five new clients and migrate ignored Web/iOS/Mac configuration with private backups; preserve unrelated providers and keys.
+- [x] Rebuild all native packages on `d3bcf4b`; shared182 tests, iOS18 simulator tests, Android in-place preservation and Mac Microsoft/iCloud CRUD/readback/cleanup pass.
+- [x] Fix cross-account discovery isolation with persisted warnings; scoped independent review has no blocking findings.
+- [ ] Add intended Google test accounts in the new project's Testing audience; fresh Android/Mac grant currently403/access_denied.
+- [ ] Prove fresh new-project Google consent, identity/calendar discovery and guarded CRUD on Android, Mac, browser and iOS; cached old-project access is not proof.
+- [ ] Validate Android development sign-in and the eventual Play-delivered app-signing certificate separately.
+
 ## Android
 
 - [x] Developer identity/package-key setup and native OAuth registrations completed by user.

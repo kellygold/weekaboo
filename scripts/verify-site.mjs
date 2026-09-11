@@ -1,7 +1,7 @@
 // Exercise the built static site under a GitHub Pages-style project prefix.
 import {chromium, webkit, expect} from '@playwright/test';
 import {createServer} from 'node:http';
-import {readFile, mkdir, writeFile} from 'node:fs/promises';
+import {readFile, mkdir, writeFile, stat} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -12,9 +12,15 @@ const server=createServer(async(req,res)=>{
   const pathname=new URL(req.url,'http://localhost').pathname;
   if(!pathname.startsWith('/weekaboo/')){res.writeHead(404).end();return;}
   const relative=pathname.slice('/weekaboo/'.length)||'index.html';
-  const filename=path.resolve(root,'dist-site',relative);
+  let filename=path.resolve(root,'dist-site',relative);
   if(!filename.startsWith(path.join(root,'dist-site')+path.sep)){res.writeHead(404).end();return;}
-  try{const body=await readFile(filename);res.writeHead(200,{'Content-Type':mime[path.extname(filename)]||'application/octet-stream'}).end(body);}
+  try{
+    if((await stat(filename)).isDirectory()) {
+      if(!pathname.endsWith('/')){res.writeHead(301,{Location:pathname+'/'}).end();return;}
+      filename=path.join(filename,'index.html');
+    }
+    const body=await readFile(filename);res.writeHead(200,{'Content-Type':mime[path.extname(filename)]||'application/octet-stream'}).end(body);
+  }
   catch{res.writeHead(404).end();}
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -62,11 +68,27 @@ try {
         expect(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');
         await page.emulateMedia({reducedMotion:'no-preference'});
         await page.screenshot({path:path.join(output,`${engine}-${device}.png`),fullPage:true});
-        await page.locator('footer a[href="./privacy.html"]').click();
+        await page.locator('footer a[href="./legal/privacy-policy/"]').click();
         await expect(page.locator('h1')).toContainText('privacy');
-        await page.locator('footer a[href="./credits.html"]').click();
+        await page.locator('footer a[href="../terms-of-service/"]').click();
+        await expect(page).toHaveTitle('Terms of service — Weekaboo');
+        await page.locator('footer a[href="../../credits.html"]').click();
         await expect(page.locator('h1')).toBeVisible();
         expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+        // Console URLs omit trailing slashes; static hosting must resolve the
+        // nested index and its assets, including under a project-site prefix.
+        for(const [slug,title] of [['privacy-policy','Privacy, plainly — Weekaboo'],['terms-of-service','Terms of service — Weekaboo']]) {
+          await page.goto(origin+'/weekaboo/legal/'+slug);
+          await expect(page).toHaveTitle(title);
+          await page.evaluate(()=>document.fonts.ready);
+          expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+          await expect(page.locator('h1')).toBeVisible();
+          await page.screenshot({path:path.join(output,`${engine}-${device}-${slug}.png`),fullPage:true});
+          await page.getByRole('link',{name:'Back home ↗'}).click();
+          await expect(page.locator('h1')).toContainText('Your business.');
+        }
+        await page.goto(origin+'/weekaboo/privacy.html');
+        await expect(page).toHaveURL(origin+'/weekaboo/legal/privacy-policy/');
         expect(failures).toEqual([]);expect(external).toEqual([]);
         result.push({engine,device,width,status:'passed',checks:'configured GitHub source links, navigation, views, tasks, mascot audio, reduced motion, asset loads, no external requests, no horizontal overflow'});
         await page.close();

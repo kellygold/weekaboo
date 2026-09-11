@@ -1,6 +1,20 @@
 # Current validation and release gaps
 
-Updated 11 September 2026. Runtime candidate source: `d824b4d`. Subsequent privacy-policy, documentation and packaging-verifier changes do not change the installed native apps. Historical attempts and earlier artifact boundaries are preserved in [validation checkpoints](history/validation-checkpoints-through-2026-09-11.md).
+## Google migration and discovery fix — 12 September 2026
+
+All five new Google clients are received. Active Web, iOS and Mac private configuration and canonical Android registration files now use `weekaboo-app` (project number `124770503970`). Owner-only private backups and receipts are under `output/google-project-migration/active-cutover/`. Browser backend restarted and health200 verified. Microsoft/iCloud configuration and signing keys are preserved.
+
+**Immediate owner action:** add intended Google accounts under [Audience → Test users](https://console.cloud.google.com/auth/audience?project=weekaboo-app). Fresh Android and Mac consent identifies Weekaboo but the selected account receives403/access_denied because the project is in Testing. Kelly has been given the exact account/address and Console steps directly. No successful new-project Google login is claimed. Cached calendars and earlier connected messages are not migration proof. All new clients are configured; no more clients are needed for the current direct-release test.
+
+**Runtime candidate `d3bcf4b`:** shared manual discovery now continues after an account fails, preserves failed-account calendars/settings, and retains its warning until discovery recovers. Three regression cases cover partial/all failure and warning persistence. Full safe suite182/182, TypeScript, exact-commit engine22/22 pass. Scoped independent Claude review completed in180seconds with no blocking findings; this is not whole-release approval.
+
+- Android: new signed APK/AAB verified; APK installed in place on the tablet. Exact three-task backup comparison, all account sections/calendar selections retained, release inspection disabled. `output/google-project-migration/android-discovery-fix/`.
+- iOS: new signed App Store IPA exported and verified;18/18 fresh iPhone/Mini/standard-iPad simulator tests pass. Retained consent simulator updated in place without data loss: `F18043A2-D6F3-4A75-9BFA-7BF07FBF5330`. Actual new-client consent and physical/store execution remain unproved. `output/google-project-migration/ios-discovery-fix/receipt.json`.
+- Mac: signed app/DMG rebuilt, package/mount/resource checks pass. Current Microsoft/iCloud UI create/edit/delete, provider readback, cleanup, restart, task and calendar-setting retention pass. `output/google-project-migration/mac/unchanged-providers-1789164513260/receipt.json`. Google live consent remains blocked; Mac is not notarized.
+
+No binary/store upload or site deployment occurred. Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: after allowlisting, retry Android fresh grant first, then Mac/Web/iOS consent; verify new-project identity, calendar discovery, guarded CRUD/readback and reconnect while preserving device data.
+
+Updated 12 September 2026. Runtime candidate source: `d3bcf4b`. Subsequent privacy-policy, documentation and packaging-verifier changes do not change the installed native apps. Historical attempts and earlier artifact boundaries are preserved in [validation checkpoints](history/validation-checkpoints-through-2026-09-11.md).
 
 Public source is live at https://github.com/kellygold/weekaboo. Native binaries, website and store releases are not published or production-approved. Follow [release checklist](release-checklist.md) and [execution plan](release-execution-plan.md).
 
@@ -24,12 +38,12 @@ Version **0.1.0 / build 1**. Consolidated private manifest: `output/distribution
 
 | Artifact | SHA-256 |
 | --- | --- |
-| Android APK | `3fb084b4430bb15451feae413022b45816b1d1664952a8ddac4257daeb1a12b0` |
-| Android AAB | `f02f5d9acd264e7fc400f61bd2aebd4efa62e0d30240318ed5ace6a1aa2bec0b` |
-| iOS distribution IPA | `50b8069b1fce153370697b2ca1dce872ab8ebabba12f7b9c073776c4ff83b98d` |
-| Mac signed DMG | `8d5afee50b0e78d27eec388adebbbb23ea7a1284bac88ad23c02e9174ad50898` |
+| Android APK | `6375916540def198d2cde410a37d9391e0bbad9d556cd641e9d979a557639dba` |
+| Android AAB | `3a8315345d47d55717355fcd715c34da9dc2fbc1bdcb74f24a831382c699335e` |
+| iOS distribution IPA | `ccb500ceff5e88fdf74c92fc29953778c2014f39fe260ac17cbd4b6f45106feb` |
+| Mac signed DMG | `0ed87a7776100ea2e5e4201eda11c589a3c5927c0de01af05f9f92f79262ed63` |
 
-Paths: `android/app/build/outputs/apk/release/app-release.apk`, `android/app/build/outputs/bundle/release/app-release.aab`, `output/production-validation/ios-app-store-current/export/App.ipa`, and `output/standalone-desktop/Weekaboo-0.1.0-arm64-signed-preview.dmg`.
+Paths: `android/app/build/outputs/apk/release/app-release.apk`, `android/app/build/outputs/bundle/release/app-release.aab`, `output/google-project-migration/ios-discovery-fix/app-store/export/App.ipa`, and `output/standalone-desktop/Weekaboo-0.1.0-arm64-signed-preview.dmg`.
 
 The old one-device development IPA and the earlier managed-signing probe are superseded, not distribution candidates. Existing Apple signing now works; no new client registration or membership is needed. App Store export is not an upload and cannot be installed by simply opening the IPA on an arbitrary iPhone.
 
@@ -55,6 +69,6 @@ The earlier cancellation review found a queued-interactive race; the author fixe
 - Complete independent final review, user-facing acknowledgments access and platform-specific privacy disclosures.
 - Prepare Play App Signing/tester track, App Store Connect/TestFlight record/listings/screenshots and exact upload manifest.
 - Obtain Mac notarization/stapling and downloaded Gatekeeper proof after concrete approval; state Apple Silicon-only support until broader support is verified.
-- Resolve Google consent branding still showing Instapie through a deliberate project decision that preserves the other app.
+- Finish new-project Google allowlisting and fresh consent across platforms; new consent identifies Weekaboo. Preserve Instapie and its unrelated clients.
 - Finish unavailable physical/minimum-OS acceptance honestly. No new registration is needed to continue independent work.
 - Obtain final publication approval for reviewed binaries/store uploads and static website deployment. Preserve existing domain email records.
