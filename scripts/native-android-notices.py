@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Collect local native Android notices. No network, installation or signing.
+"""Collect native Android notices offline from artifacts and reviewed supplements.
+Exact artifact and notice digests bind supplements to the reviewed dependency.
 Incomplete debug manifests are explicit; release packaging fails closed.
 """
 import argparse,hashlib,io,json,os,re,shutil,subprocess,tempfile,zipfile,xml.etree.ElementTree as E
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-SCOPE='Resolved Android runtime artifacts and locally available original notice texts. Presence does not establish complete binary/transitive or SDK distribution compliance. Unresolved items block release packaging.'
+SCOPE='Resolved Android runtime artifacts, original embedded notices and exact-version reviewed supplements. Completion refers to this acknowledgment inventory, not overall release, store or legal approval.'
 def sha(data):return hashlib.sha256(data).hexdigest()
 def collect_zip(data,prefix='',depth=0):
  if depth>3:raise ValueError('Nested dependency archive depth exceeds supported limit')
@@ -23,7 +24,33 @@ def collect_zip(data,prefix='',depth=0):
     result.update(collect_zip(archive.read(entry),prefix+entry+'/',depth+1))
  return result
 
-def collect(graph,cache):
+def load_supplements(directory):
+ manifest=directory/'supplements.json'
+ if not manifest.exists():return {}
+ data=json.loads(manifest.read_text())
+ if data.get('schemaVersion')!=1:raise ValueError('Unsupported Android supplemental notice schema')
+ result={}
+ for item in data['entries']:
+  coordinate=item['coordinate']
+  if coordinate in result:raise ValueError('Duplicate supplemental coordinate: '+coordinate)
+  if item.get('kind') not in ('open-source','vendor-sdk') or not item.get('rationale') or not item.get('reviewedAt'):raise ValueError('Incomplete supplemental review: '+coordinate)
+  if not item.get('artifactSha256') or not all(re.fullmatch(r'[a-f0-9]{64}',digest) for digest in item['artifactSha256']):raise ValueError('Missing reviewed artifact digests: '+coordinate)
+  required='license' if item['kind']=='open-source' else 'vendor-terms'
+  if not any(file.get('role')==required for file in item['files']):raise ValueError('Missing supplemental license or vendor terms: '+coordinate)
+  for file in item['files']:
+   path=Path(file['file'])
+   if path.is_absolute() or '..' in path.parts or not path.parts:raise ValueError('Unsafe supplemental notice path')
+   source=directory/path
+   if not source.resolve().is_relative_to(directory.resolve()):raise ValueError('Supplemental notice escapes its directory')
+   body=source.read_bytes()
+   if not body.strip() or b'\0' in body or sha(body)!=file['sha256']:raise ValueError('Supplemental notice digest/content mismatch: '+file['file'])
+   if not file.get('sourceUrl','').startswith('https://'):raise ValueError('Missing upstream notice provenance: '+file['file'])
+  result[coordinate]=item
+ return result
+
+def collect(graph,cache,supplement_directory=None):
+ supplement_directory=supplement_directory or ROOT/'licenses/android'
+ supplements=load_supplements(supplement_directory)
  packages=[];files={};unresolved=[]
  for item in graph['artifacts']:
   coordinate=':'.join(item[k] for k in ('group','name','version'))
@@ -40,11 +67,18 @@ def collect(graph,cache):
    name=key+'/'+suffix+'/'+path
    if name in files and files[name]!=body:raise ValueError('Conflicting native notice output')
    files[name]=body;notices.append({'sourceEntry':path,'file':name,'sha256':sha(body)})
+  review=supplements.get(coordinate)
+  if review:
+   if sha(raw) not in review['artifactSha256']:raise ValueError('Artifact differs from reviewed supplemental notices: '+coordinate)
+   for notice in review['files']:
+    body=(supplement_directory/notice['file']).read_bytes();name='supplemental/'+notice['file']
+    if name in files and files[name]!=body:raise ValueError('Conflicting supplemental notice output')
+    files[name]=body;notices.append(dict(notice,file=name,sourceEntry='supplemental/'+notice['file']))
   reasons=[]
   if not any(notice['file'].lower().endswith(('.txt','license','notice','copying','.md')) for notice in notices):reasons.append('Full upstream license/notice text not found in locally resolved artifact; POM declarations are metadata only')
-  if item['group'].startswith('com.google.android.gms') or item['group']=='com.google.android.libraries.identity.googleid':reasons.append('Third-party text retained; Google SDK distribution terms still require explicit review')
+  if (item['group'].startswith('com.google.android.gms') or item['group']=='com.google.android.libraries.identity.googleid') and (not review or review['kind']!='vendor-sdk'):reasons.append('Third-party text retained; Google SDK distribution terms still require explicit review')
   if reasons:unresolved.append({'coordinate':coordinate,'reasons':reasons})
-  packages.append({'coordinate':coordinate,'artifactType':suffix,'artifactSha256':sha(raw),'pomSha256':sorted(set(pomhashes)),'declaredLicenses':pomlicenses,'notices':notices,'status':'unresolved' if reasons else 'local_notice_text_preserved'})
+  packages.append({'coordinate':coordinate,'artifactType':suffix,'artifactSha256':sha(raw),'pomSha256':sorted(set(pomhashes)),'declaredLicenses':pomlicenses,'notices':notices,'review':{k:review[k] for k in ('kind','licenseId','reviewedAt','rationale')} if review else None,'status':'unresolved' if reasons else 'notice_text_preserved'})
  # Capacitor's native project is an installed npm dependency, absent from Maven artifacts.
  capacitor=ROOT/'node_modules/@capacitor/android';metadata=json.loads((capacitor/'package.json').read_text());locked=json.loads((ROOT/'package-lock.json').read_text())['packages']['node_modules/@capacitor/android']['version']
  if metadata['version']!=locked:raise ValueError('Capacitor native dependency differs from npm lock')
@@ -55,9 +89,10 @@ def collect(graph,cache):
  known={'project :app','project :capacitor-android','project :capacitor-cordova-android-plugins'}
  for project in graph.get('projects',[]):
   if project not in known:unresolved.append({'coordinate':project,'reasons':['Unrecognized local Gradle dependency project requires notice review']})
- manifest={'schemaVersion':1,'scope':SCOPE,'configuration':graph['configuration'],'packages':packages,'localProjects':graph.get('projects',[]),'complete':not unresolved,'unresolved':unresolved,'remainingReview':['Resolved binary linkage, complete transitive copyright/NOTICE obligations, project licensing and generated asset rights remain separate reviews','Gradle runtime dependency lockfile is not yet committed; current versions and artifact hashes are recorded here']}
+ lock=ROOT/'android/app/gradle.lockfile'
+ manifest={'schemaVersion':1,'scope':SCOPE,'configuration':graph['configuration'],'packages':packages,'localProjects':graph.get('projects',[]),'dependencyLockSha256':sha(lock.read_bytes()) if lock.exists() else None,'complete':not unresolved,'unresolved':unresolved,'remainingReview':['Final binary linkage, project licensing, generated asset rights, provider terms, and store distribution remain separate reviews']}
  files['inventory.json']=(json.dumps(manifest,indent=2,sort_keys=True)+'\n').encode()
- files['README.txt']=('Weekaboo Android native dependency acknowledgments\n\nOriginal locally available LICENSE, NOTICE, COPYING and third-party license files are preserved verbatim, including nested dependency archive entries. inventory.json identifies artifact versions/digests and unresolved items. POM license names/URLs are metadata, not substitutes for full license texts. This collection is explicitly incomplete and is not release approval. JavaScript notices are in ../shared.\n').encode()
+ files['README.txt']=('Weekaboo Android native dependency acknowledgments\n\nOriginal LICENSE, NOTICE, COPYING and third-party license files are preserved verbatim, including nested dependency archive entries. Reviewed supplemental texts supply separately published licenses and notices. inventory.json identifies exact artifact versions/digests, source provenance and any unresolved items. POM license names/URLs alone are not substitutes for full license texts. Vendor SDK terms remain separate from Weekaboo\'s MIT license. This collection is not release approval. JavaScript notices are in ../shared.\n').encode()
  return manifest,files
 
 def main():
@@ -79,6 +114,6 @@ def main():
    staging.rename(output)
   finally:
    if staging.exists():shutil.rmtree(staging)
-  print(f"Android native notices: {len(manifest['packages'])} resolved components, {len(files)-2} original files; {len(manifest['unresolved'])} unresolved components. Inventory remains incomplete.")
+  print(f"Android native notices: {len(manifest['packages'])} resolved components, {len(files)-2} notice files; {len(manifest['unresolved'])} unresolved components. Inventory {'complete' if manifest['complete'] else 'incomplete'}.")
   if not args.allow_incomplete and not manifest['complete']:raise SystemExit('Release blocked: native Android acknowledgment review is incomplete; see generated inventory.json. --allow-incomplete is for debug/sync evidence only.')
 if __name__=='__main__':main()

@@ -14,7 +14,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Separate current handoff from historical checkpoints so old device/setup instructions are not treated as current.
 - [x] Kelly confirmed on 11 September that a paid ElevenLabs subscription covered generation on 9 September; model availability and publishing terms checked.
 - [x] Fresh source-only npm ci/browser/static build passes; repeatable source audit and four negative/self-tests pass. Repeat final audit with `python3 scripts/audit-public-source.py --gitleaks /path/to/gitleaks` (pinned 8.30.1).
-- [x] Initial local commit `4090e70` contains only the audited 413-file manifest. Gitleaks scans of source and all Git refs report zero findings; GitHub noreply author address used. No push yet. Rerun the audit after subsequent changes.
+- [x] Initial local commit `4090e70` contains only the audited 413-file manifest. Gitleaks scans of source and all Git refs report zero findings; GitHub noreply author address used. Rerun the audit after subsequent changes.
 - [x] Public [kellygold/weekaboo](https://github.com/kellygold/weekaboo) created and reviewed source pushed. GitHub recognizes MIT and reports secret scanning and push protection enabled.
 - [x] Real GitHub source URL appears in navigation and the source section; eight browser/layout checks include destination assertions. Binary download URLs remain empty.
 
@@ -41,7 +41,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Developer identity/package-key setup and native OAuth registrations completed by user.
 - [x] Prior physical signed build: Google/Microsoft/iCloud connected and basic live CRUD validated.
 - [x] Current release emulator: cold launch, task persistence, AAB-derived in-place upgrade, completion/history/delete and settings.
-- [ ] Package full native SDK notices. Collector now records 92 resolved components, preserves 30 original files and passes five tests plus debug APK byte checks. 78 unresolved components still block release/bundle; old signed artifacts remain unchanged.
+- [x] Package reviewed native SDK notices. Digest-bound supplements and locked runtime resolution now cover 91 records and 153 notice files with zero unresolved entries. Ten collector tests, signed APK/AAB byte checks and actual MSAL fallback instrumentation on the release emulator pass. Final device/release acceptance remains separate.
 - [ ] Validate exact final release on normal-user-OS physical tablet, including inspection disabled, upgrade and provider reconnect/refresh. Do not uninstall or replace signing key.
 - [ ] Review Play App Signing certificate and matching OAuth entries, track/testers, privacy/data-safety disclosures, listing and store assets before upload.
 - [ ] Verify sideload/family-install instructions using the final signed APK and checksums; store testing/production approval remains separate.

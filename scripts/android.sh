@@ -21,7 +21,7 @@ if [ "${1:-debug}" = 'resolve' ]; then
   android/gradlew -p android -I "$PWD/scripts/native-android-notices.gradle" :app:weekabooNativeNoticeGraph -PweekabooNoticesGraphOutput="$PWD/output/native-android-dependencies.json"
   exit 0
 fi
-if [ "${1:-debug}" = 'release' ]; then
+if [ "${1:-debug}" = 'release' ] || [ "${1:-debug}" = 'bundle' ]; then
   export WEEKABOO_SIGNING_DIRECTORY="${WEEKABOO_SIGNING_DIRECTORY:-$HOME/.config/weekaboo/signing}"
   if [ ! -f "$WEEKABOO_SIGNING_DIRECTORY/android-release.p12" ] || [ ! -f "$WEEKABOO_SIGNING_DIRECTORY/android-release.password" ]; then
     echo 'Provide the existing dedicated release keystore and password file. No key will be generated or replaced.' >&2

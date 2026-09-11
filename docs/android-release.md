@@ -34,6 +34,14 @@ APK signature verification succeeds, package matches, debuggable is false, and M
 
 Google package registration reference: https://support.google.com/googleplay/android-developer/answer/16761053 .
 
+## Reproducible native acknowledgments — 11 September
+
+Runtime dependency versions are locked in `android/app/gradle.lockfile` for debug/release. Normal builds fail on lock drift. Deliberate dependency updates use `:app:dependencies --write-locks`; review the resulting graph and corresponding notice changes together. `licenses/android/supplements.json` binds reviewed upstream texts to exact compiled-artifact digests. New versions, changed artifacts, corrupted notices and unsafe paths are rejected. `python3 scripts/native-android-notices-test.py` exercises these boundaries.
+
+The current inventory has 91 resolved artifact/project records and 153 preserved/supplemental files, with zero unresolved entries. Google client SDK terms remain separate from MIT. The legacy Surface Duo display-mask compile stub is excluded; its only SDK use has a guarded fallback, exercised on ART by `MicrosoftDisplayFallbackTest`. The separate Duo Maven feed and generated example tests were removed. This completion covers acknowledgments only, not all release gates.
+
+Both `npm run android:release` and `npm run android:bundle` load the existing external signing configuration; neither generates a key. To run the real release instrumentation on an explicitly selected validation device, use `ANDROID_SERIAL=<serial> WEEKABOO_SIGNING_DIRECTORY=<existing-directory> android/gradlew -p android :app:connectedReleaseAndroidTest` with JDK 21. Never substitute the sold iPad or reset the personal tablet.
+
 ## Shared version metadata
 
 `package.json` supplies `version` and `weekabooBuild` to Gradle and desktop packaging; `npm run version:sync` generates the Apple settings. Current version is 0.1.0 / build 1. `python3 scripts/verify-release-artifacts.py` checks actual local artifacts rather than trusting source configuration. It never installs or uploads.

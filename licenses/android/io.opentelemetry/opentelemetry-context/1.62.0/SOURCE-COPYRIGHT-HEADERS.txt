@@ -1,0 +1,9 @@
+Original copyright/license headers preserved verbatim from the exact-version published source archive.
+
+Source entries: io/opentelemetry/context/ArrayBasedContext.java, io/opentelemetry/context/Context.java, io/opentelemetry/context/ContextExecutorService.java, io/opentelemetry/context/ContextKey.java, io/opentelemetry/context/ContextScheduledExecutorService.java, io/opentelemetry/context/ContextStorage.java, io/opentelemetry/context/ContextStorageProvider.java, io/opentelemetry/context/ContextStorageWrappers.java, io/opentelemetry/context/CurrentContextExecutorService.java, io/opentelemetry/context/CurrentContextScheduledExecutorService.java, io/opentelemetry/context/DefaultContextKey.java, io/opentelemetry/context/ForwardingExecutorService.java, io/opentelemetry/context/ImplicitContextKeyed.java, io/opentelemetry/context/LazyStorage.java, io/opentelemetry/context/Scope.java, io/opentelemetry/context/StrictContextStorage.java, io/opentelemetry/context/ThreadLocalContextStorage.java, io/opentelemetry/context/package-info.java, io/opentelemetry/context/internal/shaded/AbstractWeakConcurrentMap.java, io/opentelemetry/context/internal/shaded/WeakConcurrentMap.java, io/opentelemetry/context/propagation/ContextPropagators.java, io/opentelemetry/context/propagation/DefaultContextPropagators.java, io/opentelemetry/context/propagation/MultiTextMapPropagator.java, io/opentelemetry/context/propagation/NoopTextMapPropagator.java, io/opentelemetry/context/propagation/TextMapGetter.java, io/opentelemetry/context/propagation/TextMapPropagator.java, io/opentelemetry/context/propagation/TextMapSetter.java, io/opentelemetry/context/propagation/package-info.java, io/opentelemetry/context/propagation/internal/ExtendedTextMapGetter.java
+
+/*
+ * Copyright The OpenTelemetry Authors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+

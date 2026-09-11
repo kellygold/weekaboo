@@ -8,9 +8,11 @@ Kelly requested a future MCP/AI-client adapter after this release. See [MCP exte
 
 ## Active work
 
+Kelly renewed autonomous execution on 11 September. Follow [release execution plan](release-execution-plan.md): Android tablet first, then iOS/iPadOS and Mac; phone redesign deferred except release-blocking usability. No immediate user action is needed. Continue independent work around device/account/publication dependencies instead of ending at a status report.
+
 Public source repository **https://github.com/kellygold/weekaboo** is now created and the reviewed source is pushed. Do not confuse this with permission to publish binaries, submit to stores, deploy the website, notarize or incur charges. Initial local commit `4090e70` now contains the audited 413-file source set; source and all-ref history scans pass with zero findings. Origin now points to that public repository. GitHub secret scanning and push protection are enabled; source/history scans passed before push.
 
-Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are being prepared. Website source URL now targets the actual public repository; eight browser/layout checks pass with GitHub destination assertions. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
+Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are published. Website source URL now targets the actual public repository; eight browser/layout checks pass with GitHub destination assertions. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
 
 ## Completed latest validation
 
@@ -18,7 +20,7 @@ Website prominently says free and open source. README, MIT license, contributing
 - Mac injected provider outage retains cached event labels after renderer reload and failed refresh; recovery requires no new consent. Physical network outage and true expired-token renewal are not proved.
 - Shared suite: 180 passed; signed Mac cancel/retry and Android emulator restart/in-place upgrade/task lifecycle pass. Earlier full iPhone/Mini/standard iPad simulator matrix: 18 pass; latest standard iPad feedback build: six pass.
 - Current iOS connection-feedback archive/IPA refreshed at `output/production-validation/ios-source-cleanup-current/` with latest assets and native notices. Development profile allows only one registered device; not TestFlight/family distribution.
-- New iOS native notice collector: five tests pass, 13 exact notices across ten locked packages, all 15 resources verified in simulator app. Signed iOS archive/IPA now includes those notices. Android collector preserves 30 texts from 92 resolved components and debug artifact matches; 78 unresolved components block release/bundle builds.
+- New iOS native notice collector: five tests pass, 13 exact notices across ten locked packages, all 15 resources verified in simulator app. Signed iOS archive/IPA now includes those notices. Android now has locked runtime resolution and digest-bound upstream supplements: 91 resolved records, 153 notice files, zero unresolved entries, ten collector tests, signed APK/AAB byte verification and release ART fallback instrumentation passed. Final tablet checks are in progress.
 - Website free/open-source copy: eight Chromium/WebKit/layout checks pass at local port 5190. Subsequent source asset cleanup removes unused concepts/denied sounds from future builds; Android/Mac signed artifacts predate cleanup; latest iOS archive/IPA includes it.
 
 Exact receipts, artifacts and boundaries are in current-validation.md. The independent cancellation delta review timed out within its original budget; do not claim an independent final pass or retry it again in that work session.
@@ -26,7 +28,7 @@ Exact receipts, artifacts and boundaries are in current-validation.md. The indep
 ## Device and data boundaries
 
 - Physical iPad is disconnected for factory reset/sale. **Do not reconnect, control or clean it.** Remote synthetic events/tasks were removed; the user waived remaining local backup-file cleanup.
-- Physical Android currently disconnected. Only disposable Weekaboo validation simulators/emulators may be reset.
+- Kelly reconnected physical Android tablet on 11 September; authorized ADB is available. Preserve its accounts/tasks and use in-place signed updates. Only disposable Weekaboo validation simulators/emulators may be reset.
 - All Mac providers connected in the normal profile. No new registration, credential import or re-consent is needed for ordinary tests. Keep secrets inside native stores.
 - Tasks are device-local; preserve IDs/history, use export/import, and never copy native credential vaults between devices. No automatic task sync.
 - Use synthetic attendee-free unique records for explicitly authorized live writes, verify direct readback and cleanup. Preserve app settings and normal process on exit.

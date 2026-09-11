@@ -1,0 +1,9 @@
+Original copyright/license headers preserved verbatim from the exact-version published source archive.
+
+Source entries: io/opentelemetry/extension/kotlin/KotlinContextElement.java, io/opentelemetry/extension/kotlin/package-info.java, io/opentelemetry/extension/kotlin/ContextExtensions.kt
+
+/*
+ * Copyright The OpenTelemetry Authors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+

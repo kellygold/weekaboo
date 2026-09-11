@@ -1,0 +1,139 @@
+Copyright notices from the exact published source archive
+androidx.webkit:webkit:1.14.0
+https://dl.google.com/dl/android/maven2/androidx/webkit/webkit/1.14.0/webkit-1.14.0-sources.jar
+
+Source files: androidx/webkit/internal/package-info.java
+/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/ProxyConfig.java, androidx/webkit/ProxyController.java, androidx/webkit/SafeBrowsingResponseCompat.java, androidx/webkit/ServiceWorkerClientCompat.java, androidx/webkit/ServiceWorkerControllerCompat.java, androidx/webkit/ServiceWorkerWebSettingsCompat.java, androidx/webkit/TracingConfig.java, androidx/webkit/TracingController.java, androidx/webkit/WebMessageCompat.java, androidx/webkit/WebMessagePortCompat.java, androidx/webkit/WebResourceErrorCompat.java, androidx/webkit/WebResourceRequestCompat.java, androidx/webkit/WebSettingsCompat.java, androidx/webkit/WebViewClientCompat.java, androidx/webkit/WebViewCompat.java, androidx/webkit/WebViewFeature.java, androidx/webkit/WebViewRenderProcess.java, androidx/webkit/WebViewRenderProcessClient.java, androidx/webkit/internal/FrameworkServiceWorkerClient.java, androidx/webkit/internal/IncompatibleApkWebViewProviderFactory.java, androidx/webkit/internal/ProxyControllerImpl.java, androidx/webkit/internal/SafeBrowsingResponseImpl.java, androidx/webkit/internal/ServiceWorkerClientAdapter.java, androidx/webkit/internal/ServiceWorkerControllerImpl.java, androidx/webkit/internal/ServiceWorkerWebSettingsImpl.java, androidx/webkit/internal/TracingControllerImpl.java, androidx/webkit/internal/VisualStateCallbackAdapter.java, androidx/webkit/internal/WebMessageAdapter.java, androidx/webkit/internal/WebMessageCallbackAdapter.java, androidx/webkit/internal/WebMessagePortImpl.java, androidx/webkit/internal/WebResourceErrorImpl.java, androidx/webkit/internal/WebResourceRequestAdapter.java, androidx/webkit/internal/WebSettingsAdapter.java, androidx/webkit/internal/WebViewFeatureInternal.java, androidx/webkit/internal/WebViewGlueCommunicator.java, androidx/webkit/internal/WebViewProviderAdapter.java, androidx/webkit/internal/WebViewProviderFactory.java, androidx/webkit/internal/WebViewProviderFactoryAdapter.java, androidx/webkit/internal/WebViewRenderProcessImpl.java, androidx/webkit/internal/WebkitToCompatConverter.java
+/*
+ * Copyright 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/JavaScriptReplyProxy.java, androidx/webkit/WebViewAssetLoader.java, androidx/webkit/package-info.java, androidx/webkit/internal/AssetHelper.java, androidx/webkit/internal/JavaScriptReplyProxyImpl.java, androidx/webkit/internal/WebMessageListenerAdapter.java, androidx/webkit/internal/WebViewRenderProcessClientAdapter.java, androidx/webkit/internal/WebViewRenderProcessClientFrameworkAdapter.java
+/*
+ * Copyright 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/ScriptHandler.java, androidx/webkit/internal/ConditionallySupportedFeature.java, androidx/webkit/internal/ScriptHandlerImpl.java
+/*
+ * Copyright 2020 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/CookieManagerCompat.java, androidx/webkit/DropDataContentProvider.java, androidx/webkit/ProcessGlobalConfig.java, androidx/webkit/internal/ApiFeature.java, androidx/webkit/internal/ApiHelperForM.java, androidx/webkit/internal/ApiHelperForN.java, androidx/webkit/internal/ApiHelperForO.java, androidx/webkit/internal/ApiHelperForOMR1.java, androidx/webkit/internal/ApiHelperForP.java, androidx/webkit/internal/ApiHelperForQ.java, androidx/webkit/internal/ApiHelperForTiramisu.java, androidx/webkit/internal/CookieManagerAdapter.java, androidx/webkit/internal/StartupApiFeature.java, androidx/webkit/internal/StartupFeatures.java, androidx/webkit/internal/WebMessagePayloadAdapter.java
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/Profile.java, androidx/webkit/ProfileStore.java, androidx/webkit/URLUtilCompat.java, androidx/webkit/UserAgentMetadata.java, androidx/webkit/WebViewMediaIntegrityApiStatusConfig.java, androidx/webkit/internal/MimeUtil.java, androidx/webkit/internal/ProfileImpl.java, androidx/webkit/internal/ProfileStoreImpl.java, androidx/webkit/internal/UserAgentMetadataInternal.java
+/*
+ * Copyright 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/BlockingStartUpLocation.java, androidx/webkit/NoVarySearchHeader.java, androidx/webkit/OutcomeReceiverCompat.java, androidx/webkit/PrefetchException.java, androidx/webkit/PrefetchNetworkException.java, androidx/webkit/PrerenderException.java, androidx/webkit/PrerenderOperationCallback.java, androidx/webkit/SpeculativeLoadingParameters.java, androidx/webkit/WebStorageCompat.java, androidx/webkit/WebViewStartUpConfig.java, androidx/webkit/WebViewStartUpResult.java, androidx/webkit/internal/NoVarySearchHeaderAdapter.java, androidx/webkit/internal/PrefetchOperationCallbackAdapter.java, androidx/webkit/internal/SpeculativeLoadingParametersAdapter.java, androidx/webkit/internal/WebSettingsNoOpAdapter.java, androidx/webkit/internal/WebStorageAdapter.java, androidx/webkit/internal/WebViewStartUpCallbackAdapter.java, androidx/webkit/internal/WebViewStartUpConfigAdapter.java
+/*
+ * Copyright 2024 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source files: androidx/webkit/Navigation.java, androidx/webkit/Page.java, androidx/webkit/Policy.java, androidx/webkit/SpeculativeLoadingConfig.java, androidx/webkit/WebNavigationClient.java, androidx/webkit/WebViewBuilder.java, androidx/webkit/WebViewBuilderException.java, androidx/webkit/internal/NavigationAdapter.java, androidx/webkit/internal/PageImpl.java, androidx/webkit/internal/SpeculativeLoadingConfigAdapter.java, androidx/webkit/internal/WebNavigationClientAdapter.java
+/*
+ * Copyright 2025 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */

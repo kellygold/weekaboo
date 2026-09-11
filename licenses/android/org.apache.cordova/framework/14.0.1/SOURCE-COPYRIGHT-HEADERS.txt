@@ -1,0 +1,63 @@
+Original copyright/license headers preserved verbatim from the exact-version published source archive.
+
+Source entries: org/apache/cordova/AllowList.java, org/apache/cordova/AllowListPlugin.java, org/apache/cordova/AuthenticationToken.java, org/apache/cordova/BuildHelper.java, org/apache/cordova/CallbackContext.java, org/apache/cordova/CallbackMap.java, org/apache/cordova/Config.java, org/apache/cordova/ConfigXmlParser.java, org/apache/cordova/CordovaActivity.java, org/apache/cordova/CordovaArgs.java, org/apache/cordova/CordovaBridge.java, org/apache/cordova/CordovaClientCertRequest.java, org/apache/cordova/CordovaDialogsHelper.java, org/apache/cordova/CordovaHttpAuthHandler.java, org/apache/cordova/CordovaInterface.java, org/apache/cordova/CordovaInterfaceImpl.java, org/apache/cordova/CordovaPlugin.java, org/apache/cordova/CordovaPluginPathHandler.java, org/apache/cordova/CordovaPreferences.java, org/apache/cordova/CordovaWebViewEngine.java, org/apache/cordova/CordovaWebViewImpl.java, org/apache/cordova/CoreAndroid.java, org/apache/cordova/ExposedJsApi.java, org/apache/cordova/ICordovaClientCertRequest.java, org/apache/cordova/ICordovaCookieManager.java, org/apache/cordova/ICordovaHttpAuthHandler.java, org/apache/cordova/LOG.java, org/apache/cordova/NativeToJsMessageQueue.java, org/apache/cordova/PermissionHelper.java, org/apache/cordova/PluginResult.java, org/apache/cordova/ResumeCallback.java, org/apache/cordova/SplashScreenPlugin.java, org/apache/cordova/engine/SystemCookieManager.java, org/apache/cordova/engine/SystemExposedJsApi.java, org/apache/cordova/engine/SystemWebChromeClient.java, org/apache/cordova/engine/SystemWebView.java, org/apache/cordova/engine/SystemWebViewClient.java, org/apache/cordova/engine/SystemWebViewEngine.java
+
+/*
+       Licensed to the Apache Software Foundation (ASF) under one
+       or more contributor license agreements.  See the NOTICE file
+       distributed with this work for additional information
+       regarding copyright ownership.  The ASF licenses this file
+       to you under the Apache License, Version 2.0 (the
+       "License"); you may not use this file except in compliance
+       with the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing,
+       software distributed under the License is distributed on an
+       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+       KIND, either express or implied.  See the License for the
+       specific language governing permissions and limitations
+       under the License.
+*/
+
+Source entries: org/apache/cordova/CordovaResourceApi.java, org/apache/cordova/PluginEntry.java, org/apache/cordova/PluginManager.java
+
+/*
+       Licensed to the Apache Software Foundation (ASF) under one
+       or more contributor license agreements.  See the NOTICE file
+       distributed with this work for additional information
+       regarding copyright ownership.  The ASF licenses this file
+       to you under the Apache License, Version 2.0 (the
+       "License"); you may not use this file except in compliance
+       with the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing,
+       software distributed under the License is distributed on an
+       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+       KIND, either express or implied.  See the License for the
+       specific language governing permissions and limitations
+       under the License.
+ */
+
+Source entries: org/apache/cordova/CordovaWebView.java
+
+/*
+       Licensed to the Apache Software Foundation (ASF) under one
+       or more contributor license agreements.  See the NOTICE file
+       distributed with this work for additional information
+       regarding copyright ownership.  The ASF licenses this file
+       to you under the Apache License, Version 2.0 (the
+       "License"); you may not use this file except in compliance
+       with the License.  You may obtain a copy of the License at
+         http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing,
+       software distributed under the License is distributed on an
+       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+       KIND, either express or implied.  See the License for the
+       specific language governing permissions and limitations
+       under the License.
+*/
+

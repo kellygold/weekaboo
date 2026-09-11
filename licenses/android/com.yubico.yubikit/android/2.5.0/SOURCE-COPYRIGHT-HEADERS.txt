@@ -1,0 +1,136 @@
+Original copyright/license headers preserved verbatim from the exact-version published source archive.
+
+Source entries: com/yubico/yubikit/android/ui/YubiKeyPromptAction.java, com/yubico/yubikit/android/transport/usb/connection/ConnectionHandler.java
+
+/*
+ * Copyright (C) 2022 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/ui/OtpKeyListener.java, com/yubico/yubikit/android/ui/OtpActivity.java, com/yubico/yubikit/android/transport/usb/UsbConfiguration.java, com/yubico/yubikit/android/transport/usb/connection/InterfaceConnectionHandler.java, com/yubico/yubikit/android/transport/usb/connection/SmartCardConnectionHandler.java, com/yubico/yubikit/android/transport/usb/connection/ConnectionManager.java, com/yubico/yubikit/android/transport/usb/connection/OtpConnectionHandler.java, com/yubico/yubikit/android/transport/usb/connection/package-info.java, com/yubico/yubikit/android/transport/usb/package-info.java, com/yubico/yubikit/android/transport/nfc/NfcDispatcher.java, com/yubico/yubikit/android/transport/nfc/NfcConfiguration.java, com/yubico/yubikit/android/transport/nfc/NfcReaderDispatcher.java, com/yubico/yubikit/android/transport/nfc/package-info.java, com/yubico/yubikit/android/transport/package-info.java, com/yubico/yubikit/android/package-info.java
+
+/*
+ * Copyright (C) 2020-2022 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/ui/YubiKeyPromptActivity.java, com/yubico/yubikit/android/ui/package-info.java, com/yubico/yubikit/android/transport/usb/connection/UsbYubiKeyConnection.java
+
+/*
+ * Copyright (C) 2020-2023 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/ui/YubiKeyPromptConnectionAction.java, com/yubico/yubikit/android/transport/usb/UsbDeviceManager.java, com/yubico/yubikit/android/transport/usb/UsbYubiKeyManager.java
+
+/*
+ * Copyright (C) 2022-2023 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/transport/usb/connection/UsbSmartCardConnection.java, com/yubico/yubikit/android/transport/usb/UsbYubiKeyDevice.java, com/yubico/yubikit/android/transport/nfc/NfcYubiKeyDevice.java, com/yubico/yubikit/android/transport/nfc/NfcSmartCardConnection.java
+
+/*
+ * Copyright (C) 2019-2023 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/transport/usb/connection/UsbFidoConnection.java
+
+/*
+ * Copyright (C) 2020 Yubico AB - All Rights Reserved
+ * Unauthorized copying and/or distribution of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
+Source entries: com/yubico/yubikit/android/transport/usb/connection/FidoConnectionHandler.java, com/yubico/yubikit/android/internal/Base64Codec.java, com/yubico/yubikit/android/internal/package-info.java
+
+/*
+ * Copyright (C) 2023 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Source entries: com/yubico/yubikit/android/transport/usb/connection/UsbOtpConnection.java, com/yubico/yubikit/android/transport/usb/NoPermissionsException.java, com/yubico/yubikit/android/transport/nfc/NfcYubiKeyManager.java, com/yubico/yubikit/android/transport/nfc/NfcNotAvailable.java, com/yubico/yubikit/android/YubiKitManager.java
+
+/*
+ * Copyright (C) 2019-2022 Yubico.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+

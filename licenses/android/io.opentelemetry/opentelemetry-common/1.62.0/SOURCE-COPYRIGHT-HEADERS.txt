@@ -1,0 +1,9 @@
+Original copyright/license headers preserved verbatim from the exact-version published source archive.
+
+Source entries: io/opentelemetry/common/ComponentLoader.java, io/opentelemetry/common/ServiceLoaderComponentLoader.java, io/opentelemetry/common/impl/ApiUsageLogger.java
+
+/*
+ * Copyright The OpenTelemetry Authors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+

@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+// Pin the complete packaged runtime graph, including transitive SDK versions.
+// Explicit updates: see docs/android-release.md. Normal builds never rewrite it.
+configurations.matching { it.name in ['debugRuntimeClasspath', 'releaseRuntimeClasspath'] }.configureEach {
+    resolutionStrategy.activateDependencyLocking()
+}
+dependencyLocking {
+    lockMode = LockMode.STRICT
+}
+
 // Same canonical public metadata as Apple and desktop packaging.
 def releaseMetadata = new groovy.json.JsonSlurper().parse(rootProject.file('../package.json'))
 if (!(releaseMetadata.version ==~ /(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)/) || !(releaseMetadata.weekabooBuild instanceof Integer) || releaseMetadata.weekabooBuild < 1 || releaseMetadata.weekabooBuild > 2100000000) throw new GradleException('Invalid release version/build in package.json')
@@ -39,7 +48,7 @@ android {
     defaultConfig {
         applicationId "app.weekaboo.calendar"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
         resValue 'string', 'microsoft_client_id', nativeClientId
         resValue 'string', 'oauth_signature_hash', nativeSignature
         manifestPlaceholders = [oauthSignaturePath: '/' + nativeSignature]
@@ -52,6 +61,7 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    testBuildType 'release'
     signingConfigs {
         if (releaseSigningDirectory) {
             weekabooRelease {
@@ -84,7 +94,12 @@ repositories {
 
 dependencies {
     implementation 'com.google.android.gms:play-services-auth:22.0.0'
-    implementation 'com.microsoft.identity.client:msal:8.4.2'
+    implementation('com.microsoft.identity.client:msal:8.4.2') {
+        // This legacy Duo artifact is a compile stub: every method throws.
+        // MSAL's guarded hinge query already falls back when the OS API is absent.
+        // Keep the stub out of the APK; exercise that fallback in release tests.
+        exclude group: 'com.microsoft.device.display', module: 'display-mask'
+    }
     implementation "com.squareup.okhttp3:okhttp:5.3.2"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"

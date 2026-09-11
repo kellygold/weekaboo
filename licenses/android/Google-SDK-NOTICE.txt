@@ -1,0 +1,8 @@
+Google Android client SDKs
+
+These SDK components remain licensed by Google under the Android Software Development Kit License Agreement, not Weekaboo's MIT license.
+Terms: https://developer.android.com/studio/terms
+SDK overview: https://developers.google.com/android/guides/overview
+Third-party notice guidance: https://developers.google.com/android/guides/opensource
+
+Weekaboo uses the client libraries in its Android application on compatible Android devices. It does not redistribute the Google Play services system application or an SDK/toolchain. The original third_party_licenses files from the resolved client libraries are preserved separately. Google, Android and Google Play are trademarks of Google LLC.
