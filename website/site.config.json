@@ -1,5 +1,9 @@
 {
   "domain": "weekaboo.app",
-  "sourceUrl": "",
-  "downloads": { "android": "", "ios": "", "macos": "" }
+  "sourceUrl": "https://github.com/kellygold/weekaboo",
+  "downloads": {
+    "android": "",
+    "ios": "",
+    "macos": ""
+  }
 }

@@ -4,6 +4,8 @@
 
 **A free, privacy-focused calendar with room for the things you haven't scheduled yet.**
 
+[Source code](https://github.com/kellygold/weekaboo) · [Build your own](#build-the-installed-apps) · [Privacy](#privacy-and-local-data)
+
 Bring Google Calendar, Outlook and iCloud together. Keep a flexible task list beside your week. Switch between work, personal and your own calendar groups, with a little peekaboo along the way.
 
 Weekaboo's installed apps connect directly to your calendar providers. There is no Weekaboo account, hosted database or required server. Your calendar cache, tasks and preferences stay on your device; your calendar provider still receives the calendar changes you make.

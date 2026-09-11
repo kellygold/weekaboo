@@ -1,5 +1,10 @@
 ## Latest completed checks — 11 September, evening continuation
 
+## 11 September 2026 — public source repository created
+
+Kelly confirmed paid-plan coverage for the13 approved audio clips. Source/history scan passed, then public https://github.com/kellygold/weekaboo was created and reviewed source pushed. MIT recognized; secret scanning/push protection/private vulnerability reporting enabled. Website GitHub links added and all8 browser/layout checks pass with destination assertions. No Pages/DNS/native-binary/store deployment. Continue native release checklist; do not repeat registration or source-publication approval.
+
+
 ## 11 September 2026, 21:00 AEST — release preparation checkpoint
 
 Mac live CRUD/restart/outage tests remain passed at their exact signed hash. Current iOS archive/IPA now includes all13 approved sounds,13 native Swift notices and47 JS notices, strict signatures verified; one-device development profile only. Android debug artifact includes30 original notice files, but78 unresolved components block release/bundle; signed APK unchanged. Source-only npm ci/build/site build pass, eight site checks and mascot test pass, native collectors five tests each, source audit four self-tests pass. Initial local commit4090e70 holds413 reviewed files; source/full-history Gitleaks zero findings, no remote/push. Public kellygold/weekaboo authorized once ready; audio paid-generation status is pending. README/OAuth guide and deferred MCP plan are written. The source link remains unset until repository creation; website/binary deployment remain separate approvals.

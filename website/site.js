@@ -51,7 +51,7 @@ showCalendar('four');
 document.querySelectorAll('.demo-task input').forEach(input=>input.addEventListener('change',()=>{document.getElementById('task-count').textContent=document.querySelectorAll('.demo-task input:not(:checked)').length;}));
 function safeLink(value) {try { const url = new URL(value); return url.protocol === 'https:' ? url.href : null; } catch {return null;} }
 const source = safeLink(config.sourceUrl);
-if(source && document.getElementById('source-link')) {const link=document.createElement('a');link.href=source;link.className='text-link';link.textContent='Explore the source on GitHub ↗';document.getElementById('source-link').replaceWith(link);}
+if(source) for(const link of document.querySelectorAll('[data-source-link]')) {link.href=source;link.hidden=false;}
 for(const item of document.querySelectorAll('[data-download]')) {
   const url=safeLink(config.downloads?.[item.dataset.download]);if(!url) continue;
   const link=document.createElement('a');link.href=url;link.className='availability';link.textContent={android:'Get Weekaboo for Android ↗',ios:'Get Weekaboo for iPhone & iPad ↗',macos:'Get Weekaboo for Mac ↗'}[item.dataset.download];item.replaceWith(link);

@@ -15,15 +15,15 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Kelly confirmed on 11 September that a paid ElevenLabs subscription covered generation on 9 September; model availability and publishing terms checked.
 - [x] Fresh source-only npm ci/browser/static build passes; repeatable source audit and four negative/self-tests pass. Repeat final audit with `python3 scripts/audit-public-source.py --gitleaks /path/to/gitleaks` (pinned 8.30.1).
 - [x] Initial local commit `4090e70` contains only the audited 413-file manifest. Gitleaks scans of source and all Git refs report zero findings; GitHub noreply author address used. No push yet. Rerun the audit after subsequent changes.
-- [ ] Create public `kellygold/weekaboo`, push reviewed source, inspect the public tree and verify README/license/secret-scanning settings. Source publication is authorized; no further confirmation needed once clean.
-- [ ] Set and test the actual source URL in `website/site.config.json`; keep absent binary downloads empty.
+- [x] Public [kellygold/weekaboo](https://github.com/kellygold/weekaboo) created and reviewed source pushed. GitHub recognizes MIT and reports secret scanning and push protection enabled.
+- [x] Real GitHub source URL appears in navigation and the source section; eight browser/layout checks include destination assertions. Binary download URLs remain empty.
 
 ## Website — local build ready; deployment not yet authorized
 
 - [x] Lead with free, open source and privacy; describe direct provider connections and local storage accurately.
 - [x] Explain flexible undated tasks, optional deadlines/time blocks, calendar groups and bidirectional edits.
 - [x] Check eight Chromium/WebKit desktop/tablet/phone layouts including 320px, interaction, audio and no external requests.
-- [ ] Verify real GitHub link after source publication and rerun site checks against that configuration.
+- [x] Verify real GitHub link after source publication; all eight website checks pass with configured destination assertions.
 - [ ] Final asset/credits/privacy review, then explicit go-ahead for GitHub Pages/domain deployment.
 - [ ] Verify deployed HTTPS/domain/assets. Preserve existing email MX/SPF records.
 

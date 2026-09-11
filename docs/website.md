@@ -1,6 +1,6 @@
 # Weekaboo static website
 
-Local implementation, 11 September 2026. **Not published.** Kelly requested a custom static site for GitHub, alongside physical iPad validation. The site uses the existing Weekaboo brand and approved mascot/audio, fictional calendar plans, and platform-specific download slots. It is separate from the application runtime.
+Local implementation, 11 September 2026. **Website not deployed; source is public.** Kelly requested a custom static site for GitHub, alongside physical iPad validation. The site uses the existing Weekaboo brand and approved mascot/audio, fictional calendar plans, and platform-specific download slots. It is separate from the application runtime.
 
 ## Develop and review
 
@@ -33,7 +33,7 @@ The verifier serves the built artifact under `/weekaboo/`, exercises Chromium an
 
 ## Publication handoff — source approved, site deployment separate
 
-No remote is configured in this working repository. Kelly has authorized creating public `kellygold/weekaboo` once the source audit passes; it has not yet been created. Exact binary download destinations remain unknown. Do not invent them or publish the whole working tree: this checkout contains private ignored state and ongoing application work.
+The reviewed source is public at [kellygold/weekaboo](https://github.com/kellygold/weekaboo). The source URL is configured in the local website build. Exact binary download destinations remain unknown. Do not invent them or publish the whole working tree: this checkout contains private ignored state and ongoing application work.
 
 1. Complete the authorized source publication at `kellygold/weekaboo` using the release checklist and reviewed file manifest. Set the real source URL in `website/site.config.json`. Keep unavailable downloads empty.
 2. Check the static copy, credits and privacy note, including asset distribution rights. Keep download destinations truthful; no released/production-ready claim until the native validation gates pass.
@@ -60,4 +60,8 @@ Artwork source URLs: `https://developer.android.com/static/images/brand/android-
 
 ## Free and open-source revision — 11 September 2026
 
-Hero/metadata now lead with free and open-source privacy. The source section explains code inspection. Eight viewport/browser checks passed locally. GitHub destination is authorized but not yet live; keep the link unset until creation succeeds. Source publication is separate from deploying this site.
+Hero/metadata now lead with free and open-source privacy. The source section explains code inspection. Eight viewport/browser checks passed locally. GitHub destination is authorized but not yet live; keep the link unset until creation succeeds. Source publication is separate from deploying this site. The repository is now public; final link validation is recorded in the release checklist.
+
+## Public source connected — 11 September 2026
+
+The repository is live at https://github.com/kellygold/weekaboo. Navigation and the source section both use that configured URL. Eight Chromium/WebKit/layout checks pass with link destination assertions. No Pages deployment or domain changes were performed; local preview remains available on port 5190.

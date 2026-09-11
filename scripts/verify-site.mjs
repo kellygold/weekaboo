@@ -20,6 +20,7 @@ const server=createServer(async(req,res)=>{
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin=`http://127.0.0.1:${server.address().port}`;
 const result=[];
+const sourceUrl=JSON.parse(await readFile(path.join(root,'website/site.config.json'),'utf8')).sourceUrl;
 try {
   for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]) {
     const browser=await type.launch();
@@ -33,6 +34,13 @@ try {
         await page.goto(origin+'/weekaboo/');
         await page.evaluate(()=>document.fonts.ready);
         await expect(page.locator('h1')).toContainText('Your business.');
+        if(sourceUrl) {
+          await expect(page.locator('[data-source-link]')).toHaveCount(2);
+          for(const link of await page.locator('[data-source-link]').all()) await expect(link).toHaveAttribute('href',sourceUrl);
+          await expect(page.getByRole('link',{name:'Explore the source on GitHub ↗',exact:true})).toBeVisible();
+        } else {
+          await expect(page.locator('[data-source-link]:not([hidden])')).toHaveCount(0);
+        }
         await expect(page.locator('.day-column')).toHaveCount(4);
         expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
         expect(audioRequests).toEqual([]);
@@ -60,7 +68,7 @@ try {
         await expect(page.locator('h1')).toBeVisible();
         expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
         expect(failures).toEqual([]);expect(external).toEqual([]);
-        result.push({engine,device,width,status:'passed',checks:'navigation, views, tasks, mascot audio, reduced motion, asset loads, no external requests, no horizontal overflow'});
+        result.push({engine,device,width,status:'passed',checks:'configured GitHub source links, navigation, views, tasks, mascot audio, reduced motion, asset loads, no external requests, no horizontal overflow'});
         await page.close();
       }
     } finally {await browser.close();}

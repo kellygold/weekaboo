@@ -8,9 +8,9 @@ Kelly requested a future MCP/AI-client adapter after this release. See [MCP exte
 
 ## Active work
 
-Prepare a clean public source repository at **kellygold/weekaboo**, authorized by Kelly once publication checks pass. Do not confuse this with permission to publish binaries, submit to stores, deploy the website, notarize or incur charges. Initial local commit `4090e70` now contains the audited 413-file source set; source and all-ref history scans pass with zero findings. There is no remote, and GitHub returned 404 for that destination. No push yet.
+Public source repository **https://github.com/kellygold/weekaboo** is now created and the reviewed source is pushed. Do not confuse this with permission to publish binaries, submit to stores, deploy the website, notarize or incur charges. Initial local commit `4090e70` now contains the audited 413-file source set; source and all-ref history scans pass with zero findings. Origin now points to that public repository. GitHub secret scanning and push protection are enabled; source/history scans passed before push.
 
-Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are being prepared. Source URL stays unset until the repository exists. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
+Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are being prepared. Website source URL now targets the actual public repository; eight browser/layout checks pass with GitHub destination assertions. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
 
 ## Completed latest validation
 
@@ -41,4 +41,4 @@ For rationale and researched provider differences read [cross-platform plan](cro
 
 ## Continue independently
 
-Finish public source/asset readiness and first commit/history scan before creating/pushing the authorized repository; then wire its real URL into the website and verify it. Complete Android native acknowledgments and refresh signed artifacts without changing profiles. Preserve honest release gates for independent review, remaining device/expiry/recurrence tests, consent branding, store tracks and notarization. Keep this handoff and checklist updated rather than accumulating contradictory top-level instructions.
+Public repository creation, source/history audit and website source-link validation are complete. Keep source changes audited before push. Complete Android native acknowledgments and refresh signed artifacts without changing profiles. Preserve honest release gates for independent review, remaining device/expiry/recurrence tests, consent branding, store tracks and notarization. Keep this handoff and checklist updated rather than accumulating contradictory top-level instructions.
