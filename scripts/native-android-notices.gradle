@@ -1,0 +1,27 @@
+// Local, offline dependency inventory used only by native-android-notices.py.
+import groovy.json.JsonOutput
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+
+gradle.projectsEvaluated {
+    def app = gradle.rootProject.findProject(':app')
+    app.tasks.register('weekabooNativeNoticeGraph') {
+        doLast {
+            def config = app.configurations.getByName('releaseRuntimeClasspath')
+            def target = app.findProperty('weekabooNoticesGraphOutput')
+            if (!target) throw new GradleException('Missing notice graph output path')
+            def artifacts = config.incoming.artifactView {
+                componentFilter { it instanceof ModuleComponentIdentifier }
+            }.artifacts.artifacts.collect {
+                def module = it.id.componentIdentifier
+                [group: module.group, name: module.module, version: module.version,
+                 classifier: null, extension: it.file.name.tokenize('.').last(), file: it.file.absolutePath]
+            }.sort { a,b -> (a.group+':'+a.name+':'+a.version+':'+a.extension) <=> (b.group+':'+b.name+':'+b.version+':'+b.extension) }
+            def projects = config.incoming.resolutionResult.allComponents.findAll {
+                !(it.id instanceof ModuleComponentIdentifier)
+            }.collect { it.id.displayName }.sort()
+            def output = new File(target.toString())
+            output.parentFile.mkdirs()
+            output.text = JsonOutput.prettyPrint(JsonOutput.toJson([configuration:'releaseRuntimeClasspath', artifacts:artifacts, projects:projects]))+'\n'
+        }
+    }
+}

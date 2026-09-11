@@ -1,0 +1,108 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+___ test_expired_cursor_must_preserve_pending_change_to_imported_event[edit] ___
+
+client = <starlette.testclient.TestClient object at 0x107fa3710>
+db = <sqlalchemy.orm.session.Session object at 0x109418a10>
+fake = <fake_google.FakeGoogle object at 0x10941b560>
+gcal = <app.models.Calendar object at 0x10947f2f0>, operation = 'edit'
+
+    @pytest.mark.parametrize('operation', ['edit', 'delete'])
+    def test_expired_cursor_must_preserve_pending_change_to_imported_event(client, db, fake, gcal, operation):
+        remote = gevent('g-audit', 'Original appointment', '2026-09-10T01:00:00Z', '2026-09-10T02:00:00Z')
+        fake.pages = [([remote], 'cursor1')]
+        sync_engine.pull_calendar(db, gcal)
+        ev = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+        if operation == 'edit':
+            response = client.patch(f'/api/events/{ev.id}', json={'title': 'Locally edited appointment'})
+        else:
+            response = client.delete(f'/api/events/{ev.id}')
+        assert response.status_code in (200, 204), response.text
+        db.expire_all()
+        pending = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+        assert pending.sync_state != 'synced'
+        before = (pending.title, pending.status, pending.sync_state)
+        fake.expire_next_sync_token = True
+        fake.pages = [([remote], 'cursor2')]
+        sync_engine.pull_calendar(db, gcal)
+        db.expire_all()
+        after = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+>       assert (after.title, after.status, after.sync_state) == before
+E       AssertionError: assert ('Original ap...ed', 'synced') == ('Locally edi...nding_update')
+E         
+E         At index 0 diff: 'Original appointment' != 'Locally edited appointment'
+E         Use -v to get more diff
+
+tests/test_audit_regressions.py:28: AssertionError
+__ test_expired_cursor_must_preserve_pending_change_to_imported_event[delete] __
+
+client = <starlette.testclient.TestClient object at 0x109502f90>
+db = <sqlalchemy.orm.session.Session object at 0x10956d370>
+fake = <fake_google.FakeGoogle object at 0x10956ff50>
+gcal = <app.models.Calendar object at 0x10956ff20>, operation = 'delete'
+
+    @pytest.mark.parametrize('operation', ['edit', 'delete'])
+    def test_expired_cursor_must_preserve_pending_change_to_imported_event(client, db, fake, gcal, operation):
+        remote = gevent('g-audit', 'Original appointment', '2026-09-10T01:00:00Z', '2026-09-10T02:00:00Z')
+        fake.pages = [([remote], 'cursor1')]
+        sync_engine.pull_calendar(db, gcal)
+        ev = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+        if operation == 'edit':
+            response = client.patch(f'/api/events/{ev.id}', json={'title': 'Locally edited appointment'})
+        else:
+            response = client.delete(f'/api/events/{ev.id}')
+        assert response.status_code in (200, 204), response.text
+        db.expire_all()
+        pending = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+        assert pending.sync_state != 'synced'
+        before = (pending.title, pending.status, pending.sync_state)
+        fake.expire_next_sync_token = True
+        fake.pages = [([remote], 'cursor2')]
+        sync_engine.pull_calendar(db, gcal)
+        db.expire_all()
+        after = db.query(Event).filter(Event.google_event_id == 'g-audit').one()
+>       assert (after.title, after.status, after.sync_state) == before
+E       AssertionError: assert ('Original ap...ed', 'synced') == ('Original ap...nding_delete')
+E         
+E         At index 2 diff: 'synced' != 'pending_delete'
+E         Use -v to get more diff
+
+tests/test_audit_regressions.py:28: AssertionError
+________ test_arbitrary_origin_must_not_be_granted_calendar_api_access _________
+
+client = <starlette.testclient.TestClient object at 0x109419160>
+
+    def test_arbitrary_origin_must_not_be_granted_calendar_api_access(client):
+        origin = 'https://untrusted.example'
+        response = client.options('/api/events/1', headers={
+            'Origin': origin,
+            'Access-Control-Request-Method': 'PATCH',
+            'Access-Control-Request-Headers': 'content-type',
+        })
+>       assert response.headers.get('access-control-allow-origin') not in ('*', origin)
+E       AssertionError: assert '*' not in ('*', 'https://untrusted.example')
+E        +  where '*' = get('access-control-allow-origin')
+E        +    where get = Headers({'access-control-allow-origin': '*', 'access-control-allow-methods': 'DELETE, GET, HEAD, OPTIONS, PATCH, POST,...', 'access-control-allow-headers': 'content-type', 'content-length': '2', 'content-type': 'text/plain; charset=utf-8'}).get
+E        +      where Headers({'access-control-allow-origin': '*', 'access-control-allow-methods': 'DELETE, GET, HEAD, OPTIONS, PATCH, POST,...', 'access-control-allow-headers': 'content-type', 'content-length': '2', 'content-type': 'text/plain; charset=utf-8'}) = <Response [200 OK]>.headers
+
+tests/test_audit_regressions.py:38: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /private/tmp/weekaboo-audit-20260909/mantel/backend/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:53
+  /private/tmp/weekaboo-audit-20260909/mantel/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_audit_regressions.py::test_expired_cursor_must_preserve_pending_change_to_imported_event[edit]
+tests/test_audit_regressions.py::test_expired_cursor_must_preserve_pending_change_to_imported_event[delete]
+  /private/tmp/weekaboo-audit-20260909/mantel/backend/tests/test_google_sync.py:34: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    token_expiry=datetime.utcnow() + timedelta(hours=1),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_audit_regressions.py::test_expired_cursor_must_preserve_pending_change_to_imported_event[edit]
+FAILED tests/test_audit_regressions.py::test_expired_cursor_must_preserve_pending_change_to_imported_event[delete]
+FAILED tests/test_audit_regressions.py::test_arbitrary_origin_must_not_be_granted_calendar_api_access
+3 failed, 4 warnings in 0.08s

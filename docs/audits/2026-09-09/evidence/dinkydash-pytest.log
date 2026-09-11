@@ -1,0 +1,606 @@
+ssssssssssssssssssssssssss...........s...s.........................sssss [  7%]
+sssssssssssssssssssssssssssssssssssssssssssssssssssss.ssssss............ [ 14%]
+.....................................sssssssssssssssssss......ssssssssss [ 22%]
+s..........ssssssssss.s.s.s.s..ss....................................... [ 29%]
+.s.....sssssssss.s...................................................... [ 37%]
+........................................................................ [ 44%]
+............................sssssssssssssssssss......................... [ 52%]
+.............................................ssssss......F.F............ [ 59%]
+................................................................ssssssss [ 67%]
+ss...ssssssssssssssssssssssssss......................................... [ 74%]
+.........................................sssssssssssssssssssssssssssssss [ 81%]
+s.................................s..........s.s.s.s.s.s.s.s.s.s.s.s.s.s [ 89%]
+.s.s.s.s.s.s.s.sssssssssssssssssssssssssssssssssssssssssssssss......ssFF [ 96%]
+FFFFFF........................                                           [100%]
+=================================== FAILURES ===================================
+__________ test_real_worker_tick_logs_metadata_without_generated_text __________
+
+generated_store = <dinkydash.store.FileStore object at 0x108a7dca0>
+caplog = <_pytest.logging.LogCaptureFixture object at 0x108a7f830>
+
+    def test_real_worker_tick_logs_metadata_without_generated_text(generated_store, caplog):
+        with caplog.at_level(logging.INFO):
+>           assert tick_all(FakePool(["family"]), store_factory=lambda _: generated_store,
+                            budget_factory=FakeBudget) == 1
+
+tests/test_private_logs.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+__________ test_a_failed_worker_generation_still_reports_the_failure ___________
+
+generated_store = <dinkydash.store.FileStore object at 0x108ebf770>
+caplog = <_pytest.logging.LogCaptureFixture object at 0x108f5b650>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108aebe90>
+
+    def test_a_failed_worker_generation_still_reports_the_failure(generated_store, caplog, monkeypatch):
+        def failed(*args, **kwargs):
+            raise GenerationError("Provider unavailable")
+    
+        monkeypatch.setattr(runner, "generate", failed)
+        with caplog.at_level(logging.INFO):
+>           tick_all(FakePool(["family"]), store_factory=lambda _: generated_store,
+                     budget_factory=FakeBudget)
+
+tests/test_private_logs.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+______________ TestWalkingTheFamilies.test_every_family_is_ticked ______________
+
+self = <test_worker.TestWalkingTheFamilies object at 0x1088e7bf0>
+
+    def test_every_family_is_ticked(self):
+        seen = []
+>       done = run(["a", "b", "c"], lambda config, store, budget=None: seen.append(store.family_id))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_worker.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+___________ TestWalkingTheFamilies.test_no_families_is_not_an_error ____________
+
+self = <test_worker.TestWalkingTheFamilies object at 0x1088e74a0>
+
+    def test_no_families_is_not_an_error(self):
+>       assert run([], lambda config, store, budget=None: None) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_worker.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+____ TestWalkingTheFamilies.test_the_config_comes_from_that_family_s_store _____
+
+self = <test_worker.TestWalkingTheFamilies object at 0x1088e7170>
+
+    def test_the_config_comes_from_that_family_s_store(self):
+        configs = []
+>       run(["a", "b"], lambda config, store, budget=None: configs.append(config))
+
+tests/test_worker.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+____ TestWalkingTheFamilies.test_lapsed_families_are_excluded_by_the_query _____
+
+self = <test_worker.TestWalkingTheFamilies object at 0x1088e6930>
+
+    def test_lapsed_families_are_excluded_by_the_query(self):
+        """PLAN.md's freeze: the board keeps its last state, the ticking stops."""
+        pool = FakePool(["a"])
+>       tick_all(pool, store_factory=FakeStore, tick=lambda c, s: None)
+
+tests/test_worker.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+_______ TestOneBadFamily.test_a_raising_family_does_not_stop_the_others ________
+
+self = <test_worker.TestOneBadFamily object at 0x1088e61e0>
+
+    def test_a_raising_family_does_not_stop_the_others(self):
+        """A shared worker that dies on the noisiest tenant serves the quietest worst."""
+        seen = []
+    
+        def tick(config, store, budget=None):
+            seen.append(store.family_id)
+            if store.family_id == "b":
+                raise RuntimeError("their calendar feed is down")
+    
+>       done = run(["a", "b", "c"], tick)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_worker.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+_________ TestOneBadFamily.test_every_family_can_fail_without_raising __________
+
+self = <test_worker.TestOneBadFamily object at 0x1088e5fd0>
+
+    def test_every_family_can_fail_without_raising(self):
+        def tick(config, store, budget=None):
+            raise RuntimeError("everything is down")
+    
+>       assert run(["a", "b"], tick) == 0
+               ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_worker.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+____ TestOneBadFamily.test_the_failure_log_names_the_id_and_not_the_config _____
+
+self = <test_worker.TestOneBadFamily object at 0x1088e5280>
+caplog = <_pytest.logging.LogCaptureFixture object at 0x1091201d0>
+
+    def test_the_failure_log_names_the_id_and_not_the_config(self, caplog):
+        """A config holds children's names, and a calendar URL is a password."""
+        def tick(config, store, budget=None):
+            raise RuntimeError("failed fetching https://cal.example/private-abc123/basic.ics")
+    
+        with caplog.at_level(logging.DEBUG):
+>           run(["fam-42"], tick)
+
+tests/test_worker.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+_______ TestStopping.test_a_stop_request_ends_the_pass_between_families ________
+
+self = <test_worker.TestStopping object at 0x1088e5400>
+
+    def test_a_stop_request_ends_the_pass_between_families(self):
+        """SIGTERM during a redeploy must not cut a paid-for brief in half."""
+        stopping = Stopping()
+        seen = []
+    
+        def tick(config, store, budget=None):
+            seen.append(store.family_id)
+            stopping.request()
+    
+>       done = run(["a", "b", "c"], tick, stopping=stopping)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_worker.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_worker.py:67: in run
+    return tick_all(FakePool(ids), store_factory=FakeStore, tick=tick,
+worker/__init__.py:96: in tick_all
+    from dinkydash.pgstore import PostgresStore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """The cloud half of the storage seam: one family's rows in Postgres.
+    
+    Same seven operations as `FileStore`, same dicts in and out, so the runner, the
+    board route and the settings routes cannot tell which one they were handed
+    (PLAN.md decision 10, and the seam named in DIN-19).
+    
+    Kept in its own module rather than beside `FileStore` for one reason: single
+    mode must never import psycopg. A Raspberry Pi has no database and should not
+    install a driver for one, so `psycopg` lives in `requirements-cloud.txt` and
+    `dinkydash/store.py` stays importable with the single-mode dependencies.
+    
+    **Every query is scoped to `self.family_id`.** There is no unscoped read and no
+    unscoped write in this file, and there must never be one — an id arriving in a
+    URL is a claim, not a fact, and the place to check it is before it reaches a
+    store, not inside one.
+    
+    Where the payload lives:
+    
+        events, calendar_statuses, calendars_fetched_at  ->  agendas    (one row)
+        headline, note, note_kind                        ->  generations.brief
+        generated_for_date, generated_at, model, tokens  ->  generations columns
+    
+    `load_payload` puts the two back together as the dict the engine takes, and
+    `save_agenda` and `save_brief` each write one table and never the other. That
+    is why the two are separate operations rather than one `save_payload`: a brief
+    whose write is separated from its read by a slow model call would otherwise
+    overwrite an agenda that landed in between (DIN-28). Config saves and agenda
+    publication also lock the family's config row: invalidation and settings commit
+    together, and a fetch made with obsolete calendar settings is rejected (DIN-46).
+    Network requests run outside these transactions.
+    """
+    
+    import logging
+    from datetime import date, datetime, timezone
+    
+>   from psycopg.types.json import Jsonb
+E   ModuleNotFoundError: No module named 'psycopg'
+
+dinkydash/pgstore.py:36: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_private_logs.py::test_real_worker_tick_logs_metadata_without_generated_text
+FAILED tests/test_private_logs.py::test_a_failed_worker_generation_still_reports_the_failure
+FAILED tests/test_worker.py::TestWalkingTheFamilies::test_every_family_is_ticked
+FAILED tests/test_worker.py::TestWalkingTheFamilies::test_no_families_is_not_an_error
+FAILED tests/test_worker.py::TestWalkingTheFamilies::test_the_config_comes_from_that_family_s_store
+FAILED tests/test_worker.py::TestWalkingTheFamilies::test_lapsed_families_are_excluded_by_the_query
+FAILED tests/test_worker.py::TestOneBadFamily::test_a_raising_family_does_not_stop_the_others
+FAILED tests/test_worker.py::TestOneBadFamily::test_every_family_can_fail_without_raising
+FAILED tests/test_worker.py::TestOneBadFamily::test_the_failure_log_names_the_id_and_not_the_config
+FAILED tests/test_worker.py::TestStopping::test_a_stop_request_ends_the_pass_between_families
+10 failed, 643 passed, 313 skipped in 7.92s

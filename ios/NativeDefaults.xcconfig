@@ -1,0 +1,6 @@
+#include "Version.xcconfig"
+// Public client configuration only. A missing registration disables sign-in.
+WEEKABOO_GOOGLE_CLIENT_ID = unconfigured
+WEEKABOO_GOOGLE_REVERSED_CLIENT_ID = com.googleusercontent.apps.unconfigured
+WEEKABOO_MICROSOFT_CLIENT_ID = unconfigured
+#include? "native-auth.xcconfig"

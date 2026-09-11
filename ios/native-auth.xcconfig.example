@@ -1,0 +1,7 @@
+// Copy to native-auth.xcconfig. These are PUBLIC native client IDs, never secrets.
+// Google: an iOS OAuth client registered for app.weekaboo.calendar.
+WEEKABOO_GOOGLE_CLIENT_ID = REPLACE.apps.googleusercontent.com
+WEEKABOO_GOOGLE_REVERSED_CLIENT_ID = com.googleusercontent.apps.REPLACE
+// Entra: public iOS/macOS platform; personal Microsoft + organizational accounts.
+// Redirect: msauth.app.weekaboo.calendar://auth
+WEEKABOO_MICROSOFT_CLIENT_ID = REPLACE-WITH-APPLICATION-CLIENT-ID

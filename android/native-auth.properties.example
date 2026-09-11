@@ -1,0 +1,5 @@
+# Public native registration identifiers ONLY. Never add a client secret.
+# Copy to native-auth.properties (ignored).
+microsoftClientId=
+# SHA-1 signing certificate as standard base64, from Entra Android registration.
+androidSignatureHash=

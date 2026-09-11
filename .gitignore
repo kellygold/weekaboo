@@ -1,0 +1,53 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.env*
+!.env.example
+!backend/.env.example
+.DS_Store
+backend/.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+/data/
+
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Local evidence and private recovery snapshots.
+output/
+
+dist-native/
+dist-desktop/
+android/local.properties
+*.keystore
+*.jks
+android/native-auth.properties
+
+# Apple build products and local signing configuration.
+native/apple/.build/
+native/apple/.swiftpm/
+ios/native-auth.xcconfig
+ios/App/App/NativeAuth.plist
+
+/desktop/native-auth.json
+
+# Static website output; build with npm run site:build.
+/dist-site/
+
+# User credentials, signing exports and local device state must never be source.
+*.p12
+*.pfx
+*.mobileprovision
+*.provisionprofile
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.xcuserstate
+
+# Local screenshot predating the public fictional demo.
+/docs/prototype-landscape.png

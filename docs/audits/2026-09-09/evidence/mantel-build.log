@@ -1,0 +1,13 @@
+
+> family-calendar-frontend@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 435 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.83 kB │ gzip:   0.41 kB
+dist/assets/index-CPagNgxz.css   29.25 kB │ gzip:   5.77 kB
+dist/assets/index-BbtAeVpx.js   441.00 kB │ gzip: 136.10 kB
+✓ built in 600ms

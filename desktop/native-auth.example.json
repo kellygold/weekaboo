@@ -1,0 +1,4 @@
+{
+  "google": { "clientId": "DESKTOP_CLIENT_ID.apps.googleusercontent.com", "clientSecret": "DESKTOP_CLIENT_JSON_CLIENT_SECRET_OR_EMPTY" },
+  "microsoft": { "clientId": "MICROSOFT_PUBLIC_CLIENT_ID" }
+}

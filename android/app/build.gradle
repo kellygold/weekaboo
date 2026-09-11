@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+
+// Same canonical public metadata as Apple and desktop packaging.
+def releaseMetadata = new groovy.json.JsonSlurper().parse(rootProject.file('../package.json'))
+if (!(releaseMetadata.version ==~ /(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)/) || !(releaseMetadata.weekabooBuild instanceof Integer) || releaseMetadata.weekabooBuild < 1 || releaseMetadata.weekabooBuild > 2100000000) throw new GradleException('Invalid release version/build in package.json')
+
+
+def nativeAuth = new Properties()
+def nativeAuthFile = rootProject.file('native-auth.properties')
+if (nativeAuthFile.exists()) nativeAuthFile.withInputStream { nativeAuth.load(it) }
+def nativeClientId = nativeAuth.getProperty('microsoftClientId', '')
+def nativeSignature = nativeAuth.getProperty('androidSignatureHash', '')
+if (nativeClientId && !(nativeClientId ==~ /[a-fA-F0-9-]{36}/)) throw new GradleException('Invalid public Microsoft client ID')
+if (nativeSignature && !(nativeSignature ==~ /[A-Za-z0-9+\/=]{28}/)) throw new GradleException('Invalid public Android signature hash')
+
+// Release credentials are explicitly supplied from outside the source tree.
+// Derive the native callback from the actual signer, never the debug identity.
+def releaseSigningDirectory = System.getenv('WEEKABOO_SIGNING_DIRECTORY')
+def releaseStoreFile
+def releaseStorePassword
+def releaseSignature
+if (releaseSigningDirectory) {
+    releaseStoreFile = new File(releaseSigningDirectory, 'android-release.p12')
+    def passwordFile = new File(releaseSigningDirectory, 'android-release.password')
+    if (!releaseStoreFile.isFile() || !passwordFile.isFile()) throw new GradleException('Release signing files are missing')
+    if (!nativeClientId) throw new GradleException('Configure the public Microsoft client ID before preparing this release')
+    releaseStorePassword = passwordFile.text.trim()
+    def keyStore = java.security.KeyStore.getInstance('PKCS12')
+    releaseStoreFile.withInputStream { keyStore.load(it, releaseStorePassword.toCharArray()) }
+    if (!keyStore.isKeyEntry('weekaboo-release')) throw new GradleException('Release signing alias is missing')
+    def certificate = keyStore.getCertificate('weekaboo-release')
+    certificate.checkValidity()
+    releaseSignature = java.util.Base64.encoder.encodeToString(java.security.MessageDigest.getInstance('SHA-1').digest(certificate.encoded))
+}
+
+android {
+    namespace = "app.weekaboo.calendar"
+    compileSdk = rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "app.weekaboo.calendar"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        resValue 'string', 'microsoft_client_id', nativeClientId
+        resValue 'string', 'oauth_signature_hash', nativeSignature
+        manifestPlaceholders = [oauthSignaturePath: '/' + nativeSignature]
+        versionCode releaseMetadata.weekabooBuild
+        versionName releaseMetadata.version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        if (releaseSigningDirectory) {
+            weekabooRelease {
+                storeFile releaseStoreFile
+                storePassword releaseStorePassword
+                keyAlias 'weekaboo-release'
+                keyPassword releaseStorePassword
+                storeType 'PKCS12'
+            }
+        }
+    }
+    buildTypes {
+        release {
+            if (releaseSigningDirectory) {
+                signingConfig signingConfigs.weekabooRelease
+                resValue 'string', 'oauth_signature_hash', releaseSignature
+                manifestPlaceholders = [oauthSignaturePath: '/' + releaseSignature]
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-auth:22.0.0'
+    implementation 'com.microsoft.identity.client:msal:8.4.2'
+    implementation "com.squareup.okhttp3:okhttp:5.3.2"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

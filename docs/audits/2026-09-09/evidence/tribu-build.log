@@ -1,0 +1,28 @@
+
+> tribu-frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.js took 5ms
+
+  Running TypeScript ...
+  Finished TypeScript in 1ms ...
+  Creating an optimized production build ...
+✓ Compiled successfully in 1142ms
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/5) ...
+  Generating static pages using 7 workers (1/5) 
+  Generating static pages using 7 workers (2/5) 
+  Generating static pages using 7 workers (3/5) 
+✓ Generating static pages using 7 workers (5/5) in 174ms
+  Finalizing page optimization ...
+
+Route (pages)
+┌ ○ /
+├   /_app
+├ ○ /404
+├ ○ /display
+└ ○ /invite/[token]
+
+○  (Static)  prerendered as static content
+

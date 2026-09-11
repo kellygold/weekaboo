@@ -1,0 +1,13 @@
+
+> family-calendar-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /private/tmp/weekaboo-audit-20260909/mantel/frontend
+
+
+ Test Files  16 passed (16)
+      Tests  113 passed (113)
+   Start at  16:07:41
+   Duration  537ms (transform 704ms, setup 0ms, import 1.65s, tests 77ms, environment 1ms)
+

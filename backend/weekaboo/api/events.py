@@ -1,0 +1,281 @@
+# Portions adapted from Mantel, MIT © 2026 Mantel contributors. See licenses/Mantel-MIT.txt.
+from datetime import datetime
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import and_, or_, select
+from sqlalchemy.orm import Session, selectinload
+
+from ..storage import get_db
+from ..models import Calendar, Event
+from ..schemas import EventCreate, EventOut, EventUpdate
+from ..serializers import event_out
+from ..integrations import recurrence
+from ..integrations.providers.registry import validate_event
+from ..integrations.providers.base import ProviderError
+from ..integrations.event_mapping import event_to_remote
+from ..integrations.pushqueue import mark_pending, request_push
+from ..timeutil import to_utc
+
+router = APIRouter(prefix="/events", tags=["events"])
+
+
+def _load(db: Session, event_id: int) -> Event:
+    ev = db.scalar(
+        select(Event)
+        .where(Event.id == event_id)
+        .options(selectinload(Event.calendar))
+    )
+    if ev is None:
+        raise HTTPException(404, "Event not found")
+    return ev
+
+
+def _id_list(raw: str, field: str) -> list[int]:
+    """Parse a comma-separated id filter, or 400 if it isn't one.
+
+    Without this, a non-numeric value reaches `int()` and raises ValueError,
+    which FastAPI turns into a 500 — reporting a caller's typo as a server
+    fault. Every other bad input on this endpoint answers 400.
+    """
+    out: list[int] = []
+    for part in raw.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            out.append(int(part))
+        except ValueError:
+            raise HTTPException(400, f"`{field}` must be comma-separated integers") from None
+    return out
+
+
+PROVIDER_NAMES = {"google": "Google", "icloud": "iCloud", "microsoft": "Microsoft"}
+
+
+def _read_only(cal: Calendar) -> str:
+    """Name the service that made it read-only, not whichever one we shipped first."""
+    provider = cal.account.provider if cal.account else ""
+    where = PROVIDER_NAMES.get(provider, "the account it came from")
+    return f"Calendar '{cal.name}' is read-only in {where}"
+
+
+def _writable_calendar(db: Session, calendar_id: int) -> Calendar:
+    cal = db.get(Calendar, calendar_id)
+    if cal is None:
+        raise HTTPException(404, "Calendar not found")
+    if not cal.sync_enabled:
+        raise HTTPException(409, "Enable this calendar before editing events")
+    if not cal.writable:
+        raise HTTPException(403, _read_only(cal))
+    return cal
+
+
+def _validate_provider(cal: Calendar, event: Event, previous=None):
+    try:
+        validate_event(cal.account.provider, event_to_remote(event), previous)
+    except ProviderError as exc:
+        raise HTTPException(exc.status, exc.message) from exc
+
+
+@router.get(
+    "",
+    response_model=list[EventOut],
+    summary="List events in a date range",
+    description=(
+        "The single query endpoint every view uses. Always pass `start` and `end`; there is no "
+        "pagination because a date range is the natural bound for a calendar.\n\n"
+        "An event is returned when it overlaps the range. Each includes its calendar ID, "
+        "editability, sync state and available provider metadata. Calendar ownership, "
+        "group and color settings are exposed through the calendars endpoint."
+    ),
+)
+def list_events(
+    start: datetime = Query(
+        description="Range start, inclusive.", examples=["2026-08-01T00:00:00Z"]
+    ),
+    end: datetime = Query(
+        description="Range end, exclusive.", examples=["2026-08-08T00:00:00Z"]
+    ),
+    calendar_ids: str | None = Query(default=None, description="Comma-separated calendar ids."),
+    q: str | None = Query(default=None, description="Case-insensitive text search on title."),
+    db: Session = Depends(get_db),
+) -> list[EventOut]:
+    if end <= start:
+        raise HTTPException(400, "`end` must be after `start`")
+
+    window_start, window_end = to_utc(start), to_utc(end)
+    if (window_end - window_start).days > 366:
+        raise HTTPException(400, "Query at most one year at a time")
+
+    # Two shapes of row live in this table. A plain event is selected by its own
+    # dates. A recurring series has only its FIRST occurrence's dates stored, so
+    # it can't be date-filtered in SQL -- it is fetched by rule and expanded below.
+    base = (
+        select(Event)
+        .join(Calendar)
+        .where(
+            Calendar.sync_enabled.is_(True),
+            Event.status == "confirmed",
+            Event.sync_state != "pending_delete",
+            # A master already pushed to Google is represented by Google's own
+            # expanded instances; showing it too would duplicate every occurrence.
+            Event.is_master.is_(False),
+        )
+        .options(selectinload(Event.calendar))
+    )
+
+    stmt = base.where(
+        or_(
+            and_(
+                Event.recurrence_rule.is_(None),
+                Event.start_at < window_end,
+                Event.end_at > window_start,
+            ),
+            and_(
+                Event.recurrence_rule.is_not(None),
+                Event.start_at < window_end,
+                # A finished series is skipped here rather than being loaded and
+                # re-expanded only to yield nothing. NULL means it never ends.
+                or_(
+                    Event.recurrence_end.is_(None),
+                    Event.recurrence_end > window_start,
+                ),
+            ),
+        )
+    ).order_by(Event.start_at, Event.id)
+
+    if calendar_ids:
+        stmt = stmt.where(Event.calendar_id.in_(_id_list(calendar_ids, "calendar_ids")))
+    if q:
+        stmt = stmt.where(Event.title.ilike(f"%{q}%"))
+
+    rows = list(db.scalars(stmt))
+
+    expanded: list[Event] = []
+    for row in rows:
+        if row.recurrence_rule:
+            expanded.extend(recurrence.materialise(row, window_start, window_end))
+        else:
+            expanded.append(row)
+
+    expanded.sort(key=lambda e: (e.start_at, e.id))
+    return [event_out(e) for e in expanded]
+
+
+@router.post(
+    "",
+    response_model=EventOut,
+    status_code=201,
+    summary="Create an event",
+    description=(
+        "Saves the event locally and queues it for the connected calendar provider. "
+        "The returned sync state indicates whether the provider write is still pending."
+    ),
+)
+def create_event(payload: EventCreate, db: Session = Depends(get_db)) -> EventOut:
+    if payload.end_at <= payload.start_at:
+        raise HTTPException(400, "`end_at` must be after `start_at`")
+    cal = _writable_calendar(db, payload.calendar_id)
+
+    data = payload.model_dump()
+    data["start_at"] = to_utc(data["start_at"])
+    data["end_at"] = to_utc(data["end_at"])
+    if data.get("recurrence_rule"):
+        try:
+            data["recurrence_rule"] = recurrence.validate(data["recurrence_rule"])
+        except recurrence.RecurrenceError as exc:
+            raise HTTPException(400, str(exc)) from exc
+    ev = Event(**data, origin="local")
+    ev.recurrence_end = recurrence.series_end(
+        ev.recurrence_rule, ev.start_at, ev.end_at - ev.start_at, ev.timezone, ev.all_day
+    )
+    _validate_provider(cal, ev)
+    mark_pending(ev, cal, "pending_create")
+    db.add(ev)
+    db.commit()
+    request_push()
+    return event_out(_load(db, ev.id))
+
+
+@router.get("/{event_id}", response_model=EventOut, summary="Get one event")
+def get_event(event_id: int, db: Session = Depends(get_db)) -> EventOut:
+    return event_out(_load(db, event_id))
+
+
+@router.patch(
+    "/{event_id}",
+    response_model=EventOut,
+    summary="Update an event",
+    description=(
+        "Only the fields you send are changed locally. Provider-backed events are queued for automatic sync."
+    ),
+)
+def update_event(event_id: int, payload: EventUpdate, db: Session = Depends(get_db)) -> EventOut:
+    ev = _load(db, event_id)
+    if not ev.calendar.sync_enabled:
+        raise HTTPException(409, "Enable this calendar before editing events")
+    if not ev.calendar.writable:
+        raise HTTPException(403, _read_only(ev.calendar))
+
+    previous = event_to_remote(ev)
+    changes = payload.model_dump(exclude_unset=True)
+    for key in ("title", "start_at", "end_at", "all_day", "calendar_id"):
+        if key in changes and changes[key] is None:
+            raise HTTPException(422, f"{key} cannot be null")
+    if "calendar_id" in changes and changes["calendar_id"] != ev.calendar_id:
+        # Moving between calendars means deleting remotely and recreating; keep v1 simple.
+        raise HTTPException(400, "Moving an event between calendars is not supported yet")
+    for key in ("start_at", "end_at"):
+        if changes.get(key) is not None:
+            changes[key] = to_utc(changes[key])
+    if changes.get("recurrence_rule"):
+        try:
+            changes["recurrence_rule"] = recurrence.validate(changes["recurrence_rule"])
+        except recurrence.RecurrenceError as exc:
+            raise HTTPException(400, str(exc)) from exc
+    if "description" in changes and ev.calendar.account.provider == "microsoft":
+        from ..integrations.microsoft_body import merge_notes
+        from ..integrations.providers.base import ProviderError
+        try:
+            # Keep generated joining information available while the edit is
+            # queued. The provider merges again against the latest Graph body.
+            changes["description"] = merge_notes(ev.description or "", changes["description"], online=bool(ev.meeting_url)) or None
+        except ProviderError as exc:
+            raise HTTPException(exc.status, exc.message) from exc
+    for key, value in changes.items():
+        setattr(ev, key, value)
+    if ev.end_at <= ev.start_at:
+        raise HTTPException(400, "`end_at` must be after `start_at`")
+    ev.recurrence_end = recurrence.series_end(
+        ev.recurrence_rule, ev.start_at, ev.end_at - ev.start_at, ev.timezone, ev.all_day
+    )
+
+    _validate_provider(ev.calendar, ev, previous)
+    mark_pending(ev, ev.calendar, "pending_update")
+    db.commit()
+    request_push()
+    return event_out(_load(db, event_id))
+
+
+@router.delete(
+    "/{event_id}",
+    status_code=204,
+    summary="Delete an event",
+    description=(
+        "Queues a remote-backed event for deletion. It is removed from the provider and "
+        "local storage once the push succeeds; an unsynced local creation is removed immediately."
+    ),
+)
+def delete_event(event_id: int, db: Session = Depends(get_db)) -> None:
+    ev = _load(db, event_id)
+    if not ev.calendar.sync_enabled:
+        raise HTTPException(409, "Enable this calendar before editing events")
+    if not ev.calendar.writable:
+        raise HTTPException(403, _read_only(ev.calendar))
+
+    if ev.remote_id is None:
+        db.delete(ev)
+    else:
+        ev.sync_state = "pending_delete"
+    db.commit()
+    request_push()

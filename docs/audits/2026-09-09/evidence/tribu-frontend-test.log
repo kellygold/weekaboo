@@ -1,0 +1,10 @@
+
+> tribu-frontend@0.1.0 test
+> jest --runInBand
+
+
+Test Suites: 67 passed, 67 total
+Tests:       494 passed, 494 total
+Snapshots:   0 total
+Time:        7.877 s
+Ran all test suites.
