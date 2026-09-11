@@ -14,7 +14,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Separate current handoff from historical checkpoints so old device/setup instructions are not treated as current.
 - [ ] Verify generated-audio redistribution basis from the plan active when it was generated. Asked Kelly directly; no secret needed.
 - [x] Fresh source-only npm ci/browser/static build passes; repeatable source audit and four negative/self-tests pass. Repeat final audit with `python3 scripts/audit-public-source.py --gitleaks /path/to/gitleaks` (pinned 8.30.1).
-- [ ] Create a deliberate initial commit from the reviewed manifest; scan all resulting Git refs/history before any push. Do not bulk-add ignored/private files.
+- [x] Initial local commit `4090e70` contains only the audited 413-file manifest. Gitleaks scans of source and all Git refs report zero findings; GitHub noreply author address used. No push yet. Rerun the audit after subsequent changes.
 - [ ] Create public `kellygold/weekaboo`, push reviewed source, inspect the public tree and verify README/license/secret-scanning settings. Source publication is authorized; no further confirmation needed once clean.
 - [ ] Set and test the actual source URL in `website/site.config.json`; keep absent binary downloads empty.
 

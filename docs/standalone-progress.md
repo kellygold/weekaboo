@@ -1,5 +1,10 @@
 ## Latest completed checks — 11 September, evening continuation
 
+## 11 September 2026, 21:00 AEST — release preparation checkpoint
+
+Mac live CRUD/restart/outage tests remain passed at their exact signed hash. Current iOS archive/IPA now includes all13 approved sounds,13 native Swift notices and47 JS notices, strict signatures verified; one-device development profile only. Android debug artifact includes30 original notice files, but78 unresolved components block release/bundle; signed APK unchanged. Source-only npm ci/build/site build pass, eight site checks and mascot test pass, native collectors five tests each, source audit four self-tests pass. Initial local commit4090e70 holds413 reviewed files; source/full-history Gitleaks zero findings, no remote/push. Public kellygold/weekaboo authorized once ready; audio paid-generation status is pending. README/OAuth guide and deferred MCP plan are written. The source link remains unset until repository creation; website/binary deployment remain separate approvals.
+
+
 ## 11 September 2026, 20:47 AEST — Mac live validation and source publication preparation
 
 Mac all-provider UI CRUD/direct readback/cleanup and full restart pass; injected outage retains cached events and recovers without consent, tasks/settings unchanged. Connection-feedback iOS archive/IPA refreshed, still development-only. New iOS notice collector passes five tests and simulator exact-resource proof; Android native notices remain incomplete. Site now prominently says free/open-source; eight browser/layout checks pass. User authorized public kellygold/weekaboo when source is clean; first scanner pass found no secrets and no Git history exists yet. README/license/contribution/security/audit/checklist work underway. Private asset archive preserves unused concepts and rejected audio; generation-plan status is pending user clarification. See current-validation.md and release-checklist.md for current evidence/gates. Old handoff chronology moved to docs/history; physical iPad remains sold/disconnected.
