@@ -1,6 +1,6 @@
 # Weekaboo static website
 
-Local implementation, 11 September 2026. **Website not deployed; source is public.** Kelly requested a custom static site for GitHub, alongside physical iPad validation. The site uses the existing Weekaboo brand and approved mascot/audio, fictional calendar plans, and platform-specific download slots. It is separate from the application runtime.
+Updated 12 September 2026. **The website is public at https://weekaboo.app/ on GitHub Pages.** Kelly authorized publication and updated the domain DNS. Public contact is `hello@weekaboo.app`, backed by the owner-confirmed ImprovMX catch-all. The site uses the existing Weekaboo brand and approved mascot/audio, fictional calendar plans, and platform-specific download slots. It is separate from the application runtime.
 
 ## Develop and review
 
@@ -10,7 +10,7 @@ npm run site:preview
 # http://127.0.0.1:5190
 ```
 
-Only Node built-ins are needed to build. Preview uses Python's local HTTP server. All distributable files are in ignored `dist-site/`; upload that directory only. The build explicitly copies the three public pages, CSS/JS, two mascot SVGs, Nunito and its OFL notice, and the thirteen approved MP3s from `src/mascotSounds.ts`. Audio loads on interaction, never autoplay. No app database, credentials, env files, signing material, binaries or rejected audio candidates are copied. The output is roughly 640 KB, including all sound variants.
+Only Node built-ins are needed to build. Preview uses Python's local HTTP server. All distributable files are in ignored `dist-site/`; upload that directory only. The build explicitly copies the public landing, legal and attribution pages, CSS/JS, two mascot SVGs, Nunito and its OFL notice, and the thirteen approved MP3s from `src/mascotSounds.ts`. Audio loads on interaction, never autoplay. No app database, credentials, env files, signing material, binaries or rejected audio candidates are copied. The output is roughly 640 KB, including all sound variants.
 
 - `website/index.html`: landing page, fictional interactive calendar/task preview, platform availability.
 - `website/site.css`: shared responsive styling and reduced-motion treatment.
@@ -31,18 +31,42 @@ node scripts/verify-site.mjs
 
 The verifier serves the built artifact under `/weekaboo/`, exercises Chromium and WebKit at 1440, 768, 390 and 320 CSS px, checks views/tasks/mascot audio/navigation/reduced motion, rejects failed asset loads or third-party requests, and checks horizontal page overflow. Evidence/screenshots are private ignored artifacts under `output/site-validation/`. It does not sign into providers or touch app data. Real phone/device website review and deployed-domain verification remain distinct from these browser checks.
 
-## Publication handoff — source approved, site deployment separate
+## Publication and maintenance
 
-The reviewed source is public at [kellygold/weekaboo](https://github.com/kellygold/weekaboo). The source URL is configured in the local website build. Exact binary download destinations remain unknown. Do not invent them or publish the whole working tree: this checkout contains private ignored state and ongoing application work.
+The reviewed source is public at [kellygold/weekaboo](https://github.com/kellygold/weekaboo). The first site deployment used `e679c61`: [successful workflow run](https://github.com/kellygold/weekaboo/actions/runs/34656414160). The public build contains only the allowlisted `dist-site` files, never app credentials, local databases, private evidence or native binaries.
 
-1. Complete the authorized source publication at `kellygold/weekaboo` using the release checklist and reviewed file manifest. Set the real source URL in `website/site.config.json`. Keep unavailable downloads empty.
-2. Check the static copy, credits and privacy note, including asset distribution rights. Keep download destinations truthful; no released/production-ready claim until the native validation gates pass.
-3. When publication is explicitly approved, copy `website/github-pages.yml.example` into `.github/workflows/website.yml`. It is intentionally inactive today and uses **manual dispatch only**, not push-triggered publication. It uploads `dist-site` exclusively and does not need an npm install or app secrets.
-4. In repository Settings → Pages, choose GitHub Actions. Configure `weekaboo.app` as the custom domain there; an Actions deployment does not rely on `CNAME` alone. Review domain verification and DNS before changes. Preserve the existing ImprovMX MX/SPF records for email.
-5. Manually run the workflow, confirm HTTPS, then verify the deployed pages, assets and domain. Keep any required environment approval protection in place. No publish action has been performed in this task.
-6. Add approved signed-download/TestFlight/store links when those artifacts actually exist publicly, then review and publish the change. Recheck download actions and privacy text at that point.
+`.github/workflows/website.yml` is the single active workflow. It uses manual dispatch, pinned action revisions, a main-only build and deployment environment, read-only build permissions and separate Pages/OIDC deployment permissions. Checkout does not retain its token. Source pushes do not automatically deploy the site.
 
-Public repositories can use GitHub Pages on GitHub Free. This static design needs no paid runtime. Official workflow reference checked 11 September 2026: [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), including checkout v6, configure-pages v5, upload-pages-artifact v4 and deploy-pages v4. [Publishing source and custom-domain behavior](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+To publish a reviewed website change:
+
+1. Build and run the eight browser checks below; review changed copy/assets and destinations.
+2. Audit source/history, then push the reviewed commit to `main`.
+3. Run `gh workflow run website.yml --repo kellygold/weekaboo --ref main` and verify the successful run's commit.
+4. Verify the live HTTPS pages, files, contact/source links, redirects and small-screen interactions. Keep unavailable download URLs empty. Native release links need separately approved, actually available artifacts.
+
+GitHub Pages is configured for the custom domain `weekaboo.app` and HTTPS enforcement. Kelly's Squarespace DNS has these records:
+
+| Type | Host | Value |
+| --- | --- | --- |
+| A | @ | `185.199.108.153` |
+| A | @ | `185.199.109.153` |
+| A | @ | `185.199.110.153` |
+| A | @ | `185.199.111.153` |
+| CNAME | www | `kellygold.github.io` |
+
+Authoritative DNS, a public resolver and later the Mac resolver agree. Existing ImprovMX MX/SPF records were preserved. Catch-all delivery is owner-confirmed; no test email was sent by the agent. Google Search Console ownership is a separate pending verification step, not implied by correct DNS.
+
+First public proof: all 28 site files match the local build by SHA-256, all eight Chromium/WebKit viewport/interaction checks pass against the real HTTPS origin without a DNS override, HTTP redirects to HTTPS, and the policy URLs without trailing slashes redirect correctly. Private `.env`, output and source paths return404. The earlier file-hash check used a verified GitHub IP override while the Mac cached negative DNS; this limitation does not apply to the later browser proof. Evidence: ignored `output/website-publication/`.
+
+The first certificate covered the apex only. After `www` propagated, the existing custom-domain binding was removed and immediately restored using GitHub's documented reprovisioning procedure. Check its final certificate/redirect result before claiming `www` is verified. Never disable TLS verification as an acceptance workaround.
+
+A scoped independent review identified an explicit Pages read-permission omission before the first dispatch. That omission was fixed; the delta review returned no blocking findings. No failed deployment of the original version was reproduced. Source/history audits reported zero secret findings before the public push. This review covers the website publication delta, not whole-app readiness.
+
+Public repositories can use GitHub Pages on GitHub Free. This static design needs no paid runtime. Sources: [custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), [custom-domain setup](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site), [certificate troubleshooting](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/troubleshooting-custom-domains-and-github-pages).
+
+## Design and attribution history
+
+The following records explain prior design decisions; their old local-only publication status is superseded above.
 
 ## Review revision — 11 September 2026
 

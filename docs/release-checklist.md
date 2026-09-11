@@ -18,22 +18,23 @@ Updated 12 September 2026. This is the work queue, not a production-readiness cl
 - [x] Public [kellygold/weekaboo](https://github.com/kellygold/weekaboo) created and reviewed source pushed. GitHub recognizes MIT and reports secret scanning and push protection enabled.
 - [x] Real GitHub source URL appears in navigation and the source section; eight browser/layout checks include destination assertions. Binary download URLs remain empty.
 
-## Website — local build ready; deployment not yet authorized
+## Website — published on GitHub Pages
 
 - [x] Lead with free, open source and privacy; describe direct provider connections and local storage accurately.
 - [x] Explain flexible undated tasks, optional deadlines/time blocks, calendar groups and bidirectional edits.
 - [x] Check eight Chromium/WebKit desktop/tablet/phone layouts including 320px, interaction, audio and no external requests.
 - [x] Verify real GitHub link after source publication; all eight website checks pass with configured destination assertions.
 - [x] Clarify local task storage versus provider calendar/authentication diagnostics; eight website checks pass after the copy change.
-- [ ] Final asset/credits/privacy review, then explicit go-ahead for GitHub Pages/domain deployment.
-- [ ] Verify deployed HTTPS/domain/assets. Preserve existing email MX/SPF records.
+- [x] Final website delta review and explicit approval for GitHub Pages/domain deployment; published `e679c61` on 12 September.
+- [x] Verify public apex HTTPS, all28 asset hashes and eight live browser/viewport checks; preserve email MX/SPF. Public contact `hello@weekaboo.app`.
+- [ ] Complete www certificate reprovisioning/redirect acceptance and Google Search Console ownership. See [website evidence](website.md#publication-and-maintenance).
 
 ## Shared behavior and security
 
 - [x] Current shared regression suite: 182 pass, including cancellation race regressions.
 - [x] Check native storage/logging boundaries and actual signed-artifact configuration; exact evidence scopes in credential review.
 - [x] Retain failed attempts and cleanup evidence; do not replace missing proof with an optimistic status.
-- [ ] Complete independent follow-up on the fixed cancellation race in a fresh review session. Existing review budget exhausted without final verdict.
+- [x] Fresh scoped cancellation follow-up on clean `e679c61`: one independent Claude/high review,251seconds, no confirmed P0/P1. Prior budget-exhausted receipt preserved; whole-release review remains separate.
 - [ ] Complete live expired/revoked access, reconnect/removal, recurrence/DST scope and ambiguous-write recovery matrix on relevant providers/platforms.
 - [ ] Verify final candidate after any packaging/source changes, including assets/notices and fresh-install/in-place-upgrade paths.
 

@@ -12,7 +12,7 @@ All five new Google clients are received. Active Web, iOS and Mac private config
 - iOS: new signed App Store IPA exported and verified;18/18 fresh iPhone/Mini/standard-iPad simulator tests pass. Retained consent simulator updated in place without data loss: `F18043A2-D6F3-4A75-9BFA-7BF07FBF5330`. Fresh new-client simulator consent and discovery now pass; physical/store execution remains unproved. `output/google-project-migration/ios-discovery-fix/receipt.json`.
 - Mac: signed app/DMG rebuilt, package/mount/resource checks pass. Current Microsoft/iCloud UI create/edit/delete, provider readback, cleanup, restart, task and calendar-setting retention pass. `output/google-project-migration/mac/unchanged-providers-1789164513260/receipt.json`. Google fresh consent and live CRUD also pass; Mac is not notarized.
 
-No binary/store upload or site deployment occurred. Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: complete remaining platform-specific CRUD/expiry boundaries and distribution preparation. Keep direct-APK evidence separate from Play-installed signing acceptance.
+No binary/store upload occurred. Website publication is now authorized and completed separately; see [website evidence](website.md#publication-and-maintenance). Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: complete remaining platform-specific CRUD/expiry boundaries and distribution preparation. Keep direct-APK evidence separate from Play-installed signing acceptance.
 
 Updated 11 September 2026 after physical Android validation, current iOS distribution export, Mac refresh and privacy packaging review. Read [current validation](current-validation.md), [release checklist](release-checklist.md), then [execution plan](release-execution-plan.md). Earlier chronological records are in [implementation history](history/implementation-checkpoints-through-2026-09-11.md) and [validation history](history/validation-checkpoints-through-2026-09-11.md); their old pending statuses are superseded.
 
@@ -20,7 +20,7 @@ Updated 11 September 2026 after physical Android validation, current iOS distrib
 
 Continue autonomously toward release: Android tablet first, iOS/iPadOS second, Mac third. Preserve browser behavior and shared architecture. Phone redesign is deferred except actual clipping or unreachable controls. Google test-user setup and fresh consent on Android, Mac, browser and iOS simulator are complete. Continue remaining write/lifecycle and independent release checks. Continue independent work around unavailable devices and store dependencies instead of stopping at a status report.
 
-Public source https://github.com/kellygold/weekaboo exists and audited source pushes are authorized. Secret scanning and push protection are enabled. Native binary/store publication, website deployment, notarization and new charges need their own concrete final approval. Do not infer those permissions from source publication. Prepare all reviewable work first.
+Public source https://github.com/kellygold/weekaboo exists and audited source pushes are authorized. Secret scanning and push protection are enabled. Website publication is explicitly authorized and live. Native binary/store publication, notarization and new charges still need their own concrete final approval. Do not infer those permissions from source publication. Prepare all reviewable work first.
 
 ## Completed current slice
 
@@ -29,7 +29,7 @@ Public source https://github.com/kellygold/weekaboo exists and audited source pu
 - iPhone, Mini and standard iPad simulators each pass six current core/UI tests on 26.5. Current App Store distribution IPA exports and verifies with existing Apple signing, debugging disabled and no development device restriction. `scripts/ios-release.py` / [iOS release guide](ios-release.md) make this repeatable. No upload performed; old one-device development IPA is superseded.
 - Current signed Apple Silicon app/DMG refreshed. Exact renderer/package resources and isolated installation/replacement/task export/import proof pass. Not notarized. Previous real Mac provider consent/CRUD/readback/recovery evidence remains tied to its earlier build.
 - Privacy audit found no concrete missing app-owned required-reason declaration in its bounded scan. Twelve SDK manifests retained and verified in current archive and exported IPA. New `scripts/verify-ios-privacy.py` checks reviewed semantic declarations and locked SDK revisions; seven regression tests pass. Export script now runs it. This packaging check does not approve privacy labels. See [disclosure evidence](privacy-disclosures.md).
-- Website privacy copy now distinguishes local tasks from provider calendars and authentication diagnostics. Eight Chromium/WebKit viewport checks pass; site remains local. GitHub links are real. Approved thirteen greetings retained; Kelly confirmed paid ElevenLabs coverage, so that asset hold is resolved.
+- Website privacy copy now distinguishes local tasks from provider calendars and authentication diagnostics. Eight Chromium/WebKit viewport checks pass against the public site. GitHub links are real. Approved thirteen greetings retained; Kelly confirmed paid ElevenLabs coverage, so that asset hold is resolved.
 
 Exact hashes, evidence paths, failed-attempt boundaries and remaining gates are in current-validation.md. Later policy/docs/verifier changes do not alter native runtime artifacts. Rebuild only when runtime/package changes warrant it, and retain each candidate receipt.
 
@@ -37,7 +37,7 @@ Exact hashes, evidence paths, failed-attempt boundaries and remaining gates are 
 
 - Android tablet is connected by USB and authorized. Preserve accounts/tasks, use same-certificate in-place updates, never uninstall/reset. Only explicitly disposable Weekaboo emulators/simulators may be reset. Keep credentials in native stores; task export is the allowed portable backup mechanism.
 - The physical iPad was sold. Never reconnect, control or clean it. All synthetic remote events/tasks were removed; Kelly waived remaining local backup-file cleanup before factory reset. Continue iOS with simulators or a future approved family device.
-- Normal Mac profile has all three providers connected. The Google client has changed and needs normal re-consent; preserve the existing account identity and tasks. Microsoft/iCloud registration is unchanged. Package smoke tests use isolated profiles.
+- Normal Mac profile has all three providers connected. Fresh new-project Google consent is complete; preserve the existing account identity and tasks. Microsoft/iCloud registration is unchanged. Package smoke tests use isolated profiles.
 - Live writes must be uniquely named, attendee-free synthetic records with direct readback and verified cleanup. Never alter existing calendar events to test recurrence or expiration. Preserve normal processes/settings on exit.
 - Tasks remain device-local. Same calendar accounts do not synchronize tasks. Preserve IDs/completion history during export/import; never copy credential vaults between devices.
 
@@ -50,9 +50,9 @@ Read [cross-platform plan](cross-platform-plan.md), [platform references](platfo
 ## Next independent work
 
 1. Complete SDK-aware Android/iOS store disclosure drafts and accessible bundled acknowledgments. Keep website privacy claims exact; no blanket “Data Not Collected” based only on no backend.
-2. Continue isolated provider expiry/reconnect/recurrence/DST/uncertain-write proof. Working user accounts must not be revoked for a test. Cancellation review follow-up is still incomplete: the original eight-minute review budget was exhausted; do not silently retry in that same session.
+2. Continue isolated provider expiry/reconnect/recurrence/DST/uncertain-write proof. Working user accounts must not be revoked for a test. Cancellation follow-up now passes in a fresh bounded independent session on clean `e679c61` (251seconds, no confirmed P0/P1); prior timeout receipts remain intact. Current Android testing exposed a separate rapid edit→delete stale-preview revision defect, now under shared UI regression validation.
 3. Prepare Play signing/testers/store assets and App Store Connect/TestFlight metadata, without uploading. Preserve existing OAuth registrations. Physical family iOS/minimum-OS acceptance remains a separate checkpoint.
-4. Prepare Mac notarization/download acceptance and website deployment as concrete final actions for approval. Explicit Apple Silicon-only scope until Intel/minimum-OS evidence exists. Preserve ImprovMX DNS records.
+4. Prepare Mac notarization/download acceptance as concrete final actions for approval; website publication is complete. Explicit Apple Silicon-only scope until Intel/minimum-OS evidence exists. Preserve ImprovMX DNS records.
 5. Finish the dedicated Google project migration and fresh authorization on every platform with test-user setup now complete. Keep Instapie registrations and branding untouched. No further client registration is needed except a differing Play app-signing certificate if applicable.
 
 Keep source/history audits current before authorized pushes. Raw evidence, keys, account labels and recovery files stay in ignored output or protected native storage. Do not write Obsidian/Linear/Slack automatically. Distinguish built, tested, approved, uploaded and publicly available states.

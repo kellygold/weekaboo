@@ -1,5 +1,16 @@
 # User dependencies and early setup
 
+## Current owner actions — 12 September 2026
+
+- DNS updated by Kelly; GitHub Pages site is published with `hello@weekaboo.app`. ImprovMX catch-all is owner-confirmed. No further DNS A/CNAME setup is needed. Google Search Console ownership TXT/verification remains pending; this was requested directly in chat.
+- Android final live checks are active. Keep the tablet connected until engineering confirms it is safe to swap the single USB port to the offered iPhone17Pro. The sold iPad is permanently unavailable.
+- iPhone device build preflight passes unsigned; development signing/install and actual provider consent need the offered phone, trust/developer-mode approval if prompted, and owner-entered credentials. No new OAuth client is needed.
+- New Google clients, all four fresh-consent paths, Play identity verification and existing Apple signing setup are complete. Do not repeat these registrations.
+- Before store submission: review [Android packet](android-release-submission.md) and [Google verification packet](google-verification-packet.md). Public support-email eligibility, actual Play signing certificate, reviewer access, closed-test rollout and final upload approval remain distinct gates. No upload or new charge has been made.
+
+Earlier dated findings below are historical where superseded by this section and current-validation.md.
+
+
 ## Google migration and discovery fix — 12 September 2026
 
 All five new Google clients are received. Active Web, iOS and Mac private configuration and canonical Android registration files now use `weekaboo-app` (project number `124770503970`). Owner-only private backups and receipts are under `output/google-project-migration/active-cutover/`. Browser backend restarted and health200 verified. Microsoft/iCloud configuration and signing keys are preserved.

@@ -12,11 +12,11 @@ All five new Google clients are received. Active Web, iOS and Mac private config
 - iOS: new signed App Store IPA exported and verified;18/18 fresh iPhone/Mini/standard-iPad simulator tests pass. Retained consent simulator updated in place without data loss: `F18043A2-D6F3-4A75-9BFA-7BF07FBF5330`. Fresh new-client simulator consent and discovery now pass; physical/store execution remains unproved. `output/google-project-migration/ios-discovery-fix/receipt.json`.
 - Mac: signed app/DMG rebuilt, package/mount/resource checks pass. Current Microsoft/iCloud UI create/edit/delete, provider readback, cleanup, restart, task and calendar-setting retention pass. `output/google-project-migration/mac/unchanged-providers-1789164513260/receipt.json`. Google fresh consent and live CRUD also pass; Mac is not notarized.
 
-No binary/store upload or site deployment occurred. Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: complete remaining platform-specific CRUD/expiry boundaries and distribution preparation. Keep direct-APK evidence separate from Play-installed signing acceptance.
+No binary/store upload occurred. Website publication is now authorized and completed separately; see [website evidence](website.md#publication-and-maintenance). Follow [Google migration](google-project-migration.md) for detailed evidence, prior failures and remaining consent work. Next: complete remaining platform-specific CRUD/expiry boundaries and distribution preparation. Keep direct-APK evidence separate from Play-installed signing acceptance.
 
 Updated 12 September 2026. Runtime candidate source: `d3bcf4b`. Subsequent privacy-policy, documentation and packaging-verifier changes do not change the installed native apps. Historical attempts and earlier artifact boundaries are preserved in [validation checkpoints](history/validation-checkpoints-through-2026-09-11.md).
 
-Public source is live at https://github.com/kellygold/weekaboo. Native binaries, website and store releases are not published or production-approved. Follow [release checklist](release-checklist.md) and [execution plan](release-execution-plan.md).
+Public source is live at https://github.com/kellygold/weekaboo. The static website is public; native binaries and store releases are not published or production-approved. Follow [release checklist](release-checklist.md) and [execution plan](release-execution-plan.md).
 
 ## Current candidate evidence
 
@@ -29,7 +29,7 @@ Public source is live at https://github.com/kellygold/weekaboo. Native binaries,
 | Previous physical iPad Mini | All three providers connected and live CRUD/readback/cleanup passed. Release task lifecycle, real Wi-Fi-off restart/cache/recovery, isolated Keychain/SQLite/network tests passed. UI task export/import and picker cancel exercised | Older artifact, device now sold and permanently unavailable. Lock/unlock/expiry unproved. Remaining local backup-file cleanup explicitly waived before factory reset |
 | Mac Apple Silicon | Current signed app/DMG; exact 74 renderer files; isolated package/install/replacement/task export/import proof passes | Not notarized; downloaded quarantine/Gatekeeper, Intel and minimum macOS acceptance unproved |
 | Mac live provider evidence | Current signed package: fresh new-project Google consent and UI CRUD/readback/cleanup/restart pass. Microsoft/iCloud current-package CRUD passed separately; settings/tasks retained | Prior injected outage is not a physical network-off test. Ordinary silent acquisition does not prove true token expiry |
-| Website | Current privacy copy; eight Chromium/WebKit desktop/tablet/phone checks including 320px, GitHub links, interaction/audio/local assets and no external requests | Built locally only; no domain deployment or public binary URLs |
+| Website | Current privacy copy; eight Chromium/WebKit desktop/tablet/phone checks including 320px, GitHub links, interaction/audio/local assets and no external requests | Public HTTPS deployment verified on the apex; www certificate reprovisioning pending. No public binary URLs |
 | iOS privacy | Twelve manifests matched reviewed declarations in both archive and exported IPA. Seven negative/encoding/SDK-lock verifier tests pass. Bounded source/API inventory found no concrete missing app-owned declaration | Packaging retention is not full API coverage or store-label approval. SDK-specific disclosure questions remain in privacy-disclosures.md |
 
 ## Exact native artifacts
@@ -63,6 +63,8 @@ Scoped Android packaging review of `45ede45` against `8e9e82f` completed in 209 
 
 The earlier cancellation review found a queued-interactive race; the author fixed it, proved the regression fails pre-fix and passes current code, and passed packaged cancellation/retry. Follow-up exhausted the original eight-minute review budget without a verdict. Do not silently retry within the same work session or claim final independent approval. See `connection-cancel-review-status.json` and `connection-cancel-delta-review-status.json` in private validation output.
 
+A fresh, explicitly bounded release-validation session on 12 September reviewed the same four-file cancellation delta against clean `e679c61`. One Claude Opus/high invocation completed in251seconds of480 with no confirmed P0/P1. Both queued-interactive and post-store-read cancellation races are closed by the reviewed code. This resolves the scoped independent follow-up; it is static review, not whole-release/device acceptance. Prior timeout receipts remain preserved. Evidence: `output/production-validation/cancellation-final-review-20260912/`.
+
 ## Remaining release gates
 
 - Complete true expiry/revocation/reconnect, recurrence/DST and ambiguous-write matrix without revoking working user accounts or touching real events. Use isolated/synthetic fixtures and verify cleanup.
@@ -71,4 +73,4 @@ The earlier cancellation review found a queued-interactive race; the author fixe
 - Obtain Mac notarization/stapling and downloaded Gatekeeper proof after concrete approval; state Apple Silicon-only support until broader support is verified.
 - Finish remaining platform write/lifecycle checks; fresh Google consent on Android, Mac, browser and iOS simulator passes and identifies Weekaboo. Preserve Instapie and its unrelated clients.
 - Finish unavailable physical/minimum-OS acceptance honestly. No new registration is needed to continue independent work.
-- Obtain final publication approval for reviewed binaries/store uploads and static website deployment. Preserve existing domain email records.
+- Obtain final publication approval for reviewed binaries/store uploads. Static website publication is complete; preserve existing domain email records.
