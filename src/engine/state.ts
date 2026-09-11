@@ -7,6 +7,8 @@ export interface ProviderAccount extends Account {
   subject: string;
   authorizationRef: string;
   sharedWorkCalendars: boolean;
+  /** Event reads cannot prove that calendar discovery recovered. */
+  discoveryNeedsAttention?: boolean;
 }
 export interface StoredCalendar { calendar: Calendar; remoteId: string }
 export interface CalendarState {

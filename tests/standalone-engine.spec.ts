@@ -31,8 +31,65 @@ function fixture() {
     async events(_token, { calendar }) { return [{ id: `${calendar.id}:event`, calendarId: calendar.id, title: 'Fixture', start: '2026-10-03T09:00:00Z', end: '2026-10-03T10:00:00Z', allDay: false, editable: false }]; },
   };
   const services = standaloneServices({ documents, providers: { google: oauthConnection('google', auth, reader), microsoft: oauthConnection('microsoft', auth, reader) }, availability: async () => ({ google: true, microsoft: true, icloud: false }) });
-  return { documents, services, calls, offline: (value: boolean) => { offline = value; }, subject: (value: string) => { subject = value; }, failDiscovery: () => { failDiscovery = true; } };
+  return { documents, services, calls, reader, offline: (value: boolean) => { offline = value; }, subject: (value: string) => { subject = value; }, failDiscovery: () => { failDiscovery = true; } };
 }
+
+test('calendar discovery continues after another account needs reconnecting and retains its settings', async () => {
+  const f = fixture();
+  await f.services.accounts.connect({ provider: 'google' });
+  await f.services.accounts.connect({ provider: 'microsoft' });
+  const google = (await f.services.calendars.listCalendars()).find(row => row.provider === 'google')!;
+  await f.services.calendars.configure(google.id, { color: '#abcdef', scope: 'work', enabled: false });
+  const discover = f.reader.calendars;
+  const visited: string[] = [];
+  f.reader.calendars = async (token, account) => {
+    visited.push(account.provider);
+    if (account.provider === 'google') throw new AuthorizationError('interaction-required', 'Synthetic reconnect required');
+    return (await discover(token, account)).map(row => ({ ...row, calendar: { ...row.calendar, name: 'Updated Microsoft calendar' } }));
+  };
+  await f.services.calendars.refresh();
+  expect(visited).toEqual(['google', 'microsoft']);
+  expect((await f.services.calendars.listCalendars()).find(row => row.id === google.id)).toMatchObject({ color: '#abcdef', scope: 'work', enabled: false, syncError: expect.any(String) });
+  expect((await f.services.calendars.listCalendars()).find(row => row.provider === 'microsoft')?.name).toBe('Updated Microsoft calendar');
+  expect((await f.services.accounts.list()).find(row => row.provider === 'google')).toMatchObject({ status: 'needs_reauth', needsAttention: true });
+  // A later successful discovery clears the connection warning without replacing the account.
+  f.reader.calendars = discover;
+  await f.services.calendars.refresh();
+  expect((await f.services.accounts.list()).find(row => row.provider === 'google')).toMatchObject({ status: 'active', needsAttention: false });
+  expect(await f.services.accounts.list()).toHaveLength(2);
+});
+
+test('all failed calendar discoveries report failure after trying every account without removing calendars', async () => {
+  const f = fixture();
+  await f.services.accounts.connect({ provider: 'google' });
+  await f.services.accounts.connect({ provider: 'microsoft' });
+  const before = (await f.services.calendars.listCalendars()).map(row => row.id);
+  const visited: string[] = [];
+  f.reader.calendars = async (_token, account) => { visited.push(account.provider); throw new Error('Synthetic provider outage'); };
+  await expect(f.services.calendars.refresh()).rejects.toThrow('Synthetic provider outage');
+  expect(visited).toEqual(['google', 'microsoft']);
+  expect((await f.services.calendars.listCalendars()).map(row => row.id)).toEqual(before);
+  expect((await f.services.accounts.list()).every(row => row.status === 'sync_error' && row.needsAttention)).toBe(true);
+});
+
+test('successful event reads preserve persisted incomplete calendar-discovery warnings', async () => {
+  const f = fixture();
+  await f.services.accounts.connect({ provider: 'google' });
+  await f.services.accounts.connect({ provider: 'microsoft' });
+  const discover = f.reader.calendars;
+  f.reader.calendars = async (token, account) => {
+    if (account.provider === 'google') throw new Error('Synthetic incomplete calendar list');
+    return discover(token, account);
+  };
+  await f.services.calendars.refresh();
+  expect(await f.services.calendars.listEvents(range)).toHaveLength(2);
+  expect((await f.services.calendars.listCalendars()).find(row => row.provider === 'google')?.syncError).toBeTruthy();
+  expect((await new CalendarStateStore(f.documents).read()).accounts.find(row => row.provider === 'google')).toMatchObject({ status: 'sync_error', needsAttention: true, discoveryNeedsAttention: true });
+  f.reader.calendars = discover;
+  await f.services.calendars.refresh();
+  await f.services.calendars.listEvents(range);
+  expect((await f.services.calendars.listCalendars()).find(row => row.provider === 'google')?.syncError).toBeUndefined();
+});
 
 test('native account persists only after identity and complete discovery, never exposing tokens', async () => {
   const f = fixture(); f.failDiscovery();

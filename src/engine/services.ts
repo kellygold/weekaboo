@@ -127,7 +127,7 @@ export function standaloneServices(options: {
           await editCache(entries => [...entries.filter(entry => !fresh.some(row => entry.calendarId === row.calendarId && entry.start === row.start && entry.end === row.end)), ...fresh].slice(-60));
         });
         result.push(...fresh.flatMap(entry => entry.events));
-        await serialize(() => store.change(current => ({ ...current, accounts: current.accounts.map(item => item.id === account.id ? { ...item, status: 'active', needsAttention: false } : item) })));
+        await serialize(() => store.change(current => ({ ...current, accounts: current.accounts.map(item => item.id === account.id ? { ...item, status: item.discoveryNeedsAttention ? item.status : 'active', needsAttention: Boolean(item.discoveryNeedsAttention) } : item) })));
       } catch (error) {
         firstError ??= error;
         const needsAuth = error instanceof AuthorizationError && ['interaction-required', 'denied'].includes(error.code) || error instanceof ServiceError && error.code === 'authentication';
@@ -241,13 +241,29 @@ export function standaloneServices(options: {
     }),
     configure: (id, settings) => serialize(() => store.change(state => ({ ...state, calendars: state.calendars.map(row => row.calendar.id === id ? { ...row, calendar: { ...row.calendar, ...settings } } : row) }))),
     async refresh() {
+      let firstError: unknown;
+      let completed = 0;
       for (const account of (await store.read()).accounts) {
-        const discovered = await connection(account.provider).reader.calendars(await connection(account.provider).access(account), account);
-        await serialize(() => store.change(state => !state.accounts.some(item => item.id === account.id) ? state : ({ ...state, calendars: [...state.calendars.filter(row => row.calendar.accountId !== account.id), ...discovered.map(row => {
+        let discovered: Awaited<ReturnType<ProviderReader['calendars']>>;
+        try {
+          discovered = await connection(account.provider).reader.calendars(await connection(account.provider).access(account), account);
+        } catch (error) {
+          firstError ??= error;
+          const needsAuth = error instanceof AuthorizationError && ['interaction-required', 'denied'].includes(error.code) || error instanceof ServiceError && error.code === 'authentication';
+          await serialize(() => store.change(state => ({ ...state, accounts: state.accounts.map(item => item.id === account.id ? { ...item, status: needsAuth ? 'needs_reauth' : 'sync_error', needsAttention: true, discoveryNeedsAttention: true } : item) })));
+          continue;
+        }
+        // Keep local persistence errors visible; they are not provider outages.
+        await serialize(() => store.change(state => !state.accounts.some(item => item.id === account.id) ? state : ({ ...state,
+          accounts: state.accounts.map(item => item.id === account.id ? { ...item, status: 'active', needsAttention: false, discoveryNeedsAttention: false } : item),
+          calendars: [...state.calendars.filter(row => row.calendar.accountId !== account.id), ...discovered.map(row => {
           const prior = state.calendars.find(old => old.calendar.id === row.calendar.id);
           return prior ? { ...row, calendar: { ...row.calendar, enabled: prior.calendar.enabled, color: prior.calendar.color, scope: prior.calendar.scope } } : row;
         })] })));
+        completed++;
       }
+      // Partial success can render fresh events and the per-account warning.
+      if (firstError && !completed) throw firstError;
     },
   };
   return { accounts, calendars };
