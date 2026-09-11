@@ -1,54 +1,44 @@
 # Weekaboo implementation handoff
 
-Updated 11 September 2026, 21:00 AEST. Read this file, then [current validation](current-validation.md) and [release checklist](release-checklist.md). Older chronological entries are preserved in [implementation history](history/implementation-checkpoints-through-2026-09-11.md); they are not current instructions or status.
+Updated 11 September 2026 after physical Android validation, current iOS distribution export, Mac refresh and privacy packaging review. Read [current validation](current-validation.md), [release checklist](release-checklist.md), then [execution plan](release-execution-plan.md). Earlier chronological records are in [implementation history](history/implementation-checkpoints-through-2026-09-11.md) and [validation history](history/validation-checkpoints-through-2026-09-11.md); their old pending statuses are superseded.
 
-## Deferred extension
+## Active objective and authorization
 
-Kelly requested a future MCP/AI-client adapter after this release. See [MCP extension plan](mcp-extension-plan.md); do not implement it now. [OAuth setup](oauth-setup.md) explains official builds versus custom client registrations and public-client versus private-token boundaries.
+Continue autonomously toward release: Android tablet first, iOS/iPadOS second, Mac third. Preserve browser behavior and shared architecture. Phone redesign is deferred except actual clipping or unreachable controls. No immediate user setup is needed. Continue independent work around unavailable devices and store dependencies instead of stopping at a status report.
 
-## Active work
+Public source https://github.com/kellygold/weekaboo exists and audited source pushes are authorized. Secret scanning and push protection are enabled. Native binary/store publication, website deployment, notarization and new charges need their own concrete final approval. Do not infer those permissions from source publication. Prepare all reviewable work first.
 
-Kelly renewed autonomous execution on 11 September. Follow [release execution plan](release-execution-plan.md): Android tablet first, then iOS/iPadOS and Mac; phone redesign deferred except release-blocking usability. No immediate user action is needed. Continue independent work around device/account/publication dependencies instead of ending at a status report.
+## Completed current slice
 
-Public source repository **https://github.com/kellygold/weekaboo** is now created and the reviewed source is pushed. Do not confuse this with permission to publish binaries, submit to stores, deploy the website, notarize or incur charges. Initial local commit `4090e70` now contains the audited 413-file source set; source and all-ref history scans pass with zero findings. Origin now points to that public repository. GitHub secret scanning and push protection are enabled; source/history scans passed before push.
+- Runtime candidate source `d824b4d`: 182 shared tests pass; Chromium/WebKit phone controls corrected and checked. No broad phone redesign.
+- Android current signed APK installed in place on the reconnected Lenovo tablet. Exact original tasks retained, all provider accounts preserved, installed bytes matched and release WebView inspection disabled. Immediately preceding packaging build passed real offline restart/recovery and actual MSAL fallback instrumentation. Native inventory: 91 records, 153 notices, zero unresolved. Ten collector tests and bundletool/signature checks pass. Scoped independent Android packaging review passed; whole-product review remains open.
+- iPhone, Mini and standard iPad simulators each pass six current core/UI tests on 26.5. Current App Store distribution IPA exports and verifies with existing Apple signing, debugging disabled and no development device restriction. `scripts/ios-release.py` / [iOS release guide](ios-release.md) make this repeatable. No upload performed; old one-device development IPA is superseded.
+- Current signed Apple Silicon app/DMG refreshed. Exact renderer/package resources and isolated installation/replacement/task export/import proof pass. Not notarized. Previous real Mac provider consent/CRUD/readback/recovery evidence remains tied to its earlier build.
+- Privacy audit found no concrete missing app-owned required-reason declaration in its bounded scan. Twelve SDK manifests retained and verified in current archive and exported IPA. New `scripts/verify-ios-privacy.py` checks reviewed semantic declarations and locked SDK revisions; seven regression tests pass. Export script now runs it. This packaging check does not approve privacy labels. See [disclosure evidence](privacy-disclosures.md).
+- Website privacy copy now distinguishes local tasks from provider calendars and authentication diagnostics. Eight Chromium/WebKit viewport checks pass; site remains local. GitHub links are real. Approved thirteen greetings retained; Kelly confirmed paid ElevenLabs coverage, so that asset hold is resolved.
 
-Website prominently says free and open source. README, MIT license, contributing/security guidance and source audit are published. Website source URL now targets the actual public repository; eight browser/layout checks pass with GitHub destination assertions. A repeatable Gitleaks audit checks the candidate tree and all refs when commits exist; raw reports/private screenshots remain in ignored output. Kelly explicitly confirmed paid ElevenLabs coverage for the generation date; the audio publication hold is resolved. See the release checklist for every remaining gate.
-
-## Completed latest validation
-
-- Mac Google/Microsoft/iCloud user sign-in plus independent UI create/edit/delete with provider readback and fixture cleanup. Accounts survive full app restarts; original tasks and calendar settings unchanged.
-- Mac injected provider outage retains cached event labels after renderer reload and failed refresh; recovery requires no new consent. Physical network outage and true expired-token renewal are not proved.
-- Shared suite: 180 passed; signed Mac cancel/retry and Android emulator restart/in-place upgrade/task lifecycle pass. Earlier full iPhone/Mini/standard iPad simulator matrix: 18 pass; latest standard iPad feedback build: six pass.
-- Current iOS connection-feedback archive/IPA refreshed at `output/production-validation/ios-source-cleanup-current/` with latest assets and native notices. Development profile allows only one registered device; not TestFlight/family distribution.
-- New iOS native notice collector: five tests pass, 13 exact notices across ten locked packages, all 15 resources verified in simulator app. Signed iOS archive/IPA now includes those notices. Android now has locked runtime resolution and digest-bound upstream supplements: 91 resolved records, 153 notice files, zero unresolved entries, ten collector tests, signed APK/AAB byte verification and release ART fallback instrumentation passed. Final tablet checks are in progress.
-- Website free/open-source copy: eight Chromium/WebKit/layout checks pass at local port 5190. Subsequent source asset cleanup removes unused concepts/denied sounds from future builds; Android/Mac signed artifacts predate cleanup; latest iOS archive/IPA includes it.
-
-Exact receipts, artifacts and boundaries are in current-validation.md. The independent cancellation delta review timed out within its original budget; do not claim an independent final pass or retry it again in that work session.
+Exact hashes, evidence paths, failed-attempt boundaries and remaining gates are in current-validation.md. Later policy/docs/verifier changes do not alter native runtime artifacts. Rebuild only when runtime/package changes warrant it, and retain each candidate receipt.
 
 ## Device and data boundaries
 
-- Physical iPad is disconnected for factory reset/sale. **Do not reconnect, control or clean it.** Remote synthetic events/tasks were removed; the user waived remaining local backup-file cleanup.
-- Kelly reconnected physical Android tablet on 11 September; authorized ADB is available. Preserve its accounts/tasks and use in-place signed updates. Only disposable Weekaboo validation simulators/emulators may be reset.
-- All Mac providers connected in the normal profile. No new registration, credential import or re-consent is needed for ordinary tests. Keep secrets inside native stores.
-- Tasks are device-local; preserve IDs/history, use export/import, and never copy native credential vaults between devices. No automatic task sync.
-- Use synthetic attendee-free unique records for explicitly authorized live writes, verify direct readback and cleanup. Preserve app settings and normal process on exit.
+- Android tablet is connected by USB and authorized. Preserve accounts/tasks, use same-certificate in-place updates, never uninstall/reset. Only explicitly disposable Weekaboo emulators/simulators may be reset. Keep credentials in native stores; task export is the allowed portable backup mechanism.
+- The physical iPad was sold. Never reconnect, control or clean it. All synthetic remote events/tasks were removed; Kelly waived remaining local backup-file cleanup before factory reset. Continue iOS with simulators or a future approved family device.
+- Normal Mac profile has all three providers connected. No new registration, credential import or re-consent is needed for ordinary checks. Current package tests use isolated profiles.
+- Live writes must be uniquely named, attendee-free synthetic records with direct readback and verified cleanup. Never alter existing calendar events to test recurrence or expiration. Preserve normal processes/settings on exit.
+- Tasks remain device-local. Same calendar accounts do not synchronize tasks. Preserve IDs/completion history during export/import; never copy credential vaults between devices.
 
-## Architecture / product constraints
+## Architecture and durable references
 
-Shared React UI, TypeScript domain/provider engine, narrow native auth/storage/network/file adapters. Android and iOS use Capacitor; macOS uses Electron. No required Weekaboo login, hosted server, tunnel or home computer. Browser retains a loopback-only Python backend; it is not bundled in native apps. Avoid permanent duplicate provider engines. Do not redesign the established calendar/task UI during release preparation.
+Shared React UI, TypeScript domain/provider engine, narrow authorization/storage/network/file adapters. Android and iOS use Capacitor; Mac uses Electron. No required Weekaboo login, hosted server, tunnel or home computer. Optional browser backend remains loopback-only Python and is not in native packages. Avoid permanent duplicate provider engines. No MCP, hosted sync or infrastructure expansion during this release.
 
-Priorities: Android, iOS/iPadOS, then signed/notarized macOS DMG. Static public website/download/source links; operating cost target is the domain only. Existing signing material is available locally; never regenerate or replace it implicitly.
+Read [cross-platform plan](cross-platform-plan.md), [platform references](platform-reference-notes.md), [user dependencies](user-dependencies.md), [credential review](credential-security-review.md), [attribution](attribution.md) and [OAuth setup](oauth-setup.md) when needed. Native identifiers are public; user credentials are private. Future MCP/AI-client integration is pinned in [MCP plan](mcp-extension-plan.md), not active work.
 
-For rationale and researched provider differences read [cross-platform plan](cross-platform-plan.md), [platform references](platform-reference-notes.md), [user dependencies](user-dependencies.md), [credential review](credential-security-review.md) and [attribution](attribution.md). Registration/sign-in prerequisites are already complete; user-facing future questions belong directly in conversation, not only in a Markdown file.
+## Next independent work
 
-## Continue independently
+1. Complete SDK-aware Android/iOS store disclosure drafts and accessible bundled acknowledgments. Keep website privacy claims exact; no blanket “Data Not Collected” based only on no backend.
+2. Continue isolated provider expiry/reconnect/recurrence/DST/uncertain-write proof. Working user accounts must not be revoked for a test. Cancellation review follow-up is still incomplete: the original eight-minute review budget was exhausted; do not silently retry in that same session.
+3. Prepare Play signing/testers/store assets and App Store Connect/TestFlight metadata, without uploading. Preserve existing OAuth registrations. Physical family iOS/minimum-OS acceptance remains a separate checkpoint.
+4. Prepare Mac notarization/download acceptance and website deployment as concrete final actions for approval. Explicit Apple Silicon-only scope until Intel/minimum-OS evidence exists. Preserve ImprovMX DNS records.
+5. Present Google consent branding decision (currently Instapie) only with a prepared plan that protects that app. No new signup or client registration merely to continue testing.
 
-Public repository creation, source/history audit and website source-link validation are complete. Keep source changes audited before push. Complete Android native acknowledgments and refresh signed artifacts without changing profiles. Preserve honest release gates for independent review, remaining device/expiry/recurrence tests, consent branding, store tracks and notarization. Keep this handoff and checklist updated rather than accumulating contradictory top-level instructions.
-
-## Latest checkpoint — 11 September 22:05 AEST
-
-Android tablet reconnected and current signed APK installed in place. Exact tasks retained; all providers connected; offline restart/recovery and non-inspectable release WebView pass. Native notice gate closed, scoped Claude packaging review passed. Detailed receipt: current-validation.md and ignored output/production-validation/android-tablet-current/. User data preserved, Wi-Fi restored, app reopened. Continue release-execution-plan.md autonomously. iOS root privacy/API audit and small-phone button clipping remain agent-owned next checks; no new registrations needed. Source 45ede45 is local, awaiting final source/history audit before authorized push.
-
-## Latest final-artifact checkpoint — 11 September 22:18 AEST
-
-Shared suite 182 pass; Chromium/WebKit phone controls fixed and checked. Final Android APK installed with exact original tasks retained and inspection disabled. iOS current 18-test three-simulator matrix passes; current-source App Store-signed IPA export now succeeds using existing Apple account (no upload). New scripts/ios-release.py and docs/ios-release.md make archive/export repeatable. Mac signed DMG refreshed and exact renderer/install/update/import proof passes. See current-validation.md for hashes and limits. Remaining: privacy/disclosure/notice viewer, provider negative/recurrence matrix, independent cancellation follow-up, store records/testers, notarization and explicit publication approvals. No immediate new signup or client registration needed.
+Keep source/history audits current before authorized pushes. Raw evidence, keys, account labels and recovery files stay in ignored output or protected native storage. Do not write Obsidian/Linear/Slack automatically. Distinguish built, tested, approved, uploaded and publicly available states.

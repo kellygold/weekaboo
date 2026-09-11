@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-09-11",
+  "scope": "Reviewed SDK declarations retained verbatim semantically. See docs/privacy-disclosures.md; not proof of runtime collection or App Store label approval. SDK or manifest changes require deliberate review.",
+  "manifests": {
+    "AppAuth_AppAuth.bundle/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "AppAuth_AppAuthCore.bundle/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "Frameworks/Capacitor.framework/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "Frameworks/Cordova.framework/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "Frameworks/MSAL.framework/PrivacyInfo.xcprivacy": "f39b04f6f27158155cb936fe5c9e94fed98aae4856ffdee7e82eb78def38508d",
+    "GTMAppAuth_GTMAppAuth.bundle/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "GTMSessionFetcher_GTMSessionFetcherCore.bundle/PrivacyInfo.xcprivacy": "0d3d718f283b08a4e170c4cf7799d2c40b2f31d0954aab8b83f2782290556193",
+    "GoogleSignIn_GoogleSignIn.bundle/PrivacyInfo.xcprivacy": "5d7eadc0703c8eefb87dee51a77a28f8c6ee270f5831ac203237feb377a66a36",
+    "GoogleUtilities_GoogleUtilities-Environment.bundle/PrivacyInfo.xcprivacy": "6b2a65c58e80b7086aa0fbfa124a7df1738f3fca15147e6f56dc67163016ee0b",
+    "GoogleUtilities_GoogleUtilities-Logger.bundle/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d",
+    "GoogleUtilities_GoogleUtilities-UserDefaults.bundle/PrivacyInfo.xcprivacy": "42256732d6c4a21a586d2da98e82d1a118d6a4ad39b20f8b91cb2b8920338cde",
+    "Promises_FBLPromises.bundle/PrivacyInfo.xcprivacy": "3b49c699d80484e28adc8dcd4edc6febc3e232a7d9bab57459dfadac2d80033d"
+  },
+  "packages": [
+    {
+      "identity": "app-check",
+      "revision": "3e33dd27dd4c69bd81c7c81fe61d8ccf58846902"
+    },
+    {
+      "identity": "appauth-ios",
+      "revision": "a972daac82d449d58ab119e91c68153e29ddac33"
+    },
+    {
+      "identity": "capacitor-swift-pm",
+      "revision": "89e0d8ec2321025f549ddb19259a717467943b97"
+    },
+    {
+      "identity": "googlesignin-ios",
+      "revision": "7823e518f5d4db765ccac3e140dd3265ef0a1cf1"
+    },
+    {
+      "identity": "googleutilities",
+      "revision": "92c8f6dc3ac375d6febdfcb3db68bc3d10633db3"
+    },
+    {
+      "identity": "gtm-session-fetcher",
+      "revision": "724a52eea6329b7e12d3ad8300d76ca9f3895fcc"
+    },
+    {
+      "identity": "gtmappauth",
+      "revision": "57094cd46bc8700d3a887e2a429f42b6e8ea3f0b"
+    },
+    {
+      "identity": "interop-ios-for-google-sdks",
+      "revision": "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe"
+    },
+    {
+      "identity": "microsoft-authentication-library-for-objc",
+      "revision": "d54e9653f94883a896af533133888be1c2ef5c75"
+    },
+    {
+      "identity": "promises",
+      "revision": "f4a19a3c313dc2616c70bb49d29a799fb16be837"
+    }
+  ]
+}

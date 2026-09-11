@@ -452,3 +452,7 @@ Completed native notices/strict runtime locking and scoped independent review; s
 ## 11 September 2026 — current artifacts
 
 Phone clipping/overlap fixes pass Chromium/WebKit plus all 182 shared tests. Final Android update retains exact task data. iOS current iPhone/Mini/iPad matrix passes 18 tests and current-source App Store distribution export succeeds. Signed Mac DMG exact contents and isolated install/update/task transfer pass. Source/artifact evidence and outstanding release gates are in current-validation.md and release-checklist.md.
+
+## 11 September — privacy package gate and current handoff reconciliation
+
+Documented SDK-aware disclosure evidence; tightened website task/provider privacy copy. Eight website checks and seven privacy-verifier regressions pass. All twelve reviewed privacy manifests match the existing current archive and exported IPA; future exports run the guard automatically. No native runtime change, device reset, credential export or upload. Android remains connected/current; historical status moved out of current-validation.md to preserve a single accurate current ledger.

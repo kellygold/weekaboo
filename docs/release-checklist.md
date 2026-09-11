@@ -24,6 +24,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Explain flexible undated tasks, optional deadlines/time blocks, calendar groups and bidirectional edits.
 - [x] Check eight Chromium/WebKit desktop/tablet/phone layouts including 320px, interaction, audio and no external requests.
 - [x] Verify real GitHub link after source publication; all eight website checks pass with configured destination assertions.
+- [x] Clarify local task storage versus provider calendar/authentication diagnostics; eight website checks pass after the copy change.
 - [ ] Final asset/credits/privacy review, then explicit go-ahead for GitHub Pages/domain deployment.
 - [ ] Verify deployed HTTPS/domain/assets. Preserve existing email MX/SPF records.
 
@@ -57,7 +58,8 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [ ] Physical iPhone/larger iPad/minimum-supported-OS and lock/unlock/expiry acceptance. The old iPad is sold: no further work on that device.
 - [x] Current Release archive exports locally with App Store distribution profile, debugging disabled and no one-device restriction. Xcode managed signing succeeded with existing account; see ios-release.md.
 - [ ] Configure App Store Connect record/TestFlight testers and approve exact upload; local export is not distribution or App Store approval.
-- [ ] Review store metadata, privacy manifest/disclosures, review-account instructions and final archive/export before explicit upload approval.
+- [x] Inventory/review retained iOS SDK privacy manifests; repeatable package guard checks all twelve against locked revisions in archive and IPA. Seven negative/encoding tests pass; no concrete missing app-owned declaration found in bounded source/API review.
+- [ ] Complete SDK-aware privacy disclosures, store metadata, review-account instructions and final archive/export review before explicit upload approval. See privacy-disclosures.md.
 
 ## macOS
 

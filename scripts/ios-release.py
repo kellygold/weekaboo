@@ -92,11 +92,14 @@ try:
         assert entitlements['application-identifier'] == args.team + '.app.weekaboo.calendar'
         assert profile['Entitlements']['application-identifier'] == entitlements['application-identifier']
         native = json.loads(run(['node', 'scripts/native-ios-notices-verify.mjs', str(app)]))
+        privacy = json.loads(run(['python3', 'scripts/verify-ios-privacy.py', str(app)]))
+        (out / 'privacy-manifests.json').write_text(json.dumps(privacy, indent=2) + '\n')
         receipt.update(ipaSha256=sha(ipa), exportedIpa=str(ipa.relative_to(root)),
                        strictSignatureVerified=True, appStoreDistributionProfile=True,
                        developerDebuggingDisabled=True, rendererFiles=len(renderer),
                        nativeNoticePackages=native['packages'], nativeNoticeFiles=native['verbatimNotices'],
-                       privacyManifestCount=len(list(app.rglob('PrivacyInfo.xcprivacy'))))
+                       privacyManifestCount=privacy['manifestCount'],
+                       reviewedPrivacyManifestsRetained=True)
     receipt['status'] = 'local-export-verified'
     print('Verified local App Store export: ' + str(ipa.relative_to(root)), flush=True)
 except Exception as error:
