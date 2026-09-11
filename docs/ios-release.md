@@ -12,11 +12,11 @@ Use a new output directory for every candidate; previous archives and evidence a
 
 If signing is not yet provisioned and you intend Xcode to manage profiles/certificates with your existing Apple account, add `--allow-provisioning-updates`. This is an explicit Apple account mutation, not an upload. It can require Xcode sign-in/MFA or account permissions. Normal runs use installed signing material and do not enable this option.
 
-## Current verified state — 11 September 2026
+## Current verified state — 12 September 2026
 
 The initial local-only export failed because distribution signing was absent. Xcode managed signing resolved it using the existing account. A subsequent current-source archive/export succeeded without provisioning updates. The resulting IPA has an App Store distribution profile with debugging disabled and no device restriction; it is not the earlier one-iPad development IPA.
 
-Private proof: `output/production-validation/ios-app-store-current/receipt.json`. All 92 renderer resources and 13 native notices across ten Swift packages match. iPhone, Mini and standard iPad simulator tests each pass six core/UI checks on iOS 26.5. The exported IPA is not installed in the simulator; export/signature proof and simulator runtime proof are separate.
+Current private proof: `output/google-project-migration/ios-discovery-fix/receipt.json`; exported IPA SHA-256 and runtime boundary are recorded in [current validation](current-validation.md). Earlier export receipts remain historical. All 92 renderer resources and 13 native notices across ten Swift packages match. iPhone, Mini and standard iPad simulator tests each pass six core/UI checks on iOS 26.5. The exported IPA is not installed in the simulator; export/signature proof and simulator runtime proof are separate.
 
 ## Remaining delivery gates
 
@@ -26,4 +26,4 @@ Private proof: `output/production-validation/ios-app-store-current/receipt.json`
 - Physical iPhone/family-device acceptance and minimum-supported-iOS acceptance remain outstanding. Never use the sold iPad.
 - Approve the exact prepared upload before sending the IPA to App Store Connect. External TestFlight/beta review and public App Store approval are separate steps.
 
-No new OAuth clients or Apple membership are currently needed. Google consent branding still uses the shared Instapie project and needs a deliberate owner decision before broad distribution.
+No new OAuth clients or Apple membership are currently needed. All five Google clients now belong to the dedicated Weekaboo project. Fresh Android/Mac/browser/iOS-simulator consent passes. Public OAuth verification remains separate from test-user authorization.

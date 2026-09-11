@@ -1,6 +1,6 @@
 # Weekaboo release checklist
 
-Updated 11 September 2026. This is the work queue, not a production-readiness claim. Source publication, website deployment and binary distribution have separate gates. Detailed private-device evidence is summarized in [current validation](current-validation.md).
+Updated 12 September 2026. This is the work queue, not a production-readiness claim. Source publication, website deployment and binary distribution have separate gates. Detailed private-device evidence is summarized in [current validation](current-validation.md).
 
 ## Public source — authorized destination: kellygold/weekaboo
 
@@ -42,8 +42,12 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 - [x] Receive all five new clients and migrate ignored Web/iOS/Mac configuration with private backups; preserve unrelated providers and keys.
 - [x] Rebuild all native packages on `d3bcf4b`; shared182 tests, iOS18 simulator tests, Android in-place preservation and Mac Microsoft/iCloud CRUD/readback/cleanup pass.
 - [x] Fix cross-account discovery isolation with persisted warnings; scoped independent review has no blocking findings.
-- [ ] Add intended Google test accounts in the new project's Testing audience; fresh Android/Mac grant currently403/access_denied.
-- [ ] Prove fresh new-project Google consent, identity/calendar discovery and guarded CRUD on Android, Mac, browser and iOS; cached old-project access is not proof.
+- [x] Kelly added intended test accounts; fresh Android/Mac/browser authorization now succeeds under Weekaboo branding.
+- [x] Android release fresh audience/identity/discovery and actual connection/restart pass; exact three tasks and all accounts preserved.
+- [x] Mac fresh Desktop-client consent and Google UI CRUD/readback/cleanup/restart pass; current Microsoft/iCloud live CRUD already passed.
+- [x] Browser new-client callback, identity/discovery, actual refresh grant and UI CRUD/readback/reload/cleanup pass; existing account IDs/calendar settings preserved.
+- [x] Fresh iOS simulator Google consent, persisted calendar/event discovery and full process restart retention pass.
+- [ ] Finish remaining platform CRUD/lifecycle gaps; cached old-project access is not proof.
 - [ ] Validate Android development sign-in and the eventual Play-delivered app-signing certificate separately.
 
 ## Android
@@ -85,7 +89,7 @@ Updated 11 September 2026. This is the work queue, not a production-readiness cl
 ## User-dependent items — ask directly when needed
 
 - **Resolved:** Kelly confirmed paid ElevenLabs coverage for the audio generation date; no further account/billing evidence requested.
-- **Later:** Google OAuth consent still presents Instapie; approve deliberate project/branding separation without breaking that app.
+- **Resolved for current Android/Mac/browser consent:** dedicated Weekaboo project and branding. iOS simulator consent also passes. Remaining: public Google verification and actual Play-signing/tester acceptance.
 - **Distribution:** chosen Play/tester and TestFlight/family installation routes; any new signing/profile/store action requiring account interaction.
 - **Publication:** source repository is already authorized when clean. Website deployment and native binary/store publication still need their own concrete approval.
 

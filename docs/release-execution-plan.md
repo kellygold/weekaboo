@@ -1,6 +1,6 @@
 # Release execution plan
 
-Accepted direction: 11 September 2026. Kelly asked to pursue the remaining work autonomously, with Android tablet delivery first. The new Google project requires intended accounts in its Testing audience; engineering and isolated checks continue independently. This plan sequences the [release checklist](release-checklist.md); [current validation](current-validation.md) remains the evidence ledger.
+Accepted direction: 11 September 2026. Kelly asked to pursue the remaining work autonomously, with Android tablet delivery first. Test-user setup is complete. Android, Mac, browser and iOS simulator fresh Google consent pass; remaining release checks continue. This plan sequences the [release checklist](release-checklist.md); [current validation](current-validation.md) remains the evidence ledger.
 
 ## Delivery sequence
 
@@ -17,7 +17,7 @@ Tablet delivery is the first milestone. A broader phone redesign is deferred. Be
 
 ## Work Kelly may eventually need to do
 
-Current immediate action: add intended Google accounts in the new project’s Testing audience and complete fresh consent. Further concrete steps may include:
+Test-user setup and fresh Android/Mac/browser/iOS-simulator consent are complete. No further owner setup is needed for this Google migration checkpoint. Further concrete steps may include:
 
 - Reconnect the Android tablet for final in-place upgrade/physical acceptance, or install the prepared APK manually. Do not request repeated OAuth or developer registrations.
 - Complete an Apple/Google login, MFA, agreement or role-restricted distribution action if available sessions cannot do it.
