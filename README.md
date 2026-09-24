@@ -151,3 +151,8 @@ Use [CONTRIBUTING.md](CONTRIBUTING.md) for change and verification expectations,
 ## License and credits
 
 Weekaboo's original code is [MIT licensed](LICENSE). Selected calendar integration components were adapted from Mantel, with its MIT notice retained; Weekaboo does not depend on the Mantel application. Dependencies, vendor artwork, fonts and generated media have their own terms: see [third-party attribution](docs/attribution.md) and [asset provenance](licenses/ASSETS.md). The MIT license does not relicense third-party material or grant rights to provider trademarks.
+
+## Support
+
+If this project is useful to you, you can [support Burner Tools](https://buymeacoffee.com/burnertools)
+on Buy Me a Coffee.
