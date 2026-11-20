@@ -10,7 +10,7 @@ for (const link of [config.sourceUrl, ...Object.values(config.downloads)]) {
 if (config.domain && !/^[a-z0-9.-]+$/.test(config.domain)) throw new Error('Invalid site domain.');
 await rm(output, {recursive:true, force:true});
 await mkdir(path.join(output,'assets/audio'), {recursive:true});
-for (const file of ['index.html','privacy.html','credits.html','site.css','site.js']) {
+for (const file of ['index.html','privacy.html','credits.html','site.css','site.js','google1362b6188f27c0bd.html']) {
   await cp(path.join(root,'website',file), path.join(output,file));
 }
 await cp(path.join(root,'website/legal'),path.join(output,'legal'),{recursive:true});
