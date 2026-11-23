@@ -30,7 +30,7 @@
 <h2>Google user data Weekaboo accesses</h2>
 <p>When you connect a Google account, Weekaboo asks for the permissions below and accesses only this data:</p>
 <ul>
-<li><strong>Account identity.</strong> Your Google account’s email address and account ID.</li>
+<li><strong>Account identity.</strong> Your Google account’s email address and account ID. On iPhone and iPad, Google’s sign-in library also returns your basic profile (your name and the address of your profile picture). Weekaboo does not use or display it; it stays inside the saved sign-in session in the Keychain.</li>
 <li><strong>Calendar list.</strong> The list of calendars in your Google account, read-only.</li>
 <li><strong>Calendar events.</strong> Events on those calendars, including titles, times, descriptions, locations, attendees and meeting links.</li>
 <li><strong>Weekaboo’s own Drive app-data folder.</strong> Only if you separately turn on encrypted task sync. This permission covers files Weekaboo itself created in its private app-data folder; it does not let Weekaboo see your ordinary Drive files.</li>
@@ -45,23 +45,26 @@
 </ul>
 <p>Google user data is used only to provide these features to you. Weekaboo does not sell Google user data, use it for advertising, or use it to develop, improve or train AI or machine-learning models. Weekaboo’s use and transfer of information received from Google APIs follows the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including its Limited Use requirements.</p>
 <h2>Sharing, transfer and disclosure of Google user data</h2>
-<p>Weekaboo does not share, transfer, sell or disclose Google user data to anyone. There is no Weekaboo server: Google user data moves only between your device and Google, and the developer never receives it. Weekaboo adds no analytics or advertising service to the apps.</p>
-<p>If you tap a meeting or map link inside an event, that link opens in the relevant app or website, which then handles it under its own policy.</p>
+<p>Weekaboo does not sell Google user data, and the developer never receives it. The developer operates no server: Google user data moves between your device and Google. Weekaboo adds no analytics or advertising service to the apps.</p>
+<p>The one transfer to another party happens only when you choose it. If you tap a meeting link, a map link or another link inside an event, Weekaboo hands that link, or the event’s location for a map search, to the app or website that opens it. That service then handles it under its own policy. Weekaboo does not otherwise share, transfer or disclose Google user data to anyone.</p>
 <h2>How Google user data is protected</h2>
 <ul>
 <li><strong>In transit.</strong> Requests go directly from your device to Google over encrypted HTTPS connections.</li>
 <li><strong>Sign-in.</strong> You sign in with Google’s own authorization service. Weekaboo never sees or stores your Google password.</li>
 <li><strong>Stored sign-in credentials.</strong> On iPhone and iPad they are kept in the system Keychain, on that device only and not synced to iCloud. On Mac they are encrypted with the operating system’s secure storage inside a database only your user account can read, and Weekaboo refuses to store them if that encryption is unavailable. On Android, Google authorization is held by Google Play services on your device, and Weekaboo’s app data is excluded from cloud backup and device transfer.</li>
-<li><strong>Cached calendar data.</strong> Events are cached in the app’s private storage on your device so your calendar works offline. Phones and tablets keep that storage separate from other apps; on Mac it is restricted to your user account. Your device’s own lock and encryption protect it.</li>
+<li><strong>Cached calendar data.</strong> Events, and a short record of recent changes you made to them, are cached in the app’s private storage on your device so your calendar works offline. Phones and tablets keep that storage separate from other apps; on Mac it is restricted to your user account. Your device’s own lock and encryption protect it.</li>
 <li><strong>Task sync.</strong> Task content is encrypted on your device before it is uploaded to Drive, and your devices hold the keys.</li>
+<li><strong>Self-hosted browser version.</strong> If you run the open-source browser version, its companion server runs on your own computer, not ours. It encrypts Google sign-in tokens with a key kept on that computer and stores your calendars and events in a local database there. Protecting that computer and its database is up to you.</li>
 </ul>
 <h2>Retention and deletion of Google user data</h2>
 <p>The developer keeps no Google user data, because none is ever sent to us. Everything Weekaboo stores is on your own device or in your own Google account:</p>
 <ul>
-<li><strong>On your device.</strong> Cached events are kept while the account stays connected, are refreshed when the calendar syncs, and the oldest cached date ranges are removed as the cache fills. Sign-in credentials are kept until you disconnect the account.</li>
-<li><strong>Disconnecting.</strong> Disconnecting an account in Weekaboo deletes that account’s cached calendars and events, its account details and the sign-in credentials Weekaboo stored, from that device. It does not delete events from Google Calendar.</li>
+<li><strong>On your device.</strong> Cached events are kept while the account stays connected, are refreshed when the calendar syncs, and the oldest cached date ranges are removed as the cache fills. Weekaboo keeps a record of the changes you make to events so they can be sent and confirmed safely; up to the 100 most recent completed changes are kept, and older ones are removed automatically. Sign-in credentials are kept until you disconnect the account.</li>
+<li><strong>Disconnecting.</strong> Disconnecting an account in Weekaboo deletes that account’s cached calendars and events, its account details and the sign-in credentials Weekaboo stored, from that device. Completed entries in the record of recent changes stay until newer changes replace them. On Android, Google Play services holds the authorization, so disconnecting removes the account from Weekaboo but leaves that authorization in place until you revoke it in your Google Account. Disconnecting does not delete events from Google Calendar.</li>
 <li><strong>Revoking access.</strong> To withdraw Weekaboo’s permission entirely, remove it under <a href="https://myaccount.google.com/connections">third-party connections in your Google Account</a>. Revoking access also stops calendar and task sync for that account.</li>
 <li><strong>Uninstalling.</strong> Disconnect your accounts before uninstalling so stored credentials are removed along with the cached data.</li>
+<li><strong>Backups.</strong> Weekaboo excludes its data from Android cloud backup and device transfer. On iPhone, iPad and Mac, Weekaboo’s cached data is included in the device backups you run, such as iCloud Backup or Time Machine, and those copies follow your backup’s own retention. Sign-in credentials in the iPhone and iPad Keychain stay on that device and are not restored to another one.</li>
+<li><strong>Self-hosted browser version.</strong> Disconnecting an account there deletes its stored tokens, calendars and events from the local database on your computer.</li>
 <li><strong>Drive task files.</strong> Pausing task sync does not delete files already in Drive. You can delete Weekaboo’s stored app data from Google Drive’s settings under Manage apps. Keep a task backup and recovery file before removing data you may need.</li>
 </ul>
 <p>If you want help removing your data, email <a href="mailto:hello@weekaboo.app">hello@weekaboo.app</a>.</p>
